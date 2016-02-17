@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Desktop.Orders
 {
-    public class OrdersViewModel
+    class OrderViewModel : BindableBase
     {
     }
 }
