@@ -13,7 +13,7 @@
         <DataTemplate DataType="{x:Type customers:CustomerListViewModel}">
             <customers:CustomerListView />
         </DataTemplate>
-        <DataTemplate DataType="{x:Type orders:OrdersViewModel}">
+        <DataTemplate DataType="{x:Type orders:OrderViewModel}">
             <orders:OrderView />
         </DataTemplate>
         <DataTemplate DataType="{x:Type prep:OrderPrepViewModel}">
@@ -21,6 +21,32 @@
         </DataTemplate>
     </Window.Resources>
     <Grid>
-        <ContentControl Content="{Binding CurrentViewModel}" />
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid x:Name="NavBar">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />                
+            </Grid.ColumnDefinitions>
+            <Button Content="Customers"
+                    Command="{Binding NavCommand}"
+                    CommandParameter="customers"
+                    Grid.Column="0" />
+            <Button Content="Orders"
+                    Command="{Binding NavCommand}"
+                    CommandParameter="orders"
+                    Grid.Column="1" />
+            <Button Content="OrderPrep"
+                    Command="{Binding NavCommand}"
+                    CommandParameter="orderPrep"
+                    Grid.Column="2" />
+        </Grid>
+        <Grid x:Name="MainContent"
+              Grid.Row="1">
+            <ContentControl Content="{Binding CurrentViewModel}" />
+        </Grid>
     </Grid>
 </Window>
