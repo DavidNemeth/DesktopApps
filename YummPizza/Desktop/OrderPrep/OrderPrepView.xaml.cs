@@ -22,7 +22,6 @@ namespace Desktop.OrderPrep
     {
         public OrderPrepView()
         {
-            DataContext = new OrderPrepViewModel();
             InitializeComponent();
         }
     }

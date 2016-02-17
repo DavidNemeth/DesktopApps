@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Desktop.OrderPrep
+namespace Desktop.Orders
 {
-    public class OrderPrepViewModel
+    public class OrdersViewModel
     {
     }
 }
