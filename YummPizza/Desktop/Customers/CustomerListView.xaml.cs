@@ -22,7 +22,7 @@ namespace Desktop.Customers
     {
         public CustomerListView()
         {
-            this.DataContext = new CustomerListViewModel();
+            
             InitializeComponent();
         }
     }

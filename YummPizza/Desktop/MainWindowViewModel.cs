@@ -18,6 +18,7 @@ namespace Desktop
         public MainWindowViewModel()
         {
             NavCommand = new RelayCommand<string>(OnNav);
+            _customerListViewModel.PlaceOrderRequested += NavToOrder;
         }
         private BindableBase _CurrentViewModel;
         public BindableBase CurrentViewModel
@@ -38,6 +39,12 @@ namespace Desktop
                     CurrentViewModel = _customerListViewModel;
                     break;
             }
+        }
+        
+        private void NavToOrder(string customerId)
+        {
+            _orderViewModel.CustomerId = customerId;
+            CurrentViewModel = _orderViewModel;
         }
     }
 }

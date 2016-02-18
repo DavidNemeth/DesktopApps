@@ -8,5 +8,12 @@ namespace Desktop.Orders
 {
     class OrderViewModel : BindableBase
     {
+        private string _CustomerId;
+        public string CustomerId
+        {
+            get { return _CustomerId; }
+            set { SetProperty(ref _CustomerId, value); }
+        }
+
     }
 }

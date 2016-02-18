@@ -13,6 +13,10 @@ namespace Desktop.Customers
     {
         private ICustomerRepository _repo = new CustomersRepository();
         private ObservableCollection<Customer> _customers;
+        public CustomerListViewModel()
+        {
+            PlaceOrderCommand = new RelayCommand<Customer>(OnPlaceOrder);
+        }
         public ObservableCollection<Customer> Customers
         {
             get { return _customers; }
@@ -22,6 +26,11 @@ namespace Desktop.Customers
         {
             Customers = new ObservableCollection<Customer>(await _repo.GetCustomersAsync());
         }
-
+        public event Action<string> PlaceOrderRequested;
+        public RelayCommand<Customer> PlaceOrderCommand { get; private set; }
+        private void OnPlaceOrder(Customer customer)
+        {
+            PlaceOrderRequested(customer.FullName);
+        }
     }
 }
