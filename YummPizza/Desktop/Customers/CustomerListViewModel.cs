@@ -16,21 +16,43 @@ namespace Desktop.Customers
         public CustomerListViewModel()
         {
             PlaceOrderCommand = new RelayCommand<Customer>(OnPlaceOrder);
+            EditCustomerCommand = new RelayCommand<Customer>(OnEdit);
+            AddCustomerCommand = new RelayCommand(OnAdd);
         }
         public ObservableCollection<Customer> Customers
         {
             get { return _customers; }
             set { SetProperty(ref _customers, value); }
         }
+
+        //load Customers
         public async void LoadCustomers()
         {
             Customers = new ObservableCollection<Customer>(await _repo.GetCustomersAsync());
         }
-        public event Action<string> PlaceOrderRequested;
+
+        //add-order        
         public RelayCommand<Customer> PlaceOrderCommand { get; private set; }
+        public event Action<string> PlaceOrderRequested = delegate { };
         private void OnPlaceOrder(Customer customer)
         {
             PlaceOrderRequested(customer.FullName);
         }
+
+        //edit        
+        public RelayCommand<Customer> EditCustomerCommand { get; private set; }
+        public Action<Customer> EditCustomerRequested = delegate { };
+        private void OnEdit(Customer customer)
+        {
+            EditCustomerRequested(customer);
+        }
+
+        //add customer
+        public RelayCommand AddCustomerCommand { get; private set; }  
+        public event Action<Customer> AddCustomerRequested = delegate { };
+        private void OnAdd()
+        {
+            AddCustomerRequested(new Customer { Id = Guid.NewGuid() });
+        }      
     }
 }
