@@ -2,24 +2,30 @@
 using Desktop.Customers;
 using Desktop.OrderPrep;
 using Desktop.Orders;
+using Desktop.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Practices.Unity;
 
 namespace Desktop
 {
     class MainWindowViewModel : BindableBase
     {
-        private CustomerListViewModel _customerListViewModel = new CustomerListViewModel();
+        private CustomerListViewModel _customerListViewModel;
+        private AddEditCustomerViewModel _addEditCustomerViewModel;
         private OrderViewModel _orderViewModel = new OrderViewModel();
-        private OrderPrepViewModel _orderPrepViewModel = new OrderPrepViewModel();
-        private AddEditCustomerViewModel _addEditCustomerViewModel = new AddEditCustomerViewModel();
+        private OrderPrepViewModel _orderPrepViewModel = new OrderPrepViewModel();     
 
         public MainWindowViewModel()
         {
             NavCommand = new RelayCommand<string>(OnNav);
+
+            _customerListViewModel = ContainerHelper.Container.Resolve<CustomerListViewModel>();
+            _addEditCustomerViewModel = ContainerHelper.Container.Resolve<AddEditCustomerViewModel>();
+
             _customerListViewModel.PlaceOrderRequested += NavToOrder;
             _customerListViewModel.EditCustomerRequested += NavToEdit;
             _customerListViewModel.AddCustomerRequested += NavToAdd;

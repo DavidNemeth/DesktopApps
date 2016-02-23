@@ -1,4 +1,5 @@
 ﻿using Data;
+using Desktop.Services;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -9,8 +10,10 @@ namespace Desktop.Customers
 {
     class AddEditCustomerViewModel : BindableBase
     {
-        public AddEditCustomerViewModel()
+        private ICustomerRepository _repo;
+        public AddEditCustomerViewModel(ICustomerRepository repo)
         {
+            _repo = repo;
             CancelCommand = new RelayCommand(OnCancel);
             SaveCommand = new RelayCommand(OnSave, CanSave);
         }       
@@ -63,9 +66,21 @@ namespace Desktop.Customers
             Done();
         }
 
-        private void OnSave()
+        private async void OnSave()
         {
+            UpdateCustomer(Customer, _editingCustomer);
+            if (EditMode)
+                await _repo.UpdateCustomerAsync(_editingCustomer);
+            else
+                await _repo.AddCustomerAsync(_editingCustomer);
             Done();
+        }
+        private void UpdateCustomer(EditableCustomer target,Customer customer)
+        {
+            customer.FirstName = target.FirstName;
+            customer.LastName = target.LastName;
+            customer.Phone = target.Phone;
+            customer.Email = target.Email;
         }
 
         private bool CanSave()
