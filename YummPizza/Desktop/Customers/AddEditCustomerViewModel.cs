@@ -9,6 +9,12 @@ namespace Desktop.Customers
 {
     class AddEditCustomerViewModel : BindableBase
     {
+        public AddEditCustomerViewModel()
+        {
+            CancelCommand = new RelayCommand(OnCancel);
+            SaveCommand = new RelayCommand(OnSave, CanSave);
+        }       
+
         private bool _EditMode;
         public bool EditMode
         {
@@ -16,10 +22,55 @@ namespace Desktop.Customers
             set { SetProperty(ref _EditMode, value); }
         }
         private Customer _editingCustomer = null;
-
+                
+        private EditableCustomer _Customer;
+        public EditableCustomer Customer
+        {
+            get { return _Customer; }
+            set { SetProperty(ref _Customer, value); }
+        }
+        
         public void SetCustomer(Customer customer)
         {
             _editingCustomer = customer;
+            Customer = new EditableCustomer();
+            CopyCustomer(customer, Customer);
+            if (Customer != null) Customer.ErrorsChanged -= RaiseCanExecuteChanged;
+            Customer.ErrorsChanged += RaiseCanExecuteChanged;
+        }
+        private void RaiseCanExecuteChanged(object sender, EventArgs e)
+        {
+            SaveCommand.RaiseCanExecuteChanged();
+        }
+        public void CopyCustomer(Customer customer, EditableCustomer target)
+        {
+            target.Id = customer.Id;
+            if (EditMode)
+            {
+                target.FirstName = customer.FirstName;
+                target.LastName = customer.LastName;
+                target.Phone = customer.Phone;
+                target.Email = customer.Email;
+            }
+        }
+
+        public RelayCommand CancelCommand { get; private set; }
+        public RelayCommand SaveCommand { get; private set; }
+        public event Action Done = delegate { };
+
+        private void OnCancel()
+        {
+            Done();
+        }
+
+        private void OnSave()
+        {
+            Done();
+        }
+
+        private bool CanSave()
+        {
+            return !Customer.HasErrors;
         }
     }
-}
+}   

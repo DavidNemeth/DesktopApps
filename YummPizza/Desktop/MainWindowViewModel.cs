@@ -23,6 +23,7 @@ namespace Desktop
             _customerListViewModel.PlaceOrderRequested += NavToOrder;
             _customerListViewModel.EditCustomerRequested += NavToEdit;
             _customerListViewModel.AddCustomerRequested += NavToAdd;
+            _addEditCustomerViewModel.Done += NavToCustomerList;
         }
         private BindableBase _CurrentViewModel;
         public BindableBase CurrentViewModel
@@ -61,6 +62,10 @@ namespace Desktop
             _addEditCustomerViewModel.EditMode = false;
             _addEditCustomerViewModel.SetCustomer(customer);
             CurrentViewModel = _addEditCustomerViewModel;
+        }
+        private void NavToCustomerList()
+        {
+            CurrentViewModel = _customerListViewModel;
         }
     }
 }

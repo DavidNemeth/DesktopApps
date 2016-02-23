@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Data.Meta
+namespace Data
 {
     [MetadataType(typeof(ProductMeta))]
     public partial class Product
