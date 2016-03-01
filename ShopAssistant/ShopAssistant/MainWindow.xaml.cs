@@ -22,6 +22,7 @@ namespace ShopAssistant
     {
         public MainWindow()
         {
+            this.DataContext = new MainWindowViewModel();
             InitializeComponent();
         }
     }

@@ -1,8 +1,40 @@
 ﻿<Window x:Class="ShopAssistant.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:local="clr-namespace:ShopAssistant"
+        xmlns:adatok="clr-namespace:ShopAssistant.NapiAdatok"
         Title="MainWindow" Height="350" Width="525">
+    <Window.Resources>
+        <DataTemplate DataType="{x:Type adatok:NapiAdatokViewModel}">
+            <adatok:NapiAdatokView />
+        </DataTemplate>        
+        <DataTemplate DataType="{x:Type adatok:NapiAdatFelvitelViewModel}">
+            <adatok:NapiAdatokView />
+        </DataTemplate>
+    </Window.Resources>
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <Grid x:Name="NavBar">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="*" />
+            </Grid.ColumnDefinitions>
+            <Button Content="Napi Adatok"
+                    Command="{Binding NavCommand}"
+                    CommandParameter="napiadatok"
+                    Grid.Column="0" />
+            <Button Content="AdatFelvitel"
+                    Command="{Binding NavCommand}"
+                    CommandParameter="adatfelvitel"
+                    Grid.Column="2" />
+        </Grid>
+        <Grid x:Name="MainContent"
+                  Grid.Row="1">
+            <ContentControl Content="{Binding CurrentViewModel}" />
+        </Grid>
     </Grid>
 </Window>

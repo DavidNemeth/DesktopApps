@@ -21,8 +21,8 @@ namespace ShopAssistant.NapiAdatok
     public partial class NapiAdatokView : UserControl
     {
         public NapiAdatokView()
-        {
-            InitializeComponent();
+        {            
+            InitializeComponent();            
         }
     }
 }

@@ -6,6 +6,9 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid>
+        <DataGrid ItemsSource="{Binding AruKeszlet}" >
+            
+        </DataGrid>
             
     </Grid>
 </UserControl>
