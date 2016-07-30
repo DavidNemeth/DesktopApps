@@ -18,7 +18,7 @@ namespace EmployeesConsoleClient
             Console.WriteLine("Welcome to Employee Database command line tool\nType 'HELP' to display available commands");
             for (; true;)
             {
-                Console.WriteLine();         
+                Console.WriteLine();
                 Console.Write(">");
                 string input = Console.ReadLine().ToLower();
                 Regex.Replace(input, @"\s+", "");
@@ -30,7 +30,7 @@ namespace EmployeesConsoleClient
                     Console.WriteLine("Possible commands:");
                     Console.WriteLine("'HELP' show all commands\n'IDLIST' list all employee id\n'EMPINFO+id' Display employee information with the given id");
                 }
-                                
+
                 if (input == "idlist")
                 {
                     foreach (var item in empIds)
@@ -50,14 +50,19 @@ namespace EmployeesConsoleClient
                         Console.WriteLine("date of birth: {0}", birth);
                         Console.WriteLine("id: {0}", employee.EmployeeID);
                     }
+                    catch (FormatException)
+                    {
+                        Console.WriteLine("Invalid id format");
+                    }
                     catch (Exception)
                     {
-                        Console.WriteLine("Invalid id value");
+                        Console.WriteLine("Host is closed");
                     }
-
                 }
-            }
 
+            }
         }
+
     }
 }
+
