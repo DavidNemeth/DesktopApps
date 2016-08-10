@@ -1,5 +1,4 @@
-﻿using EmployeesConsoleInterfaces;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ServiceModel;
 using System.Text.RegularExpressions;
@@ -10,10 +9,18 @@ namespace EmployeesConsoleClient
     {
         static void Main(string[] args)
         {
-            ChannelFactory<IWCFemployeesService> channelFactory = new
-                ChannelFactory<IWCFemployeesService>("EmployeesEndpoint");
 
-            IWCFemployeesService proxy = channelFactory.CreateChannel();
+            EmployeesServiceReference.WCFemployeesServiceClient proxy =
+                new EmployeesServiceReference.WCFemployeesServiceClient();
+
+            //                          **
+            //Channels if metadata exchange not available (interface reference)
+            //
+            //ChannelFactory<IWCFemployeesService> channelFactory = new
+            //    ChannelFactory<IWCFemployeesService>("EmployeesEndpoint");
+            //IWCFemployeesService proxy = channelFactory.CreateChannel();
+            //                          **
+
             List<int> empIds = proxy.EmployeesIDs();
             Console.WriteLine("Welcome to Employee Database command line tool\nType 'HELP' to display available commands");
             for (; true;)
@@ -23,7 +30,6 @@ namespace EmployeesConsoleClient
                 string input = Console.ReadLine().ToLower();
                 Regex.Replace(input, @"\s+", "");
 
-                //HELP commands
                 if (input == "help")
                 {
                     Console.WriteLine();
