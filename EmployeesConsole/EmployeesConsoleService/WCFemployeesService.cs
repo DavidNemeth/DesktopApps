@@ -1,26 +1,28 @@
-﻿//using EmployeesConsoleInterfaces;
+﻿using EmployeesConsoleInterfaces;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Serialization;
 using System.ServiceModel;
-using System.Text;
 
 namespace EmployeesConsoleService
 {
-    // NOTE: You can use the "Rename" command on the "Refactor" menu to change the class name "WCFemployeesService" in both code and config file together.
+    [ServiceBehavior(InstanceContextMode = InstanceContextMode.Single)]
     public class WCFemployeesService : IWCFemployeesService
     {
+        private int empCount = 0;
         public List<int> EmployeesIDs()
         {
+
             List<int> empIdList = new List<int>();
             try
             {
                 using (EmployeesModel db = new EmployeesModel())
                 {
-                    var emps = from e in db.Employees
-                               select e.EmployeeID;
-                    empIdList = emps.ToList();
+                    foreach (var item in db.Employees)
+                    {
+                        empIdList.Add(item.EmployeeID);
+                        empCount++;
+                    }
                 }
             }
             catch (Exception)
@@ -35,7 +37,7 @@ namespace EmployeesConsoleService
             EmployeeInfo empinfo = null;
             try
             {
-                using(EmployeesModel db = new EmployeesModel())
+                using (EmployeesModel db = new EmployeesModel())
                 {
                     Employee matchingemp = db.Employees.FirstOrDefault(e => e.EmployeeID == id);
                     empinfo = new EmployeeInfo();
@@ -43,13 +45,18 @@ namespace EmployeesConsoleService
                     empinfo.BirthDate = matchingemp.BirthDate;
                     empinfo.Name = matchingemp.FirstName + " " + matchingemp.LastName;
                 }
-                
+
             }
             catch (Exception)
             {
                 Console.WriteLine("Employee id not found.");
             }
             return empinfo;
+        }
+
+        public int GetEmpCount()
+        {
+            return empCount;
         }
     }
 }

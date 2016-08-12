@@ -12,5 +12,7 @@ namespace EmployeesConsoleInterfaces
         List<int> EmployeesIDs();
         [OperationContract]
         EmployeeInfo EmpInfo(int id);
+        [OperationContract]
+        int GetEmpCount();
     }
 }

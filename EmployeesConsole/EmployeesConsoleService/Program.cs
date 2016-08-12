@@ -1,5 +1,5 @@
-﻿using System;
-using System.Diagnostics;
+﻿using EmployeesConsoleInterfaces;
+using System;
 using System.ServiceModel;
 
 namespace EmployeesConsoleService
