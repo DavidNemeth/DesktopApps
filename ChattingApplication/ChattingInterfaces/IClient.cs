@@ -6,5 +6,8 @@ namespace ChattingInterfaces
     {
         [OperationContract]
         void GetMessage(string message, string userName);
+        [OperationContract]
+        //1->log in 2->log out
+        void GetUpdate(int value, string userName);        
     }
 }

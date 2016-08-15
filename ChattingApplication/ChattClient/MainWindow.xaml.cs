@@ -1,4 +1,5 @@
 ﻿using ChattingInterfaces;
+using System.Collections.Generic;
 using System.ServiceModel;
 using System.Windows;
 
@@ -25,15 +26,26 @@ namespace ChattClient
 
         private void SendBtn_Click(object sender, RoutedEventArgs e)
         {
-            Server.SendMessageToAll(MessageAreaTxtBox.Text, userNameTxtBx.Text);
-            TakeMessage(MessageAreaTxtBox.Text, "You");
-            MessageAreaTxtBox.Text = "";
+            if (MessageAreaTxtBox.Text == "")
+            {
+                return;
+            }
+            else
+            {
+                Server.SendMessageToAll(MessageAreaTxtBox.Text, userNameTxtBx.Text);
+                TakeMessage(MessageAreaTxtBox.Text, "You");
+                MessageAreaTxtBox.Text = "";
+            }
         }
 
         private void LoginBtn_Click(object sender, RoutedEventArgs e)
         {
             int returnValue = Server.Login(userNameTxtBx.Text);
-            if (returnValue == 1)
+            if (userNameTxtBx.Text == "")
+            {
+                MessageBox.Show("Please enter a username!");                
+            }
+            else if (returnValue == 1)
             {
                 MessageBox.Show("That name is already in use!");
             }
@@ -42,6 +54,58 @@ namespace ChattClient
                 WelcomeLbl.Content = "Welcome, " + userNameTxtBx.Text;
                 userNameTxtBx.IsEnabled = false;
                 LoginBtn.IsEnabled = false;
+                LogoutBtn.Visibility = Visibility.Visible;
+                LoginBtn.Visibility = Visibility.Collapsed;
+                SendBtn.IsEnabled = true;
+                LogoutBtn.IsEnabled = true;
+
+                LoadUserList(Server.GetCurrentUsers());
+            }
+        }
+
+        private void LogoutBtn_Click(object sender, RoutedEventArgs e)
+        {
+            Server.Logout();
+            LogoutBtn.IsEnabled = false;
+            LogoutBtn.Visibility = Visibility.Collapsed;
+            LoginBtn.IsEnabled = true;
+            LoginBtn.Visibility = Visibility.Visible;
+            SendBtn.IsEnabled = false;
+            userNameTxtBx.Text = "";
+            userNameTxtBx.IsEnabled = true;
+            UsersListBox.Items.Clear();
+        }
+
+        private void Window_Closing(object sender, System.ComponentModel.CancelEventArgs e)
+        {
+            Server.Logout();
+        }
+
+        public void AddUserToList(string userName)
+        {
+            if (UsersListBox.Items.Contains(userName))
+            {
+                return;
+            }
+            else
+            {
+                UsersListBox.Items.Add(userName);
+            }
+        }
+
+        public void RemoveUserFromList(string userName)
+        {
+            if (UsersListBox.Items.Contains(userName))
+            {
+                UsersListBox.Items.Remove(userName);
+            }
+        }
+
+        private void LoadUserList(List<string> users)
+        {
+            foreach (var user in users)
+            {
+                AddUserToList(user);
             }
         }
     }
