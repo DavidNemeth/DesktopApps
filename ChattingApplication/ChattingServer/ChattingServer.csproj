@@ -46,8 +46,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ChattingService.cs" />
-    <Compile Include="ConnectedClient.cs" />
+    <Compile Include="ServerSideServices\ChattingService.cs" />
+    <Compile Include="ServiceModel\ClientModel.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

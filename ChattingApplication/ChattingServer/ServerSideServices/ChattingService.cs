@@ -12,8 +12,8 @@ namespace ChattingServer
     [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Multiple, InstanceContextMode = InstanceContextMode.Single)]
     public class ChattingService : IChattingService
     {
-        public ConcurrentDictionary<string, ConnectedClient> _connectedClients =
-            new ConcurrentDictionary<string, ConnectedClient>();
+        public ConcurrentDictionary<string, ClientModel> _connectedClients =
+            new ConcurrentDictionary<string, ClientModel>();
 
 
         // 0->logged in  // 1->username already in use
@@ -30,9 +30,9 @@ namespace ChattingServer
                     return 1;
                 }
             }
-            var establishedUserConnection = OperationContext.Current.GetCallbackChannel<IClient>();
+            var establishedUserConnection = OperationContext.Current.GetCallbackChannel<IClientService>();
 
-            ConnectedClient newClient = new ConnectedClient();
+            ClientModel newClient = new ClientModel();
             newClient.connection = establishedUserConnection;
             newClient.UserName = userName;
 
@@ -49,10 +49,10 @@ namespace ChattingServer
 
         public void Logout()
         {
-            ConnectedClient client = GetMyClient();
+            ClientModel client = GetMyClient();
             if (client != null)
             {
-                ConnectedClient removedClient;
+                ClientModel removedClient;
                 _connectedClients.TryRemove(client.UserName, out removedClient);
 
                 updateHelper(1, removedClient.UserName);
@@ -74,9 +74,9 @@ namespace ChattingServer
             }
         }
 
-        public ConnectedClient GetMyClient()
+        public ClientModel GetMyClient()
         {
-            var establishedUserConnection = OperationContext.Current.GetCallbackChannel<IClient>();
+            var establishedUserConnection = OperationContext.Current.GetCallbackChannel<IClientService>();
 
             foreach (var client in _connectedClients)
             {

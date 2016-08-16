@@ -7,9 +7,9 @@ using System.Threading.Tasks;
 
 namespace ChattingServer
 {
-    public class ConnectedClient
+    public class ClientModel
     {
-        public IClient connection;
+        public IClientService connection;
         public string UserName { get; set; }
     }
 }

@@ -2,7 +2,7 @@
 
 namespace ChattingInterfaces
 {
-    public interface IClient
+    public interface IClientService
     {
         [OperationContract]
         void GetMessage(string message, string userName);
