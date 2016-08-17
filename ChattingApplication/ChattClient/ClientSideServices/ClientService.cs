@@ -4,32 +4,32 @@ using System;
 using System.Windows;
 using ChattClient.Views;
 using System.Windows.Controls;
+using ChattClient.ViewModels;
 
 namespace ChattClient
 {
-    [CallbackBehavior(ConcurrencyMode = ConcurrencyMode.Multiple)]    
+    [CallbackBehavior(ConcurrencyMode = ConcurrencyMode.Multiple)]
     public class ClientService : IClientService
-    {        
+    {
+        
         public void GetMessage(string message, string userName)
-        {            
-            TakeMessage(message, userName);
-            currentview.TakeMessage(message, userName);
+        {
+            ClientViewModel.GetInstance().TakeMessage(message, userName);
         }
 
         public void GetUpdate(int value, string userName)
         {
-
             switch (value)
             {
                 case 0:
                     {
-                        currentview.AddUserToList(userName);
+                        ClientViewModel.GetInstance().Users.Add(userName);
                         //((MainWindow)Application.Current.MainWindow).AddUserToList(userName);                        
                         break;
                     }
                 case 1:
                     {
-                        currentview.RemoveUserFromList(userName);
+                        ClientViewModel.GetInstance().Users.Remove(userName);
                         //((ClientView)Application.Current.ClientView).RemoveUserFromList(userName);
                         break;
                     }

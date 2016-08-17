@@ -1,7 +1,4 @@
-﻿using ChattingInterfaces;
-using System.Collections.Generic;
-using System.ServiceModel;
-using System.Windows;
+﻿using ChattClient.ViewModels;
 using System.Windows.Controls;
 
 namespace ChattClient.Views
@@ -11,98 +8,106 @@ namespace ChattClient.Views
     /// </summary>
     public partial class ClientView : UserControl
     {
-        public static IChattingService Server;
-        private static DuplexChannelFactory<IChattingService> _channelFactory;
+        //public static IChattingService Server;
+        //private static DuplexChannelFactory<IChattingService> _channelFactory;
+        public static ClientView _this;
         public ClientView()
         {
+            this.DataContext = new ClientViewModel();
             InitializeComponent();
-            _channelFactory = new DuplexChannelFactory<IChattingService>(new ClientService(), "ChattingServiceEndPoint");
-            Server = _channelFactory.CreateChannel();
-        }
-        public void TakeMessage(string message, string userName)
-        {
-            TextAreaTxtBox.Text += userName + ": " + message + "\n";
-            TextAreaTxtBox.ScrollToEnd();
+            _this = this;
+            //_channelFactory = new DuplexChannelFactory<IChattingService>(new ClientService(), "ChattingServiceEndPoint");
+            //Server = _channelFactory.CreateChannel();
         }
 
-        private void SendBtn_Click(object sender, RoutedEventArgs e)
+        public static ClientView GetInstance()
         {
-            if (MessageAreaTxtBox.Text == "")
-            {
-                return;
-            }
-            else
-            {
-                Server.SendMessageToAll(MessageAreaTxtBox.Text, userNameTxtBx.Text);
-                TakeMessage(MessageAreaTxtBox.Text, "You");
-                MessageAreaTxtBox.Text = "";
-            }
+            return _this;
         }
+        //public void TakeMessage(string message, string userName)
+        //{
+        //    TextAreaTxtBox.Text += userName + ": " + message + "\n";
+        //    TextAreaTxtBox.ScrollToEnd();
+        //}
 
-        private void LoginBtn_Click(object sender, RoutedEventArgs e)
-        {
-            int returnValue = Server.Login(userNameTxtBx.Text);
-            if (userNameTxtBx.Text == "")
-            {
-                MessageBox.Show("Please enter a username!");
-            }
-            else if (returnValue == 1)
-            {
-                MessageBox.Show("That name is already in use!");
-            }
-            else if (returnValue == 0)
-            {
-                WelcomeLbl.Content = "Welcome, " + userNameTxtBx.Text;
-                userNameTxtBx.IsEnabled = false;
-                LoginBtn.IsEnabled = false;
-                LogoutBtn.Visibility = Visibility.Visible;
-                LoginBtn.Visibility = Visibility.Collapsed;
-                SendBtn.IsEnabled = true;
-                LogoutBtn.IsEnabled = true;
+        //private void SendBtn_Click(object sender, RoutedEventArgs e)
+        //{
+        //    if (MessageAreaTxtBox.Text == "")
+        //    {
+        //        return;
+        //    }
+        //    else
+        //    {
+        //        Server.SendMessageToAll(MessageAreaTxtBox.Text, userNameTxtBx.Text);
+        //        TakeMessage(MessageAreaTxtBox.Text, "You");
+        //        MessageAreaTxtBox.Text = "";
+        //    }
+        //}
 
-                LoadUserList(Server.GetCurrentUsers());
-            }
-        }
+        //private void LoginBtn_Click(object sender, RoutedEventArgs e)
+        //{
+        //    int returnValue = Server.Login(userNameTxtBx.Text);
+        //    if (userNameTxtBx.Text == "")
+        //    {
+        //        MessageBox.Show("Please enter a username!");
+        //    }
+        //    else if (returnValue == 1)
+        //    {
+        //        MessageBox.Show("That name is already in use!");
+        //    }
+        //    else if (returnValue == 0)
+        //    {
+        //        WelcomeLbl.Content = "Welcome, " + userNameTxtBx.Text;
+        //        userNameTxtBx.IsEnabled = false;
+        //        LoginBtn.IsEnabled = false;
+        //        LogoutBtn.Visibility = Visibility.Visible;
+        //        LoginBtn.Visibility = Visibility.Collapsed;
+        //        SendBtn.IsEnabled = true;
+        //        LogoutBtn.IsEnabled = true;
 
-        private void LogoutBtn_Click(object sender, RoutedEventArgs e)
-        {
-            Server.Logout();
-            LogoutBtn.IsEnabled = false;
-            LogoutBtn.Visibility = Visibility.Collapsed;
-            LoginBtn.IsEnabled = true;
-            LoginBtn.Visibility = Visibility.Visible;
-            SendBtn.IsEnabled = false;
-            userNameTxtBx.Text = "";
-            userNameTxtBx.IsEnabled = true;
-            UsersListBox.Items.Clear();
-        }        
+        //        LoadUserList(Server.GetCurrentUsers());
+        //    }
+        //}
 
-        public void AddUserToList(string userName)
-        {
-            if (UsersListBox.Items.Contains(userName))
-            {
-                return;
-            }
-            else
-            {
-                UsersListBox.Items.Add(userName);
-            }
-        }
+        //private void LogoutBtn_Click(object sender, RoutedEventArgs e)
+        //{
+        //    Server.Logout();
+        //    LogoutBtn.IsEnabled = false;
+        //    LogoutBtn.Visibility = Visibility.Collapsed;
+        //    LoginBtn.IsEnabled = true;
+        //    LoginBtn.Visibility = Visibility.Visible;
+        //    SendBtn.IsEnabled = false;
+        //    userNameTxtBx.Text = "";
+        //    userNameTxtBx.IsEnabled = true;
+        //    UsersListBox.Items.Clear();
+        //}        
 
-        public void RemoveUserFromList(string userName)
-        {
-            if (UsersListBox.Items.Contains(userName))
-            {
-                UsersListBox.Items.Remove(userName);
-            }
-        }
+        //public void AddUserToList(string userName)
+        //{
+        //    if (UsersListBox.Items.Contains(userName))
+        //    {
+        //        return;
+        //    }
+        //    else
+        //    {
+        //        UsersListBox.Items.Add(userName);
+        //    }
+        //}
 
-        private void LoadUserList(List<string> users)
-        {
-            foreach (var user in users)
-            {
-                AddUserToList(user);
-            }
-        }
+        //public void RemoveUserFromList(string userName)
+        //{
+        //    if (UsersListBox.Items.Contains(userName))
+        //    {
+        //        UsersListBox.Items.Remove(userName);
+        //    }
+        //}
+
+        //private void LoadUserList(List<string> users)
+        //{
+        //    foreach (var user in users)
+        //    {
+        //        AddUserToList(user);
+        //    }
+        //}
     }
 }

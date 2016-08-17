@@ -1,7 +1,4 @@
-﻿using ChattingInterfaces;
-using System.Collections.Generic;
-using System.ServiceModel;
-using System.Windows;
+﻿using System.Windows;
 
 namespace ChattClient
 {
@@ -11,7 +8,7 @@ namespace ChattClient
     public partial class MainWindow : Window
     {        
         public MainWindow()
-        {
+        {            
             InitializeComponent();            
         }
     }
