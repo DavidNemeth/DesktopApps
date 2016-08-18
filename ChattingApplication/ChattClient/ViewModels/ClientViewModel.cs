@@ -16,11 +16,14 @@ namespace ChattClient.ViewModels
             _channelFactory = new DuplexChannelFactory<IChattingService>(new ClientService(), "ChattingServiceEndPoint");
             Server = _channelFactory.CreateChannel();
             _this = this;
+            CreateCommands();
+        }
+        private void CreateCommands()
+        {
             Login = new RelayCommand(OnLogin);
             Logout = new RelayCommand(OnLogout);
             Send = new RelayCommand(OnSend);
         }
-
         #region props
         private string userName;
         public string UserName
@@ -53,9 +56,17 @@ namespace ChattClient.ViewModels
             get { return users; }
             set { SetProperty(ref users, value); }
         }
-
         #endregion
         #region converterProps
+        private string bordercolor = "Gray";
+        public string BorderColor
+        {
+            get { return bordercolor; }
+            set
+            {
+                SetProperty(ref bordercolor, value);
+            }
+        }
         private bool loginvis = true;
         public bool LoginVis
         {
@@ -79,10 +90,16 @@ namespace ChattClient.ViewModels
         {
             get
             {
-                return (((!string.IsNullOrEmpty(this.Message))&&(LogoutVis)));
+                return (((!string.IsNullOrEmpty(this.Message)) && (LogoutVis)));
             }
         }
         #endregion
+
+
+        private void CloseWindow()
+        {
+            //Do your operations
+        }
         public RelayCommand Login { get; private set; }
         private void OnLogin()
         {
@@ -93,6 +110,7 @@ namespace ChattClient.ViewModels
                 LoadUserList(Server.GetCurrentUsers());
                 LogoutVis = true;
                 LoginVis = false;
+                BorderColor = "Green";
             }
         }
 
@@ -101,22 +119,18 @@ namespace ChattClient.ViewModels
         {
             Server.Logout();
             Users.Clear();
+            UserName = "";
             LoginVis = true;
             LogoutVis = false;
+            BorderColor = "Gray";
         }
 
         public RelayCommand Send { get; private set; }
         private void OnSend()
         {
-            if (Message == "")
-            {
-                return;
-            }
-            else
-            {
-                Server.SendMessageToAll(Message, userName);
-                TakeMessage(Message, "You");
-            }
+            Server.SendMessageToAll(Message, UserName);
+            TakeMessage(Message, "You");
+            Message = "";
         }
 
         public void TakeMessage(string message, string username)

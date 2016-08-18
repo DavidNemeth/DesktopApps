@@ -24,6 +24,11 @@ namespace ChattClient.Views
         {
             return _this;
         }
+
+        private void userNameTxtBx_GotFocus(object sender, System.Windows.RoutedEventArgs e)
+        {
+
+        }
         //public void TakeMessage(string message, string userName)
         //{
         //    TextAreaTxtBox.Text += userName + ": " + message + "\n";

@@ -3,11 +3,20 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:local="clr-namespace:ChattClient"
         mc:Ignorable="d"
         xmlns:Views="clr-namespace:ChattClient.Views"
         ResizeMode="NoResize"
         Title="MainWindow" Height="350" Width="544">
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="bvc" />
+    </Window.Resources>
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Closing">
+            <i:InvokeCommandAction Command="{Binding Logout}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <Grid Margin="0,0,0,0">
         <Views:ClientView Margin="0,0,0,0"/>
     </Grid>

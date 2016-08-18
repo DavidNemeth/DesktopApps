@@ -1,4 +1,5 @@
-﻿using System.Windows;
+﻿using ChattClient.ViewModels;
+using System.Windows;
 
 namespace ChattClient
 {
@@ -9,7 +10,8 @@ namespace ChattClient
     {        
         public MainWindow()
         {            
-            InitializeComponent();            
+            InitializeComponent();
+            DataContext = ClientViewModel.GetInstance();
         }
     }
 }
