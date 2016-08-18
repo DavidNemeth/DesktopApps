@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 using System.ServiceModel;
 using ChattingInterfaces;
 using ChattClient.Helpers;
@@ -14,16 +10,15 @@ namespace ChattClient.ViewModels
     {
         private static IChattingService Server;
         private static DuplexChannelFactory<IChattingService> _channelFactory;
-        public static ClientViewModel _this;        
+        public static ClientViewModel _this;
         public ClientViewModel()
         {
             _channelFactory = new DuplexChannelFactory<IChattingService>(new ClientService(), "ChattingServiceEndPoint");
             Server = _channelFactory.CreateChannel();
-            _this = this;            
+            _this = this;
             Login = new RelayCommand(OnLogin);
             Logout = new RelayCommand(OnLogout);
             Send = new RelayCommand(OnSend);
-            Users = Server.GetCurrentUsers();
         }
 
         #region props
@@ -38,11 +33,12 @@ namespace ChattClient.ViewModels
         public string Message
         {
             get { return message; }
-            set { SetProperty(ref message, value); }
+            set
+            {
+                SetProperty(ref message, value);
+                OnPropertyChanged("SendEnabled");
+            }
         }
-
-
-        public List<string> Users { get; set; }
 
         private string chat;
         public string Chat
@@ -50,9 +46,43 @@ namespace ChattClient.ViewModels
             get { return chat; }
             set { SetProperty(ref chat, value); }
         }
-        
-        #endregion
 
+        private ObservableCollection<string> users = new ObservableCollection<string>();
+        public ObservableCollection<string> Users
+        {
+            get { return users; }
+            set { SetProperty(ref users, value); }
+        }
+
+        #endregion
+        #region converterProps
+        private bool loginvis = true;
+        public bool LoginVis
+        {
+            get { return loginvis; }
+            set
+            {
+                SetProperty(ref loginvis, value);
+            }
+        }
+        private bool logoutvis;
+        public bool LogoutVis
+        {
+            get { return logoutvis; }
+            set
+            {
+                SetProperty(ref logoutvis, value);
+                OnPropertyChanged("SendEnabled");
+            }
+        }
+        public bool SendEnabled
+        {
+            get
+            {
+                return (((!string.IsNullOrEmpty(this.Message))&&(LogoutVis)));
+            }
+        }
+        #endregion
         public RelayCommand Login { get; private set; }
         private void OnLogin()
         {
@@ -61,26 +91,31 @@ namespace ChattClient.ViewModels
             if (returnValue == 0)
             {
                 LoadUserList(Server.GetCurrentUsers());
+                LogoutVis = true;
+                LoginVis = false;
             }
         }
 
         public RelayCommand Logout { get; private set; }
         private void OnLogout()
         {
-            // Users.Remove(userName);
+            Server.Logout();
+            Users.Clear();
+            LoginVis = true;
+            LogoutVis = false;
         }
 
         public RelayCommand Send { get; private set; }
         private void OnSend()
         {
-            if (message == "")
+            if (Message == "")
             {
                 return;
             }
             else
             {
-                Server.SendMessageToAll(message, userName);
-                TakeMessage(message, "You");
+                Server.SendMessageToAll(Message, userName);
+                TakeMessage(Message, "You");
             }
         }
 
@@ -98,18 +133,14 @@ namespace ChattClient.ViewModels
         {
             foreach (var user in users)
             {
-                AddUserToList(user);
-            }
-        }
-        public void AddUserToList(string userName)
-        {
-            if (Users.Contains(userName))
-            {
-                return;
-            }
-            else
-            {
-                Users.Add(userName);
+                if (Users.Contains(user))
+                {
+                    return;
+                }
+                else
+                {
+                    Users.Add(user);
+                }
             }
         }
     }

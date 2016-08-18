@@ -6,14 +6,17 @@
              xmlns:local="clr-namespace:ChattClient.Views"
              mc:Ignorable="d" 
              d:DesignHeight="350" Width="525">
+    <UserControl.Resources>
+        <BooleanToVisibilityConverter x:Key="bvc" />
+    </UserControl.Resources>
     <Grid Margin="0,0,0,0">
-        <Button x:Name="LoginBtn" Content="Login" Margin="192,10,0,0" VerticalAlignment="Top" Command="{Binding Login}" HorizontalAlignment="Left" Width="73"/>
-        <TextBox x:Name="userNameTxtBx" Text="{Binding UserName}" HorizontalAlignment="Left" Height="20" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="177"/>
-        <Button x:Name="SendBtn" Content="Send" Margin="0,0,170,10" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="75" Command="{Binding Send}" IsEnabled="True"/>
-        <TextBox x:Name="MessageAreaTxtBox" Text="{Binding Message}" Margin="10,0,250,10" Height="20" VerticalAlignment="Bottom"></TextBox>
+        <Button x:Name="LoginBtn" Content="Login" Margin="192,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="73" Command="{Binding Login}"  Visibility="{Binding LoginVis, Converter={StaticResource bvc},FallbackValue=Visible}"/>
+        <Button x:Name="LogoutBtn" Content="Logout" HorizontalAlignment="Left" Margin="192,10,0,0" VerticalAlignment="Top" Width="74" Command="{Binding Logout}" Visibility="{Binding LogoutVis, Converter={StaticResource bvc},FallbackValue=Hidden}"/>
+        <Button x:Name="SendBtn" Content="Send" Margin="0,0,170,10" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="75" Command="{Binding Send}" IsEnabled="{Binding SendEnabled}" />
         <Label x:Name="WelcomeLbl" Content="{Binding UserName}" HorizontalAlignment="Right" Margin="0,10,10,0" VerticalAlignment="Top" Width="129" Height="25" FontSize="10"/>
-        <TextBox x:Name="TextAreaTxtBox" Text="{Binding Chat}" Margin="10,40,142,47" TextWrapping="Wrap" IsReadOnly="True" IsUndoEnabled="False"/>
-        <Button x:Name="LogoutBtn" Content="Logout" Visibility="Collapsed" HorizontalAlignment="Left" Margin="192,10,0,0" VerticalAlignment="Top" Width="74" IsEnabled="False" Command="{Binding Logout}"/>
+        <TextBox x:Name="userNameTxtBx" Text="{Binding UserName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" HorizontalAlignment="Left" Height="20" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="177"/>
+        <TextBox x:Name="MessageAreaTxtBox" Text="{Binding Message, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="10,0,250,10" Height="20" VerticalAlignment="Bottom"></TextBox>
+        <TextBox x:Name="TextAreaTxtBox" Text="{Binding Chat, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" Margin="10,40,142,47" TextWrapping="Wrap" IsReadOnly="True" IsUndoEnabled="False"/>
         <ListBox x:Name="UsersListBox" ItemsSource="{Binding Users}" Margin="394,40,10,47"/>
     </Grid>
 </UserControl>

@@ -30,6 +30,10 @@ namespace ChattingServer
                     return 1;
                 }
             }
+            if (userName == null)
+            {
+                return 1;
+            }
             var establishedUserConnection = OperationContext.Current.GetCallbackChannel<IClientService>();
 
             ClientModel newClient = new ClientModel();
