@@ -85,14 +85,7 @@ namespace ChattClient.ViewModels
                 SetProperty(ref logoutvis, value);
                 OnPropertyChanged("SendEnabled");
             }
-        }
-        public bool SendEnabled
-        {
-            get
-            {
-                return (((!string.IsNullOrEmpty(this.Message)) && (LogoutVis)));
-            }
-        }
+        }        
         #endregion
 
 
@@ -128,6 +121,10 @@ namespace ChattClient.ViewModels
         public RelayCommand Send { get; private set; }
         private void OnSend()
         {
+            if (string.IsNullOrEmpty(Message))
+            {
+                return;
+            }
             Server.SendMessageToAll(Message, UserName);
             TakeMessage(Message, "You");
             Message = "";

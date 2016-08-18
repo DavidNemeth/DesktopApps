@@ -20,15 +20,17 @@
     <Grid Margin="0,0,0,0" FocusManager.FocusedElement="{Binding ElementName=userNameTxtBx}">
         <Button x:Name="LoginBtn" IsDefault="True" Content="Login" Margin="192,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="73" Command="{Binding Login}"  Visibility="{Binding LoginVis, Converter={StaticResource bvc},FallbackValue=Visible}"/>
         <Button x:Name="LogoutBtn" Content="Logout" HorizontalAlignment="Left" Margin="192,10,0,0" VerticalAlignment="Top" Width="74" Command="{Binding Logout}" Visibility="{Binding LogoutVis, Converter={StaticResource bvc},FallbackValue=Hidden}"/>
-        <Button x:Name="SendBtn" IsDefault="True" Content="Send" Margin="0,0,170,10" VerticalAlignment="Bottom" HorizontalAlignment="Right" Width="75" Command="{Binding Send}" IsEnabled="{Binding SendEnabled}" />
         <TextBox x:Name="userNameTxtBx"                  
                  IsEnabled="{Binding LoginVis}" 
                  Text="{Binding UserName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                  HorizontalAlignment="Left" Height="20" Margin="10,10,0,0" TextWrapping="Wrap" VerticalAlignment="Top" Width="177"/>
-        <TextBox x:Name="MessageAreaTxtBox" 
+        <TextBox x:Name="MessageAreaTxtBox"                  
                  IsEnabled="{Binding LogoutVis}"
                  Text="{Binding Message, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                  Margin="10,0,250,10" Height="20" VerticalAlignment="Bottom">
+            <TextBox.InputBindings>
+                <KeyBinding Key="Enter" Command="{Binding Send}" />
+            </TextBox.InputBindings>
         </TextBox>
         <Border BorderThickness="1" BorderBrush="{Binding BorderColor}" Margin="10,40,170,47">
             <TextBox  x:Name="TextAreaTxtBox"
