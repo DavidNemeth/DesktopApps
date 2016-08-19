@@ -53,6 +53,18 @@
     <Compile Include="Migrations\201608182220027_Initial.Designer.cs">
       <DependentUpon>201608182220027_Initial.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201608190251127_connection.cs" />
+    <Compile Include="Migrations\201608190251127_connection.Designer.cs">
+      <DependentUpon>201608190251127_connection.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201608190350348_namefix.cs" />
+    <Compile Include="Migrations\201608190350348_namefix.Designer.cs">
+      <DependentUpon>201608190350348_namefix.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201608190418587_test.cs" />
+    <Compile Include="Migrations\201608190418587_test.Designer.cs">
+      <DependentUpon>201608190418587_test.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="ProfilesContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -66,6 +78,21 @@
     <EmbeddedResource Include="Migrations\201608182220027_Initial.resx">
       <DependentUpon>201608182220027_Initial.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608190251127_connection.resx">
+      <DependentUpon>201608190251127_connection.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608190350348_namefix.resx">
+      <DependentUpon>201608190350348_namefix.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201608190418587_test.resx">
+      <DependentUpon>201608190418587_test.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\ChattingInterfaces\ChattingInterfaces.csproj">
+      <Project>{204738D8-7F5C-48A0-92D8-7FF32337B5A4}</Project>
+      <Name>ChattingInterfaces</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -140,6 +140,10 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\ChatModel\ChatModel.csproj">
+      <Project>{61C7DDC4-E32C-486B-A3B0-5708C031F256}</Project>
+      <Name>ChatModel</Name>
+    </ProjectReference>
     <ProjectReference Include="..\ChattingInterfaces\ChattingInterfaces.csproj">
       <Project>{204738d8-7f5c-48a0-92d8-7ff32337b5a4}</Project>
       <Name>ChattingInterfaces</Name>

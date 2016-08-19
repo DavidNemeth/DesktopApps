@@ -5,13 +5,14 @@ using System.Windows;
 using ChattClient.Views;
 using System.Windows.Controls;
 using ChattClient.ViewModels;
+using ChatModel;
 
 namespace ChattClient
 {
     [CallbackBehavior(ConcurrencyMode = ConcurrencyMode.Multiple)]
     public class ClientService : IClientService
     {
-        
+        ProfilesContext db = new ProfilesContext()
         public void GetMessage(string message, string userName)
         {
             ClientViewModel.GetInstance().TakeMessage(message, userName);
@@ -33,6 +34,18 @@ namespace ChattClient
                         //((ClientView)Application.Current.ClientView).RemoveUserFromList(userName);
                         break;
                     }
+            }
+        }
+
+        public void Update(bool value, string userName)
+        {
+            if (value)
+            {
+                ClientViewModel.GetInstance().Users.Add(userName);
+            }
+            else
+            {
+                ClientViewModel.GetInstance().Users.Remove(userName);
             }
         }
     }
