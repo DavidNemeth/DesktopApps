@@ -8,7 +8,9 @@ namespace ChattingInterfaces
     public interface IChattingService
     {
         [OperationContract]
-        int Login(string userName);
+        void Register(string userName, string password);
+        [OperationContract]
+        bool Login(string userName, string password);
         [OperationContract]
         void SendMessageToAll(string message, string userName);
         [OperationContract]

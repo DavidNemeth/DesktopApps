@@ -56,6 +56,7 @@ namespace ChattClient.ViewModels
             get { return users; }
             set { SetProperty(ref users, value); }
         }
+        public string Pw { get; set; }
         #endregion
         #region converterProps
         private string bordercolor = "Gray";
@@ -85,20 +86,13 @@ namespace ChattClient.ViewModels
                 SetProperty(ref logoutvis, value);
                 OnPropertyChanged("SendEnabled");
             }
-        }        
+        }
         #endregion
 
-
-        private void CloseWindow()
-        {
-            //Do your operations
-        }
         public RelayCommand Login { get; private set; }
-        private void OnLogin()
-        {
-            //UserList.Add(UserName);
-            int returnValue = Server.Login(UserName);
-            if (returnValue == 0)
+        public void OnLogin()
+        {            
+            if (Server.Login(UserName, Pw))
             {
                 LoadUserList(Server.GetCurrentUsers());
                 LogoutVis = true;

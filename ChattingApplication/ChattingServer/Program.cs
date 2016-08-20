@@ -7,11 +7,11 @@ namespace ChattingServer
     {
         public static ChattingService _server;
         static void Main(string[] args)
-        {
+        {            
             _server = new ChattingService();
             ServiceHost host = new ServiceHost(_server);
             {
-                host.Open();
+                host.Open();                
                 Console.WriteLine("<Server is Open>");
                 for (; true;)
                 {

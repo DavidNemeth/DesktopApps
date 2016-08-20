@@ -6,6 +6,7 @@
              xmlns:ig="http://schemas.infragistics.com/xaml"
              xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
              xmlns:local="clr-namespace:ChattClient"    
+             xmlns:w="clr-namespace:ChattClient.Helpers"
              xmlns:behave="clr-namespace:ChattClient.Behaviours"    
              mc:Ignorable="d" 
              d:DesignHeight="350" Width="525">
@@ -18,8 +19,12 @@
         </i:EventTrigger>
     </i:Interaction.Triggers>
     <Grid Margin="0,0,0,0" FocusManager.FocusedElement="{Binding ElementName=userNameTxtBx}">
-        <Button x:Name="LoginBtn" IsDefault="True" Content="Login" Margin="192,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="73" Command="{Binding Login}"  Visibility="{Binding LoginVis, Converter={StaticResource bvc},FallbackValue=Visible}"/>
-        <Button x:Name="LogoutBtn" Content="Logout" HorizontalAlignment="Left" Margin="192,10,0,0" VerticalAlignment="Top" Width="74" Command="{Binding Logout}" Visibility="{Binding LogoutVis, Converter={StaticResource bvc},FallbackValue=Hidden}"/>
+        <Button x:Name="LoginBtn" IsDefault="True"
+                Content="Login" Margin="407,10,0,0" VerticalAlignment="Top" HorizontalAlignment="Left" Width="73"
+                Command="{Binding Login}" 
+                CommandParameter="{Binding ElementName=passwordBox1}"
+                Visibility="{Binding LoginVis, Converter={StaticResource bvc},FallbackValue=Visible}"/>
+        <Button x:Name="LogoutBtn" Content="Logout" HorizontalAlignment="Left" Margin="407,10,0,0" VerticalAlignment="Top" Width="74" Command="{Binding Logout}" Visibility="{Binding LogoutVis, Converter={StaticResource bvc},FallbackValue=Hidden}"/>
         <TextBox x:Name="userNameTxtBx"                  
                  IsEnabled="{Binding LoginVis}" 
                  Text="{Binding UserName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
@@ -32,15 +37,16 @@
                 <KeyBinding Key="Enter" Command="{Binding Send}" />
             </TextBox.InputBindings>
         </TextBox>
-        <Border BorderThickness="1" BorderBrush="{Binding BorderColor}" Margin="10,40,170,47">
-            <TextBox  x:Name="TextAreaTxtBox"
+        <TextBox  x:Name="TextAreaTxtBox"
                       IsReadOnly="True"
                       behave:TextBoxBehaviour.AlwaysScrollToEnd="True"
-                      Margin="2,2,2,2"
-                      Text="{Binding Chat, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}" 
+                      Margin="10,40,136,47"
+                      Text="{Binding Chat, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                       TextWrapping="Wrap" Width="Auto" Height="Auto"
                       VerticalScrollBarVisibility="Auto"/>
-        </Border>
         <ListBox x:Name="UsersListBox" ItemsSource="{Binding Users}" Margin="394,40,10,47"/>
+        <PasswordBox x:Name="passwordBox"
+                     w:PasswordHelper.Password="{Binding Pw, Mode=TwoWay}"
+                     HorizontalAlignment="Left" Margin="210,10,0,0" VerticalAlignment="Top" Width="179" Height="20"/>
     </Grid>
 </UserControl>

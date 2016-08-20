@@ -1,65 +1,56 @@
 ﻿using ChattingInterfaces;
+using ChattingServer.ServiceModel;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.Serialization;
 using System.ServiceModel;
-using System.Text;
 
 namespace ChattingServer
 {
     [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Multiple, InstanceContextMode = InstanceContextMode.Single)]
     public class ChattingService : IChattingService
     {
-        public ConcurrentDictionary<string, ClientModel> _connectedClients =
-            new ConcurrentDictionary<string, ClientModel>();
+        public ConcurrentDictionary<string, Client> _connectedClients =
+            new ConcurrentDictionary<string, Client>();
 
+        ClientContext db = new ClientContext();
 
-        // 0->logged in  // 1->username already in use
-        public int Login(string userName)
+        // true->logged in  // false->username already in use
+        public bool Login(string userName, string password)
         {
-            if (userName == "")
+            Client user = db.Clients.FirstOrDefault(p => p.UserName == userName && p.Password == password);
+            if (user == null)
             {
-                return 1;
+                return false;
             }
-            foreach (var client in _connectedClients)
+            else
             {
-                if (client.Key.ToLower() == userName.ToLower())
-                {
-                    return 1;
-                }
+                var establishedUserConnection = OperationContext.Current.GetCallbackChannel<IClientService>();
+
+                user.connection = establishedUserConnection;
+                _connectedClients.TryAdd(userName, user);
+                updateHelper(true, userName);
+
+                user.LoggedIn = true;
+
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("Client login: {0} with id: {1} at {2}", user.UserName, user.UserID, DateTime.Now);
+                Console.ResetColor();
+                return true;
             }
-            if (userName == null)
-            {
-                return 1;
-            }
-            var establishedUserConnection = OperationContext.Current.GetCallbackChannel<IClientService>();
-
-            ClientModel newClient = new ClientModel();
-            newClient.connection = establishedUserConnection;
-            newClient.UserName = userName;
-
-            updateHelper(0, userName);
-
-            _connectedClients.TryAdd(userName, newClient);
-
-            Console.ForegroundColor = ConsoleColor.Green;
-            Console.WriteLine("Client login: {0} at {1}", newClient.UserName, DateTime.Now);
-            Console.ResetColor();
-
-            return 0;
         }
 
         public void Logout()
         {
-            ClientModel client = GetMyClient();
+            Client client = GetMyClient();
             if (client != null)
             {
-                ClientModel removedClient;
+                Client removedClient;
                 _connectedClients.TryRemove(client.UserName, out removedClient);
 
-                updateHelper(1, removedClient.UserName);
+                updateHelper(false, removedClient.UserName);
+                client.LoggedIn = false;
 
                 Console.ForegroundColor = ConsoleColor.Cyan;
                 Console.WriteLine("Client logoff: {0} at {1}", removedClient.UserName, DateTime.Now);
@@ -78,7 +69,7 @@ namespace ChattingServer
             }
         }
 
-        public ClientModel GetMyClient()
+        public Client GetMyClient()
         {
             var establishedUserConnection = OperationContext.Current.GetCallbackChannel<IClientService>();
 
@@ -92,14 +83,14 @@ namespace ChattingServer
             return null;
         }
 
-        private void updateHelper(int value, string userName)
+        private void updateHelper(bool value, string userName)
         {
             foreach (var client in _connectedClients)
             {
                 if (client.Value.UserName.ToLower() != userName.ToLower())
                 {
-                    client.Value.connection.GetUpdate(value, userName);
-                }                
+                    client.Value.connection.Update(value, userName);
+                }
             }
         }
 
@@ -112,5 +103,19 @@ namespace ChattingServer
             }
             return listOfUsers;
         }
+
+        public void Register(string userName, string password)
+        {
+            Client newUser = new Client();
+            newUser.UserName = userName;
+            newUser.Password = password;
+            Save();
+        }
+
+        private void Save()
+        {
+            db.SaveChanges();
+        }
+
     }
 }

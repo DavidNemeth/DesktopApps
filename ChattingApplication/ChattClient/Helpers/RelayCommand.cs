@@ -6,7 +6,7 @@ namespace ChattClient.Helpers
     public class RelayCommand : ICommand
     {
         Action _TargetExecuteMethod;
-        Func<bool> _TargetCanExecuteMethod;
+        Func<bool> _TargetCanExecuteMethod;        
 
         public RelayCommand(Action executeMethod)
         {
@@ -17,7 +17,7 @@ namespace ChattClient.Helpers
         {
             _TargetExecuteMethod = executeMethod;
             _TargetCanExecuteMethod = canExecuteMethod;
-        }
+        }        
 
         public void RaiseCanExecuteChanged()
         {

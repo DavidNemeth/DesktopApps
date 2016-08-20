@@ -4,18 +4,15 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{EF7C09B9-3330-4760-992A-7069843650A5}</ProjectGuid>
-    <OutputType>Exe</OutputType>
+    <ProjectGuid>{AF295161-DEBA-4367-86C4-3509D490CC95}</ProjectGuid>
+    <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ChattingServer</RootNamespace>
-    <AssemblyName>ChattingServer</AssemblyName>
+    <RootNamespace>TestModel</RootNamespace>
+    <AssemblyName>TestModel</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
-    <WcfConfigValidationEnabled>True</WcfConfigValidationEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -25,7 +22,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
     <DebugType>pdbonly</DebugType>
     <Optimize>true</Optimize>
     <OutputPath>bin\Release\</OutputPath>
@@ -46,7 +42,7 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
-    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -55,31 +51,56 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Migrations\201608200225286_initial.cs" />
-    <Compile Include="Migrations\201608200225286_initial.Designer.cs">
-      <DependentUpon>201608200225286_initial.cs</DependentUpon>
+    <Compile Include="C__MigrationHistory.cs">
+      <DependentUpon>Profiles.tt</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\Configuration.cs" />
-    <Compile Include="ServerSideServices\ChattingService.cs" />
-    <Compile Include="ServiceModel\ClientContext.cs" />
-    <Compile Include="ServiceModel\Client.cs" />
-    <Compile Include="Program.cs" />
+    <Compile Include="ProfileModel.cs">
+      <DependentUpon>Profiles.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Profiles.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Profiles.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Profiles.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Profiles.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Profiles.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Profiles.edmx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <EntityDeploy Include="Profiles.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>Profiles.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.Config" />
     <None Include="packages.config" />
+    <None Include="Profiles.edmx.diagram">
+      <DependentUpon>Profiles.edmx</DependentUpon>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ChattingInterfaces\ChattingInterfaces.csproj">
-      <Project>{204738d8-7f5c-48a0-92d8-7ff32337b5a4}</Project>
-      <Name>ChattingInterfaces</Name>
-    </ProjectReference>
+    <Content Include="Profiles.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Profiles.edmx</DependentUpon>
+      <LastGenOutput>Profiles.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Profiles.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>Profiles.edmx</DependentUpon>
+      <LastGenOutput>Profiles.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201608200225286_initial.resx">
-      <DependentUpon>201608200225286_initial.cs</DependentUpon>
-    </EmbeddedResource>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

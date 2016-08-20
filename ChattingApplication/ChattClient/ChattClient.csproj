@@ -87,25 +87,25 @@
     <Compile Include="Behaviours\TextBoxBehaviour.cs" />
     <Compile Include="Helpers\BindableBase.cs" />
     <Compile Include="Helpers\BooleanVisibilityConverter.cs" />
+    <Compile Include="Helpers\PasswordHelper.cs" />
     <Compile Include="Helpers\RelayCommand.cs" />
     <Compile Include="Helpers\ValidateBindableBase.cs" />
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
     <Compile Include="ViewModels\ClientViewModel.cs" />
     <Compile Include="Views\ClientView.xaml.cs">
       <DependentUpon>ClientView.xaml</DependentUpon>
     </Compile>
-    <Page Include="MainWindow.xaml">
-      <Generator>MSBuild:Compile</Generator>
-      <SubType>Designer</SubType>
-    </Page>
     <Compile Include="App.xaml.cs">
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ClientSideServices\ClientService.cs" />
-    <Compile Include="MainWindow.xaml.cs">
-      <DependentUpon>MainWindow.xaml</DependentUpon>
-      <SubType>Code</SubType>
-    </Compile>
+    <Page Include="MainWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="Views\ClientView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -140,13 +140,13 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\ChatModel\ChatModel.csproj">
-      <Project>{61C7DDC4-E32C-486B-A3B0-5708C031F256}</Project>
-      <Name>ChatModel</Name>
-    </ProjectReference>
     <ProjectReference Include="..\ChattingInterfaces\ChattingInterfaces.csproj">
       <Project>{204738d8-7f5c-48a0-92d8-7ff32337b5a4}</Project>
       <Name>ChattingInterfaces</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ChattingServer\ChattingServer.csproj">
+      <Project>{EF7C09B9-3330-4760-992A-7069843650A5}</Project>
+      <Name>ChattingServer</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup />
