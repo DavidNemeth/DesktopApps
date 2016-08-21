@@ -8,7 +8,7 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid Style="{StaticResource ContentRoot}">
         <!-- TODO: set @SelectedSource -->
-        <mui:ModernTab Layout="List" Links="{Binding Path=CurrentUsers}">            
+        <mui:ModernTab Layout="List" Links="{Binding Path=CurrentUsers}" SelectedSource="/Pages/Chat/MainRoom.xaml">
         </mui:ModernTab>        
     </Grid>
 </UserControl>

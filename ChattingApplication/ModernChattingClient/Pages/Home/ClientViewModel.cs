@@ -1,17 +1,12 @@
 ﻿using ChattingInterfaces;
 using FirstFloor.ModernUI.Presentation;
 using FirstFloor.ModernUI.Windows.Controls;
-using FirstFloor.ModernUI.Windows.Navigation;
 using ModernChattingClient.Base;
 using ModernChattingClient.ClientServices;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ServiceModel;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Input;
-using System.Windows.Navigation;
 
 namespace ModernChattingClient.Pages.Home
 {
@@ -86,7 +81,7 @@ namespace ModernChattingClient.Pages.Home
         {
             get { return currentusers; }
             set { SetProperty(ref currentusers, value); }
-        }        
+        }
         #endregion
         #region converterProps        
         private bool loginvis = true;
@@ -225,7 +220,8 @@ namespace ModernChattingClient.Pages.Home
                 else
                 {
                     Users.Add(user);
-                    CurrentUsers.Add(new Link() { DisplayName = user });                    
+                    var instance = Pages.Chat.MainRoom.GetInstance();
+                    CurrentUsers.Add(new Link() { DisplayName = user });
                 }
             }
         }
