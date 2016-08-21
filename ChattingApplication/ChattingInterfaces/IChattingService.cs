@@ -8,7 +8,7 @@ namespace ChattingInterfaces
     public interface IChattingService
     {
         [OperationContract]
-        void Register(string userName, string password);
+        bool Register(string userName, string password);
         [OperationContract]
         bool Login(string userName, string password);
         [OperationContract]
@@ -17,5 +17,7 @@ namespace ChattingInterfaces
         void Logout();
         [OperationContract]
         List<string> GetCurrentUsers();
+        [OperationContract]
+        bool UserExists(string username);
     }
 }

@@ -20,7 +20,7 @@ namespace ChattingServer
         public bool Login(string userName, string password)
         {
             Client user = db.Clients.FirstOrDefault(p => p.UserName == userName && p.Password == password);
-            if (user == null)
+            if (user == null || _connectedClients.Values.Where(u => u.UserName == userName).FirstOrDefault() != null)
             {
                 return false;
             }
@@ -104,12 +104,33 @@ namespace ChattingServer
             return listOfUsers;
         }
 
-        public void Register(string userName, string password)
+        public bool Register(string userName, string password)
         {
-            Client newUser = new Client();
-            newUser.UserName = userName;
-            newUser.Password = password;
-            Save();
+            if (db.Clients.Any(u => u.UserName == userName))
+            {
+                return false;
+            }
+            else
+            {
+                Client newUser = new Client();
+                newUser.UserName = userName;
+                newUser.Password = password;
+                db.Clients.Add(newUser);
+                Save();
+                return true;
+            }            
+        }
+
+        public bool UserExists(string username)
+        {
+            if (string.IsNullOrEmpty(username))
+            {
+                return false;
+            }
+            if (db.Clients.Any(u => u.UserName == username))            
+                return true;            
+            else
+                return false;
         }
 
         private void Save()

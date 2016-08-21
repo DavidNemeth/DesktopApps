@@ -1,10 +1,11 @@
-﻿using System.Collections.Generic;
-using System.ServiceModel;
-using ChattingInterfaces;
-using ChattClient.Helpers;
+﻿using ChattingInterfaces;
+using ModernChattingClient.Base;
+using ModernChattingClient.ClientServices;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ServiceModel;
 
-namespace ChattClient.ViewModels
+namespace ModernChattingClient.Pages.Home
 {
     public class ClientViewModel : BindableBase
     {
@@ -25,57 +26,81 @@ namespace ChattClient.ViewModels
             Send = new RelayCommand(OnSend);
             Register = new RelayCommand(OnRegister);
         }
-        public RelayCommand Register { get; private set; }
-        public void OnRegister()
-        {
-            
-            Server.Register(UserName, Pw);
-        }
         #region props
-        private string userName;
+        private string username;
+        private string password;
+        private string message;
+        private string chat;
+        private ObservableCollection<string> users = new ObservableCollection<string>();
+
         public string UserName
         {
-            get { return userName; }
-            set { SetProperty(ref userName, value); }
+            get { return username; }
+            set
+            {
+                SetProperty(ref username, value);
+                UserNameColor = "Gray";
+                OnPropertyChanged("UserName");
+            }
         }
-
-        private string message;
+        public string Password
+        {
+            get { return password; }
+            set
+            {
+                SetProperty(ref password, value);
+                PasswordBorder = "Gray";
+                OnPropertyChanged("Password");
+            }
+        }
         public string Message
         {
             get { return message; }
             set
             {
                 SetProperty(ref message, value);
-                OnPropertyChanged("SendEnabled");
             }
         }
-
-        private string chat;
         public string Chat
         {
             get { return chat; }
             set { SetProperty(ref chat, value); }
         }
 
-        private ObservableCollection<string> users = new ObservableCollection<string>();
         public ObservableCollection<string> Users
         {
             get { return users; }
             set { SetProperty(ref users, value); }
         }
-        public string Pw { get; set; }
         #endregion
-        #region converterProps
-        private string bordercolor = "Gray";
-        public string BorderColor
+        #region converterProps        
+        private bool loginvis = true;
+        private bool logoutvis;
+        private string usernamecolor = "Gray";
+        private string passwordborder = "Gray";
+
+        public string UserNameColor
         {
-            get { return bordercolor; }
+            get
+            {                
+                return usernamecolor;
+            }
             set
             {
-                SetProperty(ref bordercolor, value);
+                SetProperty(ref usernamecolor, value);
             }
         }
-        private bool loginvis = true;
+        public string PasswordBorder
+        {
+            get
+            {
+                return passwordborder;
+            }
+            set
+            {
+                SetProperty(ref passwordborder, value);
+            }
+        }
         public bool LoginVis
         {
             get { return loginvis; }
@@ -84,7 +109,6 @@ namespace ChattClient.ViewModels
                 SetProperty(ref loginvis, value);
             }
         }
-        private bool logoutvis;
         public bool LogoutVis
         {
             get { return logoutvis; }
@@ -96,27 +120,55 @@ namespace ChattClient.ViewModels
         }
         #endregion
 
+        public RelayCommand Register { get; private set; }
+        public void OnRegister()
+        {
+            if (string.IsNullOrEmpty(UserName) || string.IsNullOrEmpty(Password))
+            {
+                if (string.IsNullOrEmpty(UserName))
+                {
+                    UserNameColor = "Red";
+                }
+                if (string.IsNullOrEmpty(Password))
+                {
+                    PasswordBorder = "Red";
+                }
+                return;
+            }
+            else
+                Server.Register(UserName, Password);
+            UserNameColor = "Green";
+        }         
+
         public RelayCommand Login { get; private set; }
         public void OnLogin()
-        {            
-            if (Server.Login(UserName, Pw))
+        {
+            if (string.IsNullOrEmpty(UserName) || string.IsNullOrEmpty(Password))
+            {
+                if (string.IsNullOrEmpty(UserName))
+                {
+                    UserNameColor = "Red";
+                }
+                if (string.IsNullOrEmpty(Password))
+                {
+                    PasswordBorder = "Red";
+                }
+                return;
+            }
+            else if (Server.Login(UserName, Password))
             {
                 LoadUserList(Server.GetCurrentUsers());
-                LogoutVis = true;
-                LoginVis = false;
-                BorderColor = "Green";
             }
+            else
+                UserNameColor = "Red";
+            return;
         }
 
         public RelayCommand Logout { get; private set; }
         private void OnLogout()
         {
             Server.Logout();
-            Users.Clear();
-            UserName = "";
-            LoginVis = true;
-            LogoutVis = false;
-            BorderColor = "Gray";
+            Users.Clear();            
         }
 
         public RelayCommand Send { get; private set; }

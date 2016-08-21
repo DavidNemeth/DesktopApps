@@ -4,13 +4,25 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:mui="http://firstfloorsoftware.com/ModernUI"
+             xmlns:toolkit="http://schemas.xceed.com/wpf/xaml/toolkit"
+             xmlns:w="clr-namespace:ModernChattingClient.Helpers"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid Style="{StaticResource ContentRoot}">
         <ScrollViewer>
             <StackPanel MinWidth="200">
-                <TextBlock Text="BASIC PAGE" Style="{StaticResource Heading2}" />
-                <TextBlock Text="Content goes here" />
+                <TextBlock Text="Register" Style="{StaticResource Heading2}" />
+                <toolkit:WatermarkTextBox x:Name="UsernameTxt"
+                                          BorderBrush="{Binding UserNameColor, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                          Text="{Binding UserName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
+                                          HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap"
+                                          Watermark="Username" VerticalAlignment="Top" Width="150"/>
+                <PasswordBox x:Name="passwordBox1" HorizontalAlignment="Left" 
+                             BorderBrush="{Binding PasswordBorder}"
+                             w:PasswordHelper.Password="{Binding Password, Mode=TwoWay}"
+                             Margin="10,10,0,0" VerticalAlignment="Top" Width="150"/>
+                <Button x:Name="RegisterBtn" Content="Register" Command="{Binding Register}"
+                        HorizontalAlignment="Left" Margin="70,10,0,0" VerticalAlignment="Top" Width="85" Height="27"/>
             </StackPanel>
         </ScrollViewer>
     </Grid>
