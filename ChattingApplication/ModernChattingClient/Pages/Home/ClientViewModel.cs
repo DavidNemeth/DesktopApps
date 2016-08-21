@@ -1,9 +1,17 @@
 ﻿using ChattingInterfaces;
+using FirstFloor.ModernUI.Presentation;
+using FirstFloor.ModernUI.Windows.Controls;
+using FirstFloor.ModernUI.Windows.Navigation;
 using ModernChattingClient.Base;
 using ModernChattingClient.ClientServices;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ServiceModel;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Input;
+using System.Windows.Navigation;
 
 namespace ModernChattingClient.Pages.Home
 {
@@ -11,7 +19,8 @@ namespace ModernChattingClient.Pages.Home
     {
         private static IChattingService Server;
         private static DuplexChannelFactory<IChattingService> _channelFactory;
-        public static ClientViewModel _this;
+        private static ClientViewModel _this;
+
         public ClientViewModel()
         {
             _channelFactory = new DuplexChannelFactory<IChattingService>(new ClientService(), "ChattingServiceEndPoint");
@@ -21,10 +30,10 @@ namespace ModernChattingClient.Pages.Home
         }
         private void CreateCommands()
         {
-            Login = new RelayCommand(OnLogin);
-            Logout = new RelayCommand(OnLogout);
-            Send = new RelayCommand(OnSend);
-            Register = new RelayCommand(OnRegister);
+            Login = new Base.RelayCommand(OnLogin);
+            Logout = new Base.RelayCommand(OnLogout);
+            Send = new Base.RelayCommand(OnSend);
+            Register = new Base.RelayCommand(OnRegister);
         }
         #region props
         private string username;
@@ -32,6 +41,7 @@ namespace ModernChattingClient.Pages.Home
         private string message;
         private string chat;
         private ObservableCollection<string> users = new ObservableCollection<string>();
+        private LinkCollection currentusers = new LinkCollection();
 
         public string UserName
         {
@@ -72,6 +82,11 @@ namespace ModernChattingClient.Pages.Home
             get { return users; }
             set { SetProperty(ref users, value); }
         }
+        public LinkCollection CurrentUsers
+        {
+            get { return currentusers; }
+            set { SetProperty(ref currentusers, value); }
+        }        
         #endregion
         #region converterProps        
         private bool loginvis = true;
@@ -82,7 +97,7 @@ namespace ModernChattingClient.Pages.Home
         public string UserNameColor
         {
             get
-            {                
+            {
                 return usernamecolor;
             }
             set
@@ -120,7 +135,7 @@ namespace ModernChattingClient.Pages.Home
         }
         #endregion
 
-        public RelayCommand Register { get; private set; }
+        public Base.RelayCommand Register { get; private set; }
         public void OnRegister()
         {
             if (string.IsNullOrEmpty(UserName) || string.IsNullOrEmpty(Password))
@@ -138,9 +153,9 @@ namespace ModernChattingClient.Pages.Home
             else
                 Server.Register(UserName, Password);
             UserNameColor = "Green";
-        }         
+        }
 
-        public RelayCommand Login { get; private set; }
+        public Base.RelayCommand Login { get; private set; }
         public void OnLogin()
         {
             if (string.IsNullOrEmpty(UserName) || string.IsNullOrEmpty(Password))
@@ -155,23 +170,28 @@ namespace ModernChattingClient.Pages.Home
                 }
                 return;
             }
-            else if (Server.Login(UserName, Password))
+            if (Server.Login(UserName, Password))
             {
                 LoadUserList(Server.GetCurrentUsers());
+                BBCodeBlock bs = new BBCodeBlock();
+                HomePage instance = HomePage.GetInstance();
+                bs.LinkNavigator.Navigate(new Uri("/Pages/ChatPage.xaml", UriKind.Relative), instance);
+                return;
             }
             else
                 UserNameColor = "Red";
             return;
         }
 
-        public RelayCommand Logout { get; private set; }
+        public Base.RelayCommand Logout { get; private set; }
         private void OnLogout()
         {
             Server.Logout();
-            Users.Clear();            
+            Users.Clear();
+            CurrentUsers.Clear();
         }
 
-        public RelayCommand Send { get; private set; }
+        public Base.RelayCommand Send { get; private set; }
         private void OnSend()
         {
             if (string.IsNullOrEmpty(Message))
@@ -195,6 +215,7 @@ namespace ModernChattingClient.Pages.Home
 
         private void LoadUserList(List<string> users)
         {
+            CurrentUsers = new LinkCollection();
             foreach (var user in users)
             {
                 if (Users.Contains(user))
@@ -204,8 +225,10 @@ namespace ModernChattingClient.Pages.Home
                 else
                 {
                     Users.Add(user);
+                    CurrentUsers.Add(new Link() { DisplayName = user });                    
                 }
             }
         }
+
     }
 }

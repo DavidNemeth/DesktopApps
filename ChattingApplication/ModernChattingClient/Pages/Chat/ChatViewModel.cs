@@ -1,4 +1,8 @@
-﻿using ModernChattingClient.Base;
+﻿using FirstFloor.ModernUI.Presentation;
+using ModernChattingClient.Base;
+using ModernChattingClient.Pages.Home;
+using System;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 
 namespace ModernChattingClient.Pages.Chat
@@ -10,9 +14,23 @@ namespace ModernChattingClient.Pages.Chat
         public ChatViewModel()
         {
             _this = this;
+            CurrentUsers = new LinkCollection();
+            foreach (var user in UserNames)
+            {
+                CurrentUsers.Add(new Link() { DisplayName = user });
+            }
         }
 
         #region props
+        public LinkCollection CurrentUsers { get; private set; }
+
+        private ObservableCollection<string> usernames = new ObservableCollection<string>();
+        public ObservableCollection<string> UserNames
+        {
+            get { return usernames; }
+            set { SetProperty(ref usernames, value); }
+        }
+
         private string userName;
         public string UserName
         {
@@ -37,14 +55,6 @@ namespace ModernChattingClient.Pages.Chat
             get { return chat; }
             set { SetProperty(ref chat, value); }
         }
-
-        private ObservableCollection<string> users = new ObservableCollection<string>();
-        public ObservableCollection<string> Users
-        {
-            get { return users; }
-            set { SetProperty(ref users, value); }
-        }
-        public string Pw { get; set; }
         #endregion
 
 
@@ -56,6 +66,21 @@ namespace ModernChattingClient.Pages.Chat
         public void TakeMessage(string message, string username)
         {
             Chat += username + ": " + message + "\n";
+        }
+
+        public void LoadUserList(List<string> users)
+        {
+            foreach (var user in users)
+            {
+                if (UserNames.Contains(user))
+                {
+                    return;
+                }
+                else
+                {
+                    CurrentUsers.Add(new Link() { DisplayName = user });
+                }
+            }
         }
     }
 }

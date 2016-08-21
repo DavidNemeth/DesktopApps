@@ -25,6 +25,9 @@
                 <Button x:Name="LoginBtn" Content="Sign In" Command="{Binding Login}"
                         HorizontalAlignment="Left" Margin="70,10,0,0" 
                         VerticalAlignment="Top" Width="72" Height="27"/>
+                <Button x:Name="asd" Content="Sign out" Command="{Binding Logout}"
+                        HorizontalAlignment="Left" Margin="70,10,0,0" 
+                        VerticalAlignment="Top" Width="72" Height="27"/>
             </StackPanel>
         </ScrollViewer>
     </Grid>

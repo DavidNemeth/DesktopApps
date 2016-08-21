@@ -1,4 +1,5 @@
-﻿using System;
+﻿using ModernChattingClient.Pages.Home;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -20,9 +21,17 @@ namespace ModernChattingClient.Pages
     /// </summary>
     public partial class HomePage : UserControl
     {
+        private static HomePage _this;
         public HomePage()
         {
             InitializeComponent();
+            this.DataContext = ClientViewModel.GetInstance();
+            _this = this;
+        }
+
+        public static HomePage GetInstance()
+        {
+            return _this;
         }
     }
 }

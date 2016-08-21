@@ -1,11 +1,7 @@
 ﻿using ChattingInterfaces;
-using ModernChattingClient.Pages.Chat;
-using System;
-using System.Collections.Generic;
+using ModernChattingClient.Pages.Home;
 using System.Linq;
 using System.ServiceModel;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ModernChattingClient.ClientServices
 {
@@ -14,18 +10,21 @@ namespace ModernChattingClient.ClientServices
     {
         public void GetMessage(string message, string userName)
         {
-            ChatViewModel.GetInstance().TakeMessage(message, userName);
+            ClientViewModel.GetInstance().TakeMessage(message, userName);
         }
 
         public void Update(bool value, string userName)
         {
             if (value)
             {
-                ChatViewModel.GetInstance().Users.Add(userName);
+                ClientViewModel.GetInstance().Users.Add(userName);
+                ClientViewModel.GetInstance().CurrentUsers.Add(new FirstFloor.ModernUI.Presentation.Link() { DisplayName = userName });
             }
             else
             {
-                ChatViewModel.GetInstance().Users.Remove(userName);
+                ClientViewModel.GetInstance().Users.Remove(userName);
+                var Link = ClientViewModel.GetInstance().CurrentUsers.Where(n => n.DisplayName == userName).FirstOrDefault();
+                ClientViewModel.GetInstance().CurrentUsers.Remove(Link);
             }
         }
     }

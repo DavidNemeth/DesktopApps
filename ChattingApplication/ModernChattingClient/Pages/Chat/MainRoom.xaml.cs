@@ -1,5 +1,4 @@
-﻿using FirstFloor.ModernUI.Windows.Controls;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,24 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace ModernChattingClient
+namespace ModernChattingClient.Pages.Chat
 {
     /// <summary>
-    /// Interaction logic for MainWindow.xaml
+    /// Interaction logic for MainRoom.xaml
     /// </summary>
-    public partial class MainWindow : ModernWindow
+    public partial class MainRoom : UserControl
     {
-        private static MainWindow _this;
-
-        public MainWindow()
+        public MainRoom()
         {
             InitializeComponent();
-            _this = this;
-        }
-
-        public static MainWindow GetInstance()
-        {
-            return _this;
         }
     }
 }
