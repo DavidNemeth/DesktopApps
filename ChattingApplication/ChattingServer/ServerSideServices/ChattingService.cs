@@ -19,26 +19,33 @@ namespace ChattingServer
         // true->logged in  // false->username already in use
         public bool Login(string userName, string password)
         {
-            Client user = db.Clients.FirstOrDefault(p => p.UserName == userName && p.Password == password);
-            if (user == null || _connectedClients.Values.Where(u => u.UserName == userName).FirstOrDefault() != null)
+            try
             {
+                Client user = db.Clients.FirstOrDefault(p => p.UserName == userName && p.Password == password);
+                if (user == null && _connectedClients.Values.Where(u => u.UserName == userName).FirstOrDefault() != null)
+                {
+                    return false;
+                }
+                else
+                {
+                    var establishedUserConnection = OperationContext.Current.GetCallbackChannel<IClientService>();
+
+                    user.connection = establishedUserConnection;
+                    _connectedClients.TryAdd(userName, user);
+                    updateHelper(true, userName);
+
+                    user.LoggedIn = true;
+
+                    Console.ForegroundColor = ConsoleColor.Green;
+                    Console.WriteLine("Client login: {0} with id: {1} at {2}", user.UserName, user.UserID, DateTime.Now);
+                    Console.ResetColor();
+                    return true;
+                }
+            }
+            catch (Exception)
+            {                
                 return false;
-            }
-            else
-            {
-                var establishedUserConnection = OperationContext.Current.GetCallbackChannel<IClientService>();
-
-                user.connection = establishedUserConnection;
-                _connectedClients.TryAdd(userName, user);
-                updateHelper(true, userName);
-
-                user.LoggedIn = true;
-
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("Client login: {0} with id: {1} at {2}", user.UserName, user.UserID, DateTime.Now);
-                Console.ResetColor();
-                return true;
-            }
+            }            
         }
 
         public void Logout()
@@ -106,6 +113,10 @@ namespace ChattingServer
 
         public bool Register(string userName, string password)
         {
+            if (string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(password))
+            {
+                return false;
+            }
             if (db.Clients.Any(u => u.UserName == userName))
             {
                 return false;
@@ -118,7 +129,7 @@ namespace ChattingServer
                 db.Clients.Add(newUser);
                 Save();
                 return true;
-            }            
+            }
         }
 
         public bool UserExists(string username)
@@ -127,8 +138,8 @@ namespace ChattingServer
             {
                 return false;
             }
-            if (db.Clients.Any(u => u.UserName == username))            
-                return true;            
+            if (db.Clients.Any(u => u.UserName == username))
+                return true;
             else
                 return false;
         }
@@ -137,6 +148,20 @@ namespace ChattingServer
         {
             db.SaveChanges();
         }
+        // Non interface member area//
+
+        public List<string> GetUserNames()
+        {
+            return new List<string>(db.Clients.Select(u => u.UserName).ToList());
+        }
+
+        public void BanUser(string username)
+        {
+            var userToBan = db.Clients.Where(u => u.UserName == username).FirstOrDefault();
+            db.Clients.Remove(userToBan);
+            db.SaveChanges();
+        }
+
 
     }
 }

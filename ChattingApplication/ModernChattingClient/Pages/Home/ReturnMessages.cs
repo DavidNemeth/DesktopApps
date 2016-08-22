@@ -1,14 +1,11 @@
 ﻿using ModernChattingClient.Base;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace ModernChattingClient.Pages.Home
 {
     public class ReturnMessages : BindableBase
     {
+
+        #region REGISTER
         private string registermessage = "Register";
         public string RegisterMessage
         {
@@ -34,5 +31,33 @@ namespace ModernChattingClient.Pages.Home
                 SetProperty(ref registercolor, value);
             }
         }
+        #endregion
+        #region LOGIN
+        private string loginmessage = "Login";
+        public string LoginMessage
+        {
+            get
+            {
+                return loginmessage;
+            }
+            set
+            {
+                SetProperty(ref loginmessage, value);
+            }
+        }
+
+        private string logincolor = "Black";
+        public string LoginColor
+        {
+            get
+            {
+                return logincolor;
+            }
+            set
+            {
+                SetProperty(ref logincolor, value);
+            }
+        }
+        #endregion
     }
 }

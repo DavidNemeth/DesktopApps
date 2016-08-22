@@ -18,6 +18,16 @@ namespace ChattingServer
                     string input = Console.ReadLine().ToLower();
                     switch (input)
                     {
+                        case "help":
+                            Console.WriteLine("Server Commands:\n open -open server \n close -close server \n exit -close server application \nDatabase Commands:\n users -list user names\n user+name -display user information");
+                            break;
+
+                        case "users":
+                            foreach (var item in _server.GetUserNames())
+                            {
+                                Console.WriteLine("-"+item);
+                            }
+                            break;
                         case "open":
                             if (host.State.ToString() != "Opened")
                             {

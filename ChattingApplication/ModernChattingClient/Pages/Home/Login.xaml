@@ -13,18 +13,37 @@
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="bvc" />
     </UserControl.Resources>
+    <i:Interaction.Triggers>
+        <i:EventTrigger EventName="Unloaded">
+            <i:InvokeCommandAction Command="{Binding ClearCommand}" />
+        </i:EventTrigger>
+    </i:Interaction.Triggers>
     <Grid Style="{StaticResource ContentRoot}">
         <ScrollViewer>
             <StackPanel MinWidth="200">
-                <TextBlock Text="Login" Style="{StaticResource Heading2}" />
+                <TextBlock Text="{Binding ReturnMessage.LoginMessage,  FallbackValue=Login, UpdateSourceTrigger=PropertyChanged}" >
+                    <TextBlock.Style>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding MyTextProperty}" Value="{x:Null}">
+                                    <Setter Property="FontSize" Value="15"/>
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                    <Setter Property="Foreground" Value="{Binding ReturnMessage.LoginColor}"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
                 <toolkit:WatermarkTextBox x:Name="UsernameTxt"
+                                          Visibility="{Binding LoginVisible}"
                                           IsEnabled="{Binding LoginVis}"
-                                          BorderBrush="{Binding UserNameColor}"                                          
+                                          BorderBrush="{Binding UserNameBorder}"                                          
                                           Text="{Binding UserName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                           HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap"
                                           Watermark="Username" VerticalAlignment="Top" Width="150"/>
                 <PasswordBox x:Name="passwordBox1" HorizontalAlignment="Left" 
                              BorderBrush="{Binding PasswordBorder}"
+                             Visibility="{Binding LoginVisible}"                             
                              IsEnabled="{Binding LoginVis}"
                              w:PasswordHelper.Password="{Binding Password, Mode=TwoWay}"
                              Margin="10,10,0,0" VerticalAlignment="Top" Width="150"/>
@@ -33,7 +52,7 @@
                         HorizontalAlignment="Left" Margin="70,10,0,0" VerticalAlignment="Top" Width="72" Height="27"/>
                 <Button x:Name="Logout" Content="Sign Out" Command="{Binding Logout}"  
                     Visibility="{Binding LogoutVis, Converter={StaticResource bvc},FallbackValue=Hidden}"
-                    HorizontalAlignment="Left" Margin="70,10,0,0" VerticalAlignment="Top" Width="85" Height="27"/>
+                    HorizontalAlignment="Left" Margin="70,-50,0,0" VerticalAlignment="Top" Width="85" Height="27"/>
             </StackPanel>
         </ScrollViewer>
     </Grid>
