@@ -1,17 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using ModernChattingClient.Pages.Home;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 
 namespace ModernChattingClient.Pages.Chat
 {
@@ -22,9 +10,11 @@ namespace ModernChattingClient.Pages.Chat
     {
         private static MainRoom _this;
 
+        private ClientViewModel context = ClientViewModel.GetInstance();
         public MainRoom()
         {
             InitializeComponent();
+            //DataContext = context;
             _this = this;
         }
 

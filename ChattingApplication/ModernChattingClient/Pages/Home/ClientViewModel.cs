@@ -98,7 +98,15 @@ namespace ModernChattingClient.Pages.Home
         private string passwordborder = "Gray";
         private string regmessage;
         private ReturnMessages returnmessage = new ReturnMessages();
-
+        private bool chatenabled;
+        public bool ChatEnabled
+        {
+            get { return chatenabled; }
+            set
+            {
+                SetProperty(ref chatenabled, value);
+            }
+        }
         public string LoginVisible
         {
             get
@@ -195,9 +203,8 @@ namespace ModernChattingClient.Pages.Home
                     if (Server.Register(UserName, Password))
                     {
                         ReturnMessage.RegisterMessage = "Successfuly Registered, Your username: " + UserName;
-                        ReturnMessage.RegisterColor = "Green";
-                        UserName = "";
-                        Password = "";
+                        ReturnMessage.RegisterColor = "Green";                       
+                                            
                     }
                     else
                     {
@@ -241,6 +248,8 @@ namespace ModernChattingClient.Pages.Home
                     LoadUserList(Server.GetCurrentUsers());
                     LoginVis = false;
                     LogoutVis = true;
+                    ChatEnabled = true;
+                    Chat = "";
                     BBCodeBlock bs = new BBCodeBlock();
                     bs.LinkNavigator.Navigate(new Uri("/Pages/ChatPage.xaml", UriKind.Relative), instance);
                     ReturnMessage.LoginMessage = "Logged In as: " + UserName;
@@ -273,6 +282,7 @@ namespace ModernChattingClient.Pages.Home
             Chat = "";
             ReturnMessage.LoginMessage = "Log In";
             LoginVis = true;
+            ChatEnabled = false;
             LogoutVis = false;
             LoginVisible = "visible";
         }

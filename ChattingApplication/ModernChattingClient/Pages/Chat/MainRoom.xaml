@@ -1,4 +1,4 @@
-﻿<UserControl
+﻿<UserControl IsEnabled="{Binding ChatEnabled}"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
@@ -13,7 +13,7 @@
         <BooleanToVisibilityConverter x:Key="bvc" />
     </UserControl.Resources>
 
-    <Grid Style="{StaticResource ContentRoot}" IsEnabled="{Binding LogoutVis, FallbackValue=True, UpdateSourceTrigger=PropertyChanged}">
+    <Grid Style="{StaticResource ContentRoot}">
         <ScrollViewer>
             <StackPanel MinWidth="200">
                 <TextBlock Text="Main Channel" Style="{StaticResource Heading2}" />
@@ -26,13 +26,12 @@
                       Text="{Binding Chat, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" 
                       TextWrapping="Wrap" Width="Auto" Height="Auto"
                       VerticalScrollBarVisibility="Auto" Background="{x:Null}"/>
-        <TextBox x:Name="MessageAreaTxtBox"   
-                 IsEnabled="{Binding LogoutVis}"
+        <TextBox x:Name="MessageAreaTxtBox"                    
                  Text="{Binding Message, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                  Margin="10,0,10,10" Height="25" VerticalAlignment="Bottom">
             <TextBox.InputBindings>
                 <KeyBinding Key="Enter" Command="{Binding Send}" />
             </TextBox.InputBindings>
-        </TextBox>        
+        </TextBox>
     </Grid>
 </UserControl>

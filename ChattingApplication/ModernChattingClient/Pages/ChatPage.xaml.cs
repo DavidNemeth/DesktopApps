@@ -8,7 +8,7 @@ namespace ModernChattingClient.Pages
     /// </summary>
     public partial class ChatPage : UserControl
     {
-        private static ClientViewModel context = ClientViewModel.GetInstance();
+        private ClientViewModel context = ClientViewModel.GetInstance();
         private static ChatPage _this;
         public ChatPage()
         {

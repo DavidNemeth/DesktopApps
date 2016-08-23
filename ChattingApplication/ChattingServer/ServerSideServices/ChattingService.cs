@@ -43,9 +43,9 @@ namespace ChattingServer
                 }
             }
             catch (Exception)
-            {                
+            {
                 return false;
-            }            
+            }
         }
 
         public void Logout()
@@ -150,18 +150,83 @@ namespace ChattingServer
         }
         // Non interface member area//
 
+
         public List<string> GetUserNames()
         {
             return new List<string>(db.Clients.Select(u => u.UserName).ToList());
         }
 
-        public void BanUser(string username)
+        public bool BanUser(string username)
         {
-            var userToBan = db.Clients.Where(u => u.UserName == username).FirstOrDefault();
-            db.Clients.Remove(userToBan);
-            db.SaveChanges();
+            try
+            {
+                var userToBan = db.Clients.Where(u => u.UserName == username).FirstOrDefault();
+                db.Clients.Remove(userToBan);
+                db.SaveChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
 
+        public bool Rename(string currentname, string newname)
+        {
+            try
+            {
+                Client user = db.Clients.Where(u => u.UserName == currentname).FirstOrDefault();
+                user.UserName = newname;
+                db.SaveChanges();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
 
+        public Client GetUserByName(string username)
+        {
+            try
+            {
+                return db.Clients.Where(U => U.UserName == username).FirstOrDefault();
+            }
+            catch (Exception)
+            {
+                return null;
+            }
+        }
+
+        public void WipeUsers()
+        {
+            try
+            {
+                db.Database.ExecuteSqlCommand("TRUNCATE TABLE [Clients]");
+                db.SaveChanges();
+                Console.WriteLine("Data entries deleted");
+            }
+            catch (Exception)
+            {
+                Console.WriteLine("Database error, no data was deleted.");
+            }
+        }
+
+        public void LogoutUser(string username)
+        {
+            Client client = db.Clients.Where(u => u.UserName == username).FirstOrDefault();
+            if (client != null)
+            {
+                Client removedClient;
+                _connectedClients.TryRemove(client.UserName, out removedClient);
+
+                updateHelper(false, removedClient.UserName);
+                client.LoggedIn = false;
+                
+                Console.ForegroundColor = ConsoleColor.Cyan;
+                Console.WriteLine("Client logoff: {0} at {1}", removedClient.UserName, DateTime.Now);
+                Console.ResetColor();
+            }
+        }
     }
 }

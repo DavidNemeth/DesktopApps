@@ -7,10 +7,11 @@ namespace ModernChattingClient.Pages.Home
     /// </summary>
     public partial class Register : UserControl
     {
+        private ClientViewModel context = ClientViewModel.GetInstance();
         public Register()
         {
             InitializeComponent();
-            this.DataContext = new ClientViewModel();
+            this.DataContext = context;
         }
     }
 }
