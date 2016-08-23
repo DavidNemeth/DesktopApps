@@ -6,12 +6,11 @@ namespace ModernChattingClient.Pages.Home
     /// Interaction logic for Register.xaml
     /// </summary>
     public partial class Register : UserControl
-    {
-        private ClientViewModel context = ClientViewModel.GetInstance();
+    {       
         public Register()
         {
             InitializeComponent();
-            this.DataContext = context;
+            this.DataContext = new RegisterViewModel();
         }
     }
 }

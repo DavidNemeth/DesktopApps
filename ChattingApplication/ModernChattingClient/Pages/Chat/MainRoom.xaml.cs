@@ -9,12 +9,11 @@ namespace ModernChattingClient.Pages.Chat
     public partial class MainRoom : UserControl
     {
         private static MainRoom _this;
-
-        private ClientViewModel context = ClientViewModel.GetInstance();
+        
         public MainRoom()
         {
             InitializeComponent();
-            //DataContext = context;
+            DataContext = ClientViewModel.GetInstance();
             _this = this;
         }
 

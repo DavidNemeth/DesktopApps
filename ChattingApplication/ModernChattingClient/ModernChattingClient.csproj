@@ -85,6 +85,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Pages\Home\RegisterViewModel.cs" />
     <Compile Include="Pages\Home\ReturnMessages.cs" />
     <Compile Include="Resources\TextBoxBehaviour.cs" />
     <Page Include="MainWindow.xaml">
@@ -129,7 +130,6 @@
     <Compile Include="Pages\ChatPage.xaml.cs">
       <DependentUpon>ChatPage.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Pages\Chat\ChatViewModel.cs" />
     <Compile Include="Pages\Chat\MainRoom.xaml.cs">
       <DependentUpon>MainRoom.xaml</DependentUpon>
     </Compile>

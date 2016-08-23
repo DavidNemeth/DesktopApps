@@ -22,7 +22,7 @@ namespace ChattingServer
             try
             {
                 Client user = db.Clients.FirstOrDefault(p => p.UserName == userName && p.Password == password);
-                if (user == null && _connectedClients.Values.Where(u => u.UserName == userName).FirstOrDefault() != null)
+                if (user == null || _connectedClients.Values.Where(u => u.UserName == userName).FirstOrDefault() != null)
                 {
                     return false;
                 }
@@ -67,6 +67,10 @@ namespace ChattingServer
 
         public void SendMessageToAll(string message, string userName)
         {
+            if (string.IsNullOrEmpty(userName))
+            {
+                return;
+            }
             foreach (var client in _connectedClients)
             {
                 if (client.Key.ToLower() != userName.ToLower())
@@ -74,6 +78,19 @@ namespace ChattingServer
                     client.Value.connection.GetMessage(message, userName);
                 }
             }
+        }
+
+        public string GetUserName()
+        {
+            try
+            {
+                return GetMyClient().UserName;
+            }
+            catch (Exception)
+            {
+
+                return "Offline";
+            }            
         }
 
         public Client GetMyClient()

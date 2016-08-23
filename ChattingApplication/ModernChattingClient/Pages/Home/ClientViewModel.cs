@@ -30,7 +30,6 @@ namespace ModernChattingClient.Pages.Home
             Login = new Base.RelayCommand(OnLogin);
             Logout = new Base.RelayCommand(OnLogout);
             Send = new Base.RelayCommand(OnSend);
-            Register = new Base.RelayCommand(OnRegister);
             ClearCommand = new Base.RelayCommand(OnClear);
         }
         private void NavigationCommands()
@@ -96,7 +95,6 @@ namespace ModernChattingClient.Pages.Home
         private string loginvisibile;
         private string usernameborder = "Gray";
         private string passwordborder = "Gray";
-        private string regmessage;
         private ReturnMessages returnmessage = new ReturnMessages();
         private bool chatenabled;
         public bool ChatEnabled
@@ -116,17 +114,6 @@ namespace ModernChattingClient.Pages.Home
             set
             {
                 SetProperty(ref loginvisibile, value);
-            }
-        }
-        public string RegMessage
-        {
-            get
-            {
-                return regmessage;
-            }
-            set
-            {
-                SetProperty(ref regmessage, value);
             }
         }
         public string UserNameBorder
@@ -181,44 +168,7 @@ namespace ModernChattingClient.Pages.Home
         }
         #endregion
 
-        public Base.RelayCommand Register { get; private set; }
-        public void OnRegister()
-        {
-            if (string.IsNullOrEmpty(UserName) || string.IsNullOrEmpty(Password))
-            {
-                if (string.IsNullOrEmpty(UserName))
-                {
-                    UserNameBorder = "Red";
-                }
-                if (string.IsNullOrEmpty(Password))
-                {
-                    PasswordBorder = "Red";
-                }
-                return;
-            }
-            else
-            {
-                try
-                {
-                    if (Server.Register(UserName, Password))
-                    {
-                        ReturnMessage.RegisterMessage = "Successfuly Registered, Your username: " + UserName;
-                        ReturnMessage.RegisterColor = "Green";                       
-                                            
-                    }
-                    else
-                    {
-                        ReturnMessage.RegisterMessage = "Username already taken";
-                        ReturnMessage.RegisterColor = "Red";
-                    }
-                }
-                catch (Exception)
-                {
-                    ReturnMessage.RegisterColor = "Red";
-                    ReturnMessage.RegisterMessage = "Unable to Register, Server status: Offline";
-                }
-            }
-        }
+       
         public Base.RelayCommand ToLogin { get; private set; }
         public void NavigateToLogin()
         {
@@ -317,8 +267,6 @@ namespace ModernChattingClient.Pages.Home
             PasswordBorder = "Gray";
             UserNameBorder = "Gray";
             ReturnMessage.LoginColor = "Black";
-            ReturnMessage.RegisterColor = "Black";
-            ReturnMessage.RegisterMessage = "Regsiter";
         }
         public void TakeMessage(string message, string username)
         {
