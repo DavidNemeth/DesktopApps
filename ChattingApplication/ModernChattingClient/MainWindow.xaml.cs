@@ -13,7 +13,7 @@ namespace ModernChattingClient
         public MainWindow()
         {
             InitializeComponent();
-            this.DataContext = ClientViewModel.GetInstance();
+            this.DataContext = new ClientViewModel();
             _this = this;
         }
 

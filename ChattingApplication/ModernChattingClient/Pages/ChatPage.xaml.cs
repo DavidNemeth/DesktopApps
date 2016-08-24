@@ -7,12 +7,10 @@ namespace ModernChattingClient.Pages
     /// Interaction logic for ChatPage.xaml
     /// </summary>
     public partial class ChatPage : UserControl
-    {
-        private ClientViewModel context = ClientViewModel.GetInstance();
+    {        
         private static ChatPage _this;
         public ChatPage()
-        {
-            DataContext = context;
+        {           
             InitializeComponent();
             _this = this;           
         }

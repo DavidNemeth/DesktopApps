@@ -12,9 +12,7 @@ namespace ModernChattingClient.Pages.Home
         private static Login _this;
         public Login()
         {
-            InitializeComponent();
-            this.DataContext = new ClientViewModel();
-            _this = this;
+            InitializeComponent();            
         }
 
         public static Login GetInstance()

@@ -1,6 +1,7 @@
 ﻿using ChattingInterfaces;
 using FirstFloor.ModernUI.Presentation;
 using FirstFloor.ModernUI.Windows.Controls;
+using FirstFloor.ModernUI.Windows.Navigation;
 using ModernChattingClient.Base;
 using ModernChattingClient.ClientServices;
 using System;
@@ -36,7 +37,7 @@ namespace ModernChattingClient.Pages.Home
         {
             ToLogin = new Base.RelayCommand(NavigateToLogin);
         }
-        #region props
+        #region props        
         private string username;
         private string password;
         private string message;
@@ -105,6 +106,7 @@ namespace ModernChattingClient.Pages.Home
                 SetProperty(ref chatenabled, value);
             }
         }
+        public string CurrentUser { get; set; }
         public string LoginVisible
         {
             get
@@ -168,7 +170,7 @@ namespace ModernChattingClient.Pages.Home
         }
         #endregion
 
-       
+
         public Base.RelayCommand ToLogin { get; private set; }
         public void NavigateToLogin()
         {
@@ -201,7 +203,8 @@ namespace ModernChattingClient.Pages.Home
                     ChatEnabled = true;
                     Chat = "";
                     BBCodeBlock bs = new BBCodeBlock();
-                    bs.LinkNavigator.Navigate(new Uri("/Pages/ChatPage.xaml", UriKind.Relative), instance);
+                    bs.LinkNavigator.Navigate(new Uri("/Pages/ChatPage.xaml", UriKind.Relative), HomePage.GetInstance(), NavigationHelper.FrameSelf);
+                    CurrentUser = UserName;
                     ReturnMessage.LoginMessage = "Logged In as: " + UserName;
                     LoginVisible = "hidden";
                     return;
@@ -262,7 +265,7 @@ namespace ModernChattingClient.Pages.Home
 
         public Base.RelayCommand ClearCommand { get; private set; }
         private void OnClear()
-        {           
+        {
             Password = "";
             PasswordBorder = "Gray";
             UserNameBorder = "Gray";

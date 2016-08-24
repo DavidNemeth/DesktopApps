@@ -1,5 +1,4 @@
-﻿using ModernChattingClient.Pages.Home;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -14,23 +13,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace ModernChattingClient.Pages
+namespace ModernChattingClient.Pages.Home
 {
     /// <summary>
-    /// Interaction logic for HomePage.xaml
+    /// Interaction logic for Profile.xaml
     /// </summary>
-    public partial class HomePage : UserControl
+    public partial class Profile : UserControl
     {
-        private static HomePage _this;
-        public HomePage()
+        public Profile()
         {
-            InitializeComponent();            
-            _this = this;
-        }
-
-        public static HomePage GetInstance()
-        {
-            return _this;
+            InitializeComponent();
         }
     }
 }

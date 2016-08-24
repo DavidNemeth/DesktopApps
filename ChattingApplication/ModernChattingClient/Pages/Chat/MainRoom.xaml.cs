@@ -12,8 +12,7 @@ namespace ModernChattingClient.Pages.Chat
         
         public MainRoom()
         {
-            InitializeComponent();
-            DataContext = ClientViewModel.GetInstance();
+            InitializeComponent();            
             _this = this;
         }
 
