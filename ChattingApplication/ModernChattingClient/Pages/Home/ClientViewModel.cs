@@ -7,6 +7,7 @@ using ModernChattingClient.ClientServices;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.ServiceModel;
 
 namespace ModernChattingClient.Pages.Home
@@ -16,6 +17,7 @@ namespace ModernChattingClient.Pages.Home
         private static IChattingService Server;
         private static DuplexChannelFactory<IChattingService> _channelFactory;
         private static ClientViewModel _this;
+        private readonly BackgroundWorker worker;
         HomePage instance = HomePage.GetInstance();
 
         public ClientViewModel()
@@ -28,7 +30,7 @@ namespace ModernChattingClient.Pages.Home
         }
         private void CreateCommands()
         {
-            Login = new Base.RelayCommand(OnLogin);
+            Login = new Base.RelayCommand(OnLogin, () => { return !(string.IsNullOrEmpty(UserName) || string.IsNullOrEmpty(Password)); });
             Logout = new Base.RelayCommand(OnLogout);
             Send = new Base.RelayCommand(OnSend);
             ClearCommand = new Base.RelayCommand(OnClear);
@@ -52,6 +54,7 @@ namespace ModernChattingClient.Pages.Home
             {
                 SetProperty(ref username, value);
                 UserNameBorder = "Gray";
+                Login.RaiseCanExecuteChanged();
                 OnPropertyChanged("UserName");
             }
         }
@@ -62,6 +65,7 @@ namespace ModernChattingClient.Pages.Home
             {
                 SetProperty(ref password, value);
                 PasswordBorder = "Gray";
+                Login.RaiseCanExecuteChanged();
                 OnPropertyChanged("Password");
             }
         }
@@ -90,7 +94,8 @@ namespace ModernChattingClient.Pages.Home
             set { SetProperty(ref currentusers, value); }
         }
         #endregion
-        #region converterProps        
+        #region converterProps    
+        private string progressring;
         private bool loginvis = true;
         private bool logoutvis;
         private string loginvisibile;
@@ -140,6 +145,14 @@ namespace ModernChattingClient.Pages.Home
                 SetProperty(ref passwordborder, value);
             }
         }
+        public string ProgressRing
+        {
+            get { return progressring; }
+            set
+            {
+                SetProperty(ref progressring, value);
+            }
+        }
         public bool LoginVis
         {
             get { return loginvis; }
@@ -180,19 +193,7 @@ namespace ModernChattingClient.Pages.Home
 
         public Base.RelayCommand Login { get; private set; }
         public void OnLogin()
-        {
-            if (string.IsNullOrEmpty(UserName) || string.IsNullOrEmpty(Password))
-            {
-                if (string.IsNullOrEmpty(UserName))
-                {
-                    UserNameBorder = "Red";
-                }
-                if (string.IsNullOrEmpty(Password))
-                {
-                    PasswordBorder = "Red";
-                }
-                return;
-            }
+        {   
             try
             {
                 if (Server.Login(UserName, Password))
@@ -206,17 +207,19 @@ namespace ModernChattingClient.Pages.Home
                     bs.LinkNavigator.Navigate(new Uri("/Pages/ChatPage.xaml", UriKind.Relative), HomePage.GetInstance(), NavigationHelper.FrameSelf);
                     CurrentUser = UserName;
                     ReturnMessage.LoginMessage = "Logged In as: " + UserName;
-                    LoginVisible = "hidden";
+                    LoginVisible = "hidden";                   
                     return;
                 }
                 else
-                    UserNameBorder = "Red";
+                    UserNameBorder = "Red";                
                 return;
             }
             catch (Exception)
             {
                 ReturnMessage.LoginColor = "Red";
                 ReturnMessage.LoginMessage = "Unable to connect, Server status: Offline";
+                ProgressRing = "False";
+                return;
             }
         }
 

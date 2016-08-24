@@ -47,9 +47,10 @@
                              IsEnabled="{Binding LoginVis}"
                              w:PasswordHelper.Password="{Binding Password, Mode=TwoWay}"
                              Margin="10,10,0,0" VerticalAlignment="Top" Width="150"/>
-                <Button x:Name="LoginBtn" Content="Sign In" Command="{Binding Login}" 
+                <Button x:Name="LoginBtn" Content="Sign In" Command="{Binding Login,UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
                         Visibility="{Binding LoginVis, Converter={StaticResource bvc},FallbackValue=Visible}"
                         HorizontalAlignment="Left" Margin="70,10,0,0" VerticalAlignment="Top" Width="72" Height="27"/>
+                <mui:ModernProgressRing IsActive="{Binding ProgressRing}" Margin="-10,-120,-80,10" Height="54" Width="67" />
                 <Button x:Name="Logout" Content="Sign Out" Command="{Binding Logout}"  
                     Visibility="{Binding LogoutVis, Converter={StaticResource bvc},FallbackValue=Hidden}"
                     HorizontalAlignment="Left" Margin="70,-50,0,0" VerticalAlignment="Top" Width="85" Height="27"/>
