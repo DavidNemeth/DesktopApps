@@ -42,6 +42,7 @@
                 <PasswordBox x:Name="passwordBox1" HorizontalAlignment="Left" 
                              BorderBrush="{Binding PasswordBorder}"
                              w:PasswordHelper.Password="{Binding Password, Mode=TwoWay}"
+                             IsEnabled="True"
                              Margin="10,10,0,0" VerticalAlignment="Top" Width="150"/>
                 <Button x:Name="RegisterBtn" Content="Register" Command="{Binding Register}"
                         HorizontalAlignment="Left" Margin="70,10,0,0" VerticalAlignment="Top" Width="85" Height="27"/>

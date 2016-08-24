@@ -10,11 +10,7 @@
     <UserControl.Resources>
         <BooleanToVisibilityConverter x:Key="bvc" />
     </UserControl.Resources>
-    <i:Interaction.Triggers>
-        <i:EventTrigger EventName="Closing">
-            <i:InvokeCommandAction Command="{Binding Logout}" />
-        </i:EventTrigger>
-    </i:Interaction.Triggers>
+    
     <Grid Style="{StaticResource ContentRoot}">
         <!-- TODO: set @SelectedSource -->
         <mui:ModernTab Layout="List" Links="{Binding Path=CurrentUsers}" SelectedSource="/Pages/Chat/MainRoom.xaml">

@@ -34,26 +34,33 @@
                         </Style>
                     </TextBlock.Style>
                 </TextBlock>
-                <toolkit:WatermarkTextBox x:Name="UsernameTxt"
-                                          Visibility="{Binding LoginVisible}"
-                                          IsEnabled="{Binding LoginVis}"
-                                          BorderBrush="{Binding UserNameBorder}"                                          
-                                          Text="{Binding UserName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                          HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap"
-                                          Watermark="Username" VerticalAlignment="Top" Width="150"/>
-                <PasswordBox x:Name="passwordBox1" HorizontalAlignment="Left" 
-                             BorderBrush="{Binding PasswordBorder}"
-                             Visibility="{Binding LoginVisible}"                             
-                             IsEnabled="{Binding LoginVis}"
-                             w:PasswordHelper.Password="{Binding Password, Mode=TwoWay}"
-                             Margin="10,10,0,0" VerticalAlignment="Top" Width="150"/>
-                <Button x:Name="LoginBtn" Content="Sign In" Command="{Binding Login,UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
-                        Visibility="{Binding LoginVis, Converter={StaticResource bvc},FallbackValue=Visible}"
-                        HorizontalAlignment="Left" Margin="70,10,0,0" VerticalAlignment="Top" Width="72" Height="27"/>
-                <mui:ModernProgressRing IsActive="{Binding ProgressRing}" Margin="-10,-120,-80,10" Height="54" Width="67" />
-                <Button x:Name="Logout" Content="Sign Out" Command="{Binding Logout}"  
-                    Visibility="{Binding LogoutVis, Converter={StaticResource bvc},FallbackValue=Hidden}"
-                    HorizontalAlignment="Left" Margin="70,-50,0,0" VerticalAlignment="Top" Width="85" Height="27"/>
+                <StackPanel x:Name="Form" Orientation="Vertical" Margin="0,20,0,0">
+                    <StackPanel.Resources>
+                        <Style TargetType="StackPanel">
+                            <Setter Property="Orientation" Value="Horizontal" />
+                            <Setter Property="Margin" Value="0,0,0,4" />
+                        </Style>
+                        <Style TargetType="Label" BasedOn="{StaticResource {x:Type Label}}">
+                            <Setter Property="Width" Value="100" />
+                            <Setter Property="VerticalAlignment" Value="Center" />
+                        </Style>
+                        <Style TargetType="CheckBox" BasedOn="{StaticResource {x:Type CheckBox}}">
+                            <Setter Property="Padding" Value="0,3" />
+                        </Style>
+                        <Style TargetType="RadioButton" BasedOn="{StaticResource {x:Type RadioButton}}">
+                            <Setter Property="Padding" Value="0,3" />
+                        </Style>
+                    </StackPanel.Resources>
+                    <StackPanel>
+                        <Label Content="UserName" Target="{Binding ElementName=TextFirstName}"/>
+                        <TextBox x:Name="TextUserName" Width="150" Text="{Binding UserName, Mode=TwoWay}" />
+                    </StackPanel>
+                    <StackPanel>
+                        <Label Content="Password" Target="{Binding ElementName=TextLastName}"/>
+                        <PasswordBox x:Name="Password1" Width="150" w:PasswordHelper.Password="{Binding Password, Mode=TwoWay}"/>
+                    </StackPanel>
+                    <Button Content="Login" Margin="100,16,0,0" HorizontalAlignment="Left" Command="{Binding Login, ValidatesOnDataErrors=True}"/>
+                </StackPanel>
             </StackPanel>
         </ScrollViewer>
     </Grid>

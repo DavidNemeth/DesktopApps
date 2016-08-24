@@ -14,16 +14,20 @@
     <Grid Style="{StaticResource ContentRoot}">
         <ScrollViewer>
             <StackPanel MinWidth="200">
-                <toolkit:WatermarkTextBox x:Name="CurrentUserTxt"                                          
-                                          BorderBrush="{Binding CurrentUser}"                                          
-                                          Text="{Binding UserName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
-                                          HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap"
-                                          Watermark="Username" VerticalAlignment="Top" Width="150"/>
-                <PasswordBox x:Name="newpassword" HorizontalAlignment="Left"                                                       
-                             IsEnabled="{Binding LoginVis}"
-                             w:PasswordHelper.Password="{Binding Password, Mode=TwoWay}"
-                             Margin="10,10,0,0" VerticalAlignment="Top" Width="150"/>
-                <Button x:Name="SaveBtn" Content="Save Changes" Command="{Binding Save}"                         
+                <TextBlock Text="{Binding UserName,  FallbackValue=Register, UpdateSourceTrigger=PropertyChanged}" >
+                    <TextBlock.Style>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding MyTextProperty}" Value="{x:Null}">
+                                    <Setter Property="FontSize" Value="15"/>
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                    <Setter Property="Foreground" Value="{Binding ReturnMessage.RegisterColor}"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>      
+                <Button x:Name="SaveBtn" Content="Edit Profile" Command="{Binding EditInfo}"                         
                         HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="121" Height="27"/>
                 <Button x:Name="Logout" Content="Sign Out" Command="{Binding Logout}"                      
                     HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Width="85" Height="27"/>

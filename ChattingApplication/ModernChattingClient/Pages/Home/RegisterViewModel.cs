@@ -14,8 +14,8 @@ namespace ModernChattingClient.Pages.Home
         {
             _channelFactory = new DuplexChannelFactory<IChattingService>(new ClientService(), "ChattingServiceEndPoint");
             Server = _channelFactory.CreateChannel();
-            Register = new Base.RelayCommand(OnRegister);
-             ClearCommand = new Base.RelayCommand(OnClear);
+            Register = new Base.RelayCommand(OnRegister, () => !(string.IsNullOrEmpty(UserName) || string.IsNullOrEmpty(Password)));
+            ClearCommand = new Base.RelayCommand(OnClear);
         }
 
         private string username;
@@ -29,6 +29,7 @@ namespace ModernChattingClient.Pages.Home
                 SetProperty(ref username, value);
                 UserNameBorder = "Gray";
                 OnPropertyChanged("UserName");
+                Register.RaiseCanExecuteChanged();
             }
         }
         public string Password
@@ -39,6 +40,7 @@ namespace ModernChattingClient.Pages.Home
                 SetProperty(ref password, value);
                 PasswordBorder = "Gray";
                 OnPropertyChanged("Password");
+                Register.RaiseCanExecuteChanged();
             }
         }
 
@@ -96,39 +98,25 @@ namespace ModernChattingClient.Pages.Home
         public Base.RelayCommand Register { get; private set; }
         public void OnRegister()
         {
-            if (string.IsNullOrEmpty(UserName) || string.IsNullOrEmpty(Password))
-            {
-                if (string.IsNullOrEmpty(UserName))
-                {
-                    UserNameBorder = "Red";
-                }
-                if (string.IsNullOrEmpty(Password))
-                {
-                    PasswordBorder = "Red";
-                }
-                return;
-            }
-            else
-            {
-                try
-                {
-                    if (Server.Register(UserName, Password))
-                    {
-                        ReturnMessage.RegisterMessage = "Successfuly Registered, Your username: " + UserName;
-                        ReturnMessage.RegisterColor = "Green";
 
-                    }
-                    else
-                    {
-                        ReturnMessage.RegisterMessage = "Username already taken";
-                        ReturnMessage.RegisterColor = "Red";
-                    }
-                }
-                catch (Exception)
+            try
+            {
+                if (Server.Register(UserName, Password))
                 {
-                    ReturnMessage.RegisterColor = "Red";
-                    ReturnMessage.RegisterMessage = "Unable to Register, Server status: Offline";
+                    ReturnMessage.RegisterMessage = "Successfuly Registered, Your username: " + UserName;
+                    ReturnMessage.RegisterColor = "Green";
+
                 }
+                else
+                {
+                    ReturnMessage.RegisterMessage = "Username already taken";
+                    ReturnMessage.RegisterColor = "Red";
+                }
+            }
+            catch (Exception)
+            {
+                ReturnMessage.RegisterColor = "Red";
+                ReturnMessage.RegisterMessage = "Unable to Register, Server status: Offline";
             }
         }
         public Base.RelayCommand ClearCommand { get; private set; }

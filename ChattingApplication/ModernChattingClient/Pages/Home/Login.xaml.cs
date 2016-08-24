@@ -12,7 +12,8 @@ namespace ModernChattingClient.Pages.Home
         private static Login _this;
         public Login()
         {
-            InitializeComponent();            
+            InitializeComponent();
+            _this = this;
         }
 
         public static Login GetInstance()

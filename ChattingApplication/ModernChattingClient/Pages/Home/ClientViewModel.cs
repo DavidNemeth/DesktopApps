@@ -9,15 +9,16 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ServiceModel;
+using System.Windows.Input;
 
 namespace ModernChattingClient.Pages.Home
 {
-    public class ClientViewModel : BindableBase
+    public class ClientViewModel : BindableBase, IDataErrorInfo
     {
         private static IChattingService Server;
         private static DuplexChannelFactory<IChattingService> _channelFactory;
         private static ClientViewModel _this;
-        private readonly BackgroundWorker worker;
+
         HomePage instance = HomePage.GetInstance();
 
         public ClientViewModel()
@@ -26,7 +27,7 @@ namespace ModernChattingClient.Pages.Home
             Server = _channelFactory.CreateChannel();
             _this = this;
             CreateCommands();
-            NavigationCommands();
+            NavigationCommands();           
         }
         private void CreateCommands()
         {
@@ -35,6 +36,7 @@ namespace ModernChattingClient.Pages.Home
             Send = new Base.RelayCommand(OnSend);
             ClearCommand = new Base.RelayCommand(OnClear);
         }
+
         private void NavigationCommands()
         {
             ToLogin = new Base.RelayCommand(NavigateToLogin);
@@ -54,8 +56,7 @@ namespace ModernChattingClient.Pages.Home
             {
                 SetProperty(ref username, value);
                 UserNameBorder = "Gray";
-                Login.RaiseCanExecuteChanged();
-                OnPropertyChanged("UserName");
+                Login.RaiseCanExecuteChanged();                
             }
         }
         public string Password
@@ -65,8 +66,7 @@ namespace ModernChattingClient.Pages.Home
             {
                 SetProperty(ref password, value);
                 PasswordBorder = "Gray";
-                Login.RaiseCanExecuteChanged();
-                OnPropertyChanged("Password");
+                Login.RaiseCanExecuteChanged();                
             }
         }
         public string Message
@@ -95,7 +95,6 @@ namespace ModernChattingClient.Pages.Home
         }
         #endregion
         #region converterProps    
-        private string progressring;
         private bool loginvis = true;
         private bool logoutvis;
         private string loginvisibile;
@@ -145,14 +144,7 @@ namespace ModernChattingClient.Pages.Home
                 SetProperty(ref passwordborder, value);
             }
         }
-        public string ProgressRing
-        {
-            get { return progressring; }
-            set
-            {
-                SetProperty(ref progressring, value);
-            }
-        }
+
         public bool LoginVis
         {
             get { return loginvis; }
@@ -190,10 +182,9 @@ namespace ModernChattingClient.Pages.Home
             BBCodeBlock bs = new BBCodeBlock();
             bs.LinkNavigator.Navigate(new Uri("/Pages/HomePage.xaml", UriKind.Relative), instance);
         }
-
         public Base.RelayCommand Login { get; private set; }
         public void OnLogin()
-        {   
+        {
             try
             {
                 if (Server.Login(UserName, Password))
@@ -207,18 +198,19 @@ namespace ModernChattingClient.Pages.Home
                     bs.LinkNavigator.Navigate(new Uri("/Pages/ChatPage.xaml", UriKind.Relative), HomePage.GetInstance(), NavigationHelper.FrameSelf);
                     CurrentUser = UserName;
                     ReturnMessage.LoginMessage = "Logged In as: " + UserName;
-                    LoginVisible = "hidden";                   
                     return;
                 }
                 else
-                    UserNameBorder = "Red";                
+                {
+                    ReturnMessage.LoginColor = "Red";
+                    ReturnMessage.LoginMessage = "Incorrect Username or Password";
+                }                    
                 return;
             }
             catch (Exception)
             {
                 ReturnMessage.LoginColor = "Red";
                 ReturnMessage.LoginMessage = "Unable to connect, Server status: Offline";
-                ProgressRing = "False";
                 return;
             }
         }
@@ -300,5 +292,27 @@ namespace ModernChattingClient.Pages.Home
                 }
             }
         }
+
+        #region errors
+        public string Error
+        {
+            get { return null; }
+        }
+        public string this[string columnName]
+        {
+            get
+            {
+                //if (columnName == "UserName")
+                //{
+                //    return (Server.Login(UserName, Password)) ? "Required value" : null;
+                //}
+                //if (columnName == "Password")
+                //{
+                //    return (Server.Login(UserName, Password)) ? "Required value" : null;
+                //}
+                return null;
+            }
+        }
+        #endregion
     }
 }
