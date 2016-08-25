@@ -1,8 +1,8 @@
-﻿using ChattingInterfaces;
-using System.ServiceModel;
+﻿using System.ServiceModel;
 using ChattClient.ViewModels;
+using ChattingInterfaces;
 
-namespace ChattClient
+namespace ChattClient.ClientSideServices
 {
     [CallbackBehavior(ConcurrencyMode = ConcurrencyMode.Multiple)]
     public class ClientService : IClientService

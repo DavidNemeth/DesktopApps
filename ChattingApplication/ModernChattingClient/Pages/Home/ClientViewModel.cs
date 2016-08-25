@@ -9,29 +9,27 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
 using System.ServiceModel;
-using System.Windows.Input;
 
 namespace ModernChattingClient.Pages.Home
 {
     public class ClientViewModel : BindableBase, IDataErrorInfo
     {
-        private static IChattingService Server;
-        private static DuplexChannelFactory<IChattingService> _channelFactory;
+        private static IChattingService _server;
         private static ClientViewModel _this;
 
-        HomePage instance = HomePage.GetInstance();
+        private readonly HomePage _instance = HomePage.GetInstance();
 
         public ClientViewModel()
         {
-            _channelFactory = new DuplexChannelFactory<IChattingService>(new ClientService(), "ChattingServiceEndPoint");
-            Server = _channelFactory.CreateChannel();
+            var channelFactory = new DuplexChannelFactory<IChattingService>(new ClientService(), "ChattingServiceEndPoint");
+            _server = channelFactory.CreateChannel();
             _this = this;
             CreateCommands();
             NavigationCommands();           
         }
         private void CreateCommands()
         {
-            Login = new Base.RelayCommand(OnLogin, () => { return !(string.IsNullOrEmpty(UserName) || string.IsNullOrEmpty(Password)); });
+            Login = new Base.RelayCommand(OnLogin, () => !(string.IsNullOrEmpty(UserName) || string.IsNullOrEmpty(Password)));
             Logout = new Base.RelayCommand(OnLogout);
             Send = new Base.RelayCommand(OnSend);
             ClearCommand = new Base.RelayCommand(OnClear);
@@ -42,72 +40,72 @@ namespace ModernChattingClient.Pages.Home
             ToLogin = new Base.RelayCommand(NavigateToLogin);
         }
         #region props        
-        private string username;
-        private string password;
-        private string message;
-        private string chat;
-        private ObservableCollection<string> users = new ObservableCollection<string>();
-        private LinkCollection currentusers = new LinkCollection();
+        private string _username;
+        private string _password;
+        private string _message;
+        private string _chat;
+        private ObservableCollection<string> _users = new ObservableCollection<string>();
+        private LinkCollection _currentusers = new LinkCollection();
 
         public string UserName
         {
-            get { return username; }
+            get { return _username; }
             set
             {
-                SetProperty(ref username, value);
+                SetProperty(ref _username, value);
                 UserNameBorder = "Gray";
                 Login.RaiseCanExecuteChanged();                
             }
         }
         public string Password
         {
-            get { return password; }
+            get { return _password; }
             set
             {
-                SetProperty(ref password, value);
+                SetProperty(ref _password, value);
                 PasswordBorder = "Gray";
                 Login.RaiseCanExecuteChanged();                
             }
         }
         public string Message
         {
-            get { return message; }
+            get { return _message; }
             set
             {
-                SetProperty(ref message, value);
+                SetProperty(ref _message, value);
             }
         }
         public string Chat
         {
-            get { return chat; }
-            set { SetProperty(ref chat, value); }
+            get { return _chat; }
+            set { SetProperty(ref _chat, value); }
         }
 
         public ObservableCollection<string> Users
         {
-            get { return users; }
-            set { SetProperty(ref users, value); }
+            get { return _users; }
+            set { SetProperty(ref _users, value); }
         }
         public LinkCollection CurrentUsers
         {
-            get { return currentusers; }
-            set { SetProperty(ref currentusers, value); }
+            get { return _currentusers; }
+            set { SetProperty(ref _currentusers, value); }
         }
         #endregion
         #region converterProps    
-        private bool loginvis = true;
-        private bool logoutvis;
-        private string loginvisibile;
-        private string usernameborder = "Gray";
-        private string passwordborder = "Gray";
-        private ReturnMessages returnmessage = new ReturnMessages();
-        private bool chatenabled;
+        private bool _loginvis = true;
+        private bool _logoutvis;
+        private string _loginvisibile;
+        private string _usernameborder = "Gray";
+        private string _passwordborder = "Gray";
+        private ReturnMessages _returnmessage = new ReturnMessages();
+        private bool _chatenabled;
         public bool ChatEnabled
         {
-            get { return chatenabled; }
+            get { return _chatenabled; }
             set
             {
-                SetProperty(ref chatenabled, value);
+                SetProperty(ref _chatenabled, value);
             }
         }
         public string CurrentUser { get; set; }
@@ -115,50 +113,50 @@ namespace ModernChattingClient.Pages.Home
         {
             get
             {
-                return loginvisibile;
+                return _loginvisibile;
             }
             set
             {
-                SetProperty(ref loginvisibile, value);
+                SetProperty(ref _loginvisibile, value);
             }
         }
         public string UserNameBorder
         {
             get
             {
-                return usernameborder;
+                return _usernameborder;
             }
             set
             {
-                SetProperty(ref usernameborder, value);
+                SetProperty(ref _usernameborder, value);
             }
         }
         public string PasswordBorder
         {
             get
             {
-                return passwordborder;
+                return _passwordborder;
             }
             set
             {
-                SetProperty(ref passwordborder, value);
+                SetProperty(ref _passwordborder, value);
             }
         }
 
         public bool LoginVis
         {
-            get { return loginvis; }
+            get { return _loginvis; }
             set
             {
-                SetProperty(ref loginvis, value);
+                SetProperty(ref _loginvis, value);
             }
         }
         public bool LogoutVis
         {
-            get { return logoutvis; }
+            get { return _logoutvis; }
             set
             {
-                SetProperty(ref logoutvis, value);
+                SetProperty(ref _logoutvis, value);
                 OnPropertyChanged("SendEnabled");
             }
         }
@@ -166,11 +164,11 @@ namespace ModernChattingClient.Pages.Home
         {
             get
             {
-                return returnmessage;
+                return _returnmessage;
             }
             set
             {
-                SetProperty(ref returnmessage, value);
+                SetProperty(ref _returnmessage, value);
             }
         }
         #endregion
@@ -180,16 +178,16 @@ namespace ModernChattingClient.Pages.Home
         public void NavigateToLogin()
         {
             BBCodeBlock bs = new BBCodeBlock();
-            bs.LinkNavigator.Navigate(new Uri("/Pages/HomePage.xaml", UriKind.Relative), instance);
+            bs.LinkNavigator.Navigate(new Uri("/Pages/HomePage.xaml", UriKind.Relative), _instance);
         }
         public Base.RelayCommand Login { get; private set; }
         public void OnLogin()
         {
             try
             {
-                if (Server.Login(UserName, Password))
+                if (_server.Login(UserName, Password))
                 {
-                    LoadUserList(Server.GetCurrentUsers());
+                    LoadUserList(_server.GetCurrentUsers());
                     LoginVis = false;
                     LogoutVis = true;
                     ChatEnabled = true;
@@ -198,20 +196,17 @@ namespace ModernChattingClient.Pages.Home
                     bs.LinkNavigator.Navigate(new Uri("/Pages/ChatPage.xaml", UriKind.Relative), HomePage.GetInstance(), NavigationHelper.FrameSelf);
                     CurrentUser = UserName;
                     ReturnMessage.LoginMessage = "Logged In as: " + UserName;
-                    return;
                 }
                 else
                 {
                     ReturnMessage.LoginColor = "Red";
                     ReturnMessage.LoginMessage = "Incorrect Username or Password";
-                }                    
-                return;
+                }
             }
             catch (Exception)
             {
                 ReturnMessage.LoginColor = "Red";
                 ReturnMessage.LoginMessage = "Unable to connect, Server status: Offline";
-                return;
             }
         }
 
@@ -220,10 +215,11 @@ namespace ModernChattingClient.Pages.Home
         {
             try
             {
-                Server.Logout();
+                _server.Logout();
             }
             catch (Exception)
             {
+                // ignored
             }
             Users.Clear();
             CurrentUsers.Clear();
@@ -244,7 +240,7 @@ namespace ModernChattingClient.Pages.Home
             }
             try
             {
-                Server.SendMessageToAll(Message, UserName);
+                _server.SendMessageToAll(Message, UserName);
                 TakeMessage(Message, "You");
                 Message = "";
             }
@@ -276,10 +272,10 @@ namespace ModernChattingClient.Pages.Home
             return _this;
         }
 
-        private void LoadUserList(List<string> users)
+        private void LoadUserList(IEnumerable<string> userlist)
         {
             CurrentUsers = new LinkCollection();
-            foreach (var user in users)
+            foreach (var user in userlist)
             {
                 if (Users.Contains(user))
                 {
@@ -294,25 +290,10 @@ namespace ModernChattingClient.Pages.Home
         }
 
         #region errors
-        public string Error
-        {
-            get { return null; }
-        }
-        public string this[string columnName]
-        {
-            get
-            {
-                //if (columnName == "UserName")
-                //{
-                //    return (Server.Login(UserName, Password)) ? "Required value" : null;
-                //}
-                //if (columnName == "Password")
-                //{
-                //    return (Server.Login(UserName, Password)) ? "Required value" : null;
-                //}
-                return null;
-            }
-        }
+        public string Error => null;
+
+        public string this[string columnName] => null;
+
         #endregion
     }
 }

@@ -1,19 +1,21 @@
 ﻿using System;
 using System.ServiceModel;
+using ChattingServer.ServerSideServices;
+using ChattingServer.ServiceModel;
 
 namespace ChattingServer
 {
     class Program
     {
-        public static ChattingService _server;
-        static void Main(string[] args)
+        public static ChattingService Server;
+        static void Main()
         {
-            _server = new ChattingService();
-            ServiceHost host = new ServiceHost(_server);
+            Server = new ChattingService();
+            ServiceHost host = new ServiceHost(Server);
             {
                 host.Open();
                 Console.WriteLine("<Server is Open>");
-                for (; true;)
+                for (;;)
                 {
                     string input = Console.ReadLine().ToLower();
                     switch (input)
@@ -36,29 +38,24 @@ namespace ChattingServer
                             Console.WriteLine("This action will wipe every database entry, type 'I AGREE' if you wish to proceed");
                             string prompt = Console.ReadLine();
                             if (prompt == "I AGREE")
-                                _server.WipeUsers();
+                                Server.WipeUsers();
                             break;
                         case "ban":
                             Console.Write("User to ban: ");
                             string usertoban = Console.ReadLine().ToLower();
-                            if (_server._connectedClients.Keys.Contains(usertoban))
+                            if (Server.ConnectedClients.Keys.Contains(usertoban))
                             {
-                                _server.LogoutUser(usertoban);
-                            }                           
-                            if (_server.BanUser(usertoban))
-                            {                                
-                                Console.WriteLine("User banned");
-                            }                                
-                            else
-                                Console.WriteLine("Invalid username");
+                                Server.LogoutUser(usertoban);
+                            }
+                            Console.WriteLine(Server.BanUser(usertoban) ? "User banned" : "Invalid username");
                             break;
                         case "userinfo":
                             Console.Write("User: ");
                             string username = Console.ReadLine().ToLower();
-                            Client user = _server.GetUserByName(username);
+                            Client user = Server.GetUserByName(username);
                             if (user != null)
                             {
-                                Console.WriteLine("User id: {0}", user.UserID);
+                                Console.WriteLine("User id: {0}", user.UserId);
                                 Console.WriteLine("UserName: {0}", user.UserName);
                                 Console.WriteLine("Password: {0}", user.Password);
                                 Console.WriteLine("Logged In: {0}", user.LoggedIn);
@@ -67,20 +64,19 @@ namespace ChattingServer
                         case "rename":
                             Console.Write("User to rename: ");
                             string userToRename = Console.ReadLine().ToLower();
-                            if (_server.GetUserByName(userToRename) != null)
+                            if (Server.GetUserByName(userToRename) != null)
                             {
                                 Console.Write("Enter new name: ");
                                 string newname = Console.ReadLine();
-                                if (_server.Rename(userToRename, newname))
-                                    Console.WriteLine("User renamed");
-                                else
-                                    Console.WriteLine("Invalid new name");
+                                Console.WriteLine(Server.Rename(userToRename, newname)
+                                    ? "User renamed"
+                                    : "Invalid new name");
                             }
                             else
                                 Console.WriteLine("User not found");
                             break;
                         case "users":
-                            foreach (var item in _server.GetUserNames())
+                            foreach (var item in Server.GetUserNames())
                             {
                                 Console.WriteLine("-" + item);
                             }
@@ -89,7 +85,7 @@ namespace ChattingServer
                         case "open":
                             if (host.State.ToString() != "Opened")
                             {
-                                host = new ServiceHost(_server);
+                                host = new ServiceHost(Server);
                                 host.Open();
                                 Console.WriteLine("<Server is Open>");
                             }
@@ -110,13 +106,10 @@ namespace ChattingServer
                             break;
                         case "clear":
                             Console.Clear();
-                            if (host.State.ToString() != "Opened")
-                                Console.WriteLine("<Server is Closed>");
-                            else
-                                Console.WriteLine("<Server is Open>");
+                            Console.WriteLine(host.State.ToString() != "Opened"
+                                ? "<Server is Closed>"
+                                : "<Server is Open>");
 
-                            break;
-                        default:
                             break;
                     }
                 }

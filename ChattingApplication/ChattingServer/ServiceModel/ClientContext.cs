@@ -12,8 +12,8 @@ namespace ChattingServer.ServiceModel
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            this.Configuration.LazyLoadingEnabled = true;
-            this.Configuration.ProxyCreationEnabled = true;
+            Configuration.LazyLoadingEnabled = true;
+            Configuration.ProxyCreationEnabled = true;
         }
     }
 }

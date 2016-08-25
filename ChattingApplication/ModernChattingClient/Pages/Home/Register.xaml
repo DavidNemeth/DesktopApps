@@ -11,7 +11,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
-        <BooleanToVisibilityConverter x:Key="bvc" />
+        <BooleanToVisibilityConverter x:Key="Bvc" />
     </UserControl.Resources>
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Unloaded">
@@ -39,7 +39,7 @@
                                           Text="{Binding UserName, UpdateSourceTrigger=PropertyChanged, Mode=TwoWay}"
                                           HorizontalAlignment="Left" Margin="10,10,0,0" TextWrapping="Wrap"
                                           Watermark="Username" VerticalAlignment="Top" Width="150"/>
-                <PasswordBox x:Name="passwordBox1" HorizontalAlignment="Left" 
+                <PasswordBox x:Name="PasswordBox1" HorizontalAlignment="Left" 
                              BorderBrush="{Binding PasswordBorder}"
                              w:PasswordHelper.Password="{Binding Password, Mode=TwoWay}"
                              IsEnabled="True"

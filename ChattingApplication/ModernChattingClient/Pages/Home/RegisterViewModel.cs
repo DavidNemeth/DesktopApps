@@ -8,25 +8,25 @@ namespace ModernChattingClient.Pages.Home
 {
     public class RegisterViewModel : BindableBase
     {
-        private static IChattingService Server;
-        private static DuplexChannelFactory<IChattingService> _channelFactory;
+        private static IChattingService _server;
+
         public RegisterViewModel()
         {
-            _channelFactory = new DuplexChannelFactory<IChattingService>(new ClientService(), "ChattingServiceEndPoint");
-            Server = _channelFactory.CreateChannel();
-            Register = new Base.RelayCommand(OnRegister, () => !(string.IsNullOrEmpty(UserName) || string.IsNullOrEmpty(Password)));
-            ClearCommand = new Base.RelayCommand(OnClear);            
+            var channelFactory = new DuplexChannelFactory<IChattingService>(new ClientService(), "ChattingServiceEndPoint");
+            _server = channelFactory.CreateChannel();
+            Register = new RelayCommand(OnRegister, () => !(string.IsNullOrEmpty(UserName) || string.IsNullOrEmpty(Password)));
+            ClearCommand = new RelayCommand(OnClear);            
         }
 
-        private string username;
-        private string password;
+        private string _username;
+        private string _password;
 
         public string UserName
         {
-            get { return username; }
+            get { return _username; }
             set
             {
-                SetProperty(ref username, value);
+                SetProperty(ref _username, value);
                 UserNameBorder = "Gray";
                 OnPropertyChanged("UserName");
                 Register.RaiseCanExecuteChanged();
@@ -34,30 +34,30 @@ namespace ModernChattingClient.Pages.Home
         }
         public string Password
         {
-            get { return password; }
+            get { return _password; }
             set
             {
-                SetProperty(ref password, value);
+                SetProperty(ref _password, value);
                 PasswordBorder = "Gray";
                 OnPropertyChanged("Password");
                 Register.RaiseCanExecuteChanged();
             }
         }
 
-        private string usernameborder = "Gray";
-        private string passwordborder = "Gray";
-        private ReturnMessages returnmessage = new ReturnMessages();
-        private string regmessage;
+        private string _usernameborder = "Gray";
+        private string _passwordborder = "Gray";
+        private ReturnMessages _returnmessage = new ReturnMessages();
+        private string _regmessage;
 
         public string RegMessage
         {
             get
             {
-                return regmessage;
+                return _regmessage;
             }
             set
             {
-                SetProperty(ref regmessage, value);
+                SetProperty(ref _regmessage, value);
             }
         }
 
@@ -65,45 +65,45 @@ namespace ModernChattingClient.Pages.Home
         {
             get
             {
-                return usernameborder;
+                return _usernameborder;
             }
             set
             {
-                SetProperty(ref usernameborder, value);
+                SetProperty(ref _usernameborder, value);
             }
         }
         public string PasswordBorder
         {
             get
             {
-                return passwordborder;
+                return _passwordborder;
             }
             set
             {
-                SetProperty(ref passwordborder, value);
+                SetProperty(ref _passwordborder, value);
             }
         }
         public ReturnMessages ReturnMessage
         {
             get
             {
-                return returnmessage;
+                return _returnmessage;
             }
             set
             {
-                SetProperty(ref returnmessage, value);
+                SetProperty(ref _returnmessage, value);
             }
         }
 
-        public Base.RelayCommand Register { get; private set; }
+        public RelayCommand Register { get; }
         public void OnRegister()
         {
 
             try
             {
-                if (Server.Register(UserName, Password))
+                if (_server.Register(UserName, Password))
                 {
-                    ReturnMessage.RegisterMessage = "Successfuly Registered, Your username: " + UserName;
+                    ReturnMessage.RegisterMessage = "Successful Registered, Your Username: " + UserName;
                     ReturnMessage.RegisterColor = "Green";
 
                 }
@@ -119,14 +119,14 @@ namespace ModernChattingClient.Pages.Home
                 ReturnMessage.RegisterMessage = "Unable to Register, Server status: Offline";
             }
         }
-        public Base.RelayCommand ClearCommand { get; private set; }
+        public RelayCommand ClearCommand { get; private set; }
         private void OnClear()
         {
             Password = "";
             PasswordBorder = "Gray";
             UserNameBorder = "Gray";
             ReturnMessage.RegisterColor = "Black";
-            ReturnMessage.RegisterMessage = "Regsiter";
+            ReturnMessage.RegisterMessage = "Register";
         }
     }
 }

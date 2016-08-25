@@ -1,46 +1,43 @@
-﻿using ChattingInterfaces;
-using ChattingServer.ServiceModel;
-using System;
+﻿using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
+using ChattingInterfaces;
+using ChattingServer.ServiceModel;
 
-namespace ChattingServer
+namespace ChattingServer.ServerSideServices
 {
     [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Multiple, InstanceContextMode = InstanceContextMode.Single)]
     public class ChattingService : IChattingService
     {
-        public ConcurrentDictionary<string, Client> _connectedClients =
+        public ConcurrentDictionary<string, Client> ConnectedClients =
             new ConcurrentDictionary<string, Client>();
 
-        ClientContext db = new ClientContext();
+        private readonly ClientContext _db = new ClientContext();
 
         // true->logged in  // false->username already in use
         public bool Login(string userName, string password)
         {
             try
             {
-                Client user = db.Clients.FirstOrDefault(p => p.UserName == userName && p.Password == password);
-                if (user == null || _connectedClients.Values.Where(u => u.UserName == userName).FirstOrDefault() != null)
+                Client user = _db.Clients.FirstOrDefault(p => p.UserName == userName && p.Password == password);
+                if (user == null || ConnectedClients.Values.FirstOrDefault(u => u.UserName == userName) != null)
                 {
                     return false;
                 }
-                else
-                {
-                    var establishedUserConnection = OperationContext.Current.GetCallbackChannel<IClientService>();
+                var establishedUserConnection = OperationContext.Current.GetCallbackChannel<IClientService>();
 
-                    user.connection = establishedUserConnection;
-                    _connectedClients.TryAdd(userName, user);
-                    updateHelper(true, userName);
+                user.Connection = establishedUserConnection;
+                ConnectedClients.TryAdd(userName, user);
+                UpdateHelper(true, userName);
 
-                    user.LoggedIn = true;
+                user.LoggedIn = true;
 
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.WriteLine("Client login: {0} with id: {1} at {2}", user.UserName, user.UserID, DateTime.Now);
-                    Console.ResetColor();
-                    return true;
-                }
+                Console.ForegroundColor = ConsoleColor.Green;
+                Console.WriteLine("Client login: {0} with id: {1} at {2}", user.UserName, user.UserId, DateTime.Now);
+                Console.ResetColor();
+                return true;
             }
             catch (Exception)
             {
@@ -51,18 +48,16 @@ namespace ChattingServer
         public void Logout()
         {
             Client client = GetMyClient();
-            if (client != null)
-            {
-                Client removedClient;
-                _connectedClients.TryRemove(client.UserName, out removedClient);
+            if (client == null) return;
+            Client removedClient;
+            ConnectedClients.TryRemove(client.UserName, out removedClient);
 
-                updateHelper(false, removedClient.UserName);
-                client.LoggedIn = false;
+            UpdateHelper(false, removedClient.UserName);
+            client.LoggedIn = false;
 
-                Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.WriteLine("Client logoff: {0} at {1}", removedClient.UserName, DateTime.Now);
-                Console.ResetColor();
-            }
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine($"Client log-off: {removedClient.UserName} at {DateTime.Now}");
+            Console.ResetColor();
         }
 
         public void SendMessageToAll(string message, string userName)
@@ -71,11 +66,11 @@ namespace ChattingServer
             {
                 return;
             }
-            foreach (var client in _connectedClients)
+            foreach (var client in ConnectedClients)
             {
                 if (client.Key.ToLower() != userName.ToLower())
                 {
-                    client.Value.connection.GetMessage(message, userName);
+                    client.Value.Connection.GetMessage(message, userName);
                 }
             }
         }
@@ -97,35 +92,23 @@ namespace ChattingServer
         {
             var establishedUserConnection = OperationContext.Current.GetCallbackChannel<IClientService>();
 
-            foreach (var client in _connectedClients)
-            {
-                if (client.Value.connection == establishedUserConnection)
-                {
-                    return client.Value;
-                }
-            }
-            return null;
+            return (from client in ConnectedClients where client.Value.Connection == establishedUserConnection select client.Value).FirstOrDefault();
         }
 
-        private void updateHelper(bool value, string userName)
+        private void UpdateHelper(bool value, string userName)
         {
-            foreach (var client in _connectedClients)
+            foreach (var client in ConnectedClients)
             {
-                if (client.Value.UserName.ToLower() != userName.ToLower())
+                if (!string.Equals(client.Value.UserName, userName, StringComparison.CurrentCultureIgnoreCase))
                 {
-                    client.Value.connection.Update(value, userName);
+                    client.Value.Connection.Update(value, userName);
                 }
             }
         }
 
         public List<string> GetCurrentUsers()
         {
-            List<string> listOfUsers = new List<string>();
-            foreach (var client in _connectedClients)
-            {
-                listOfUsers.Add(client.Value.UserName);
-            }
-            return listOfUsers;
+            return ConnectedClients.Select(client => client.Value.UserName).ToList();
         }
 
         public bool Register(string userName, string password)
@@ -134,52 +117,44 @@ namespace ChattingServer
             {
                 return false;
             }
-            if (db.Clients.Any(u => u.UserName == userName))
+            if (_db.Clients.Any(u => u.UserName == userName))
             {
                 return false;
             }
-            else
+            Client newUser = new Client
             {
-                Client newUser = new Client();
-                newUser.UserName = userName;
-                newUser.Password = password;
-                db.Clients.Add(newUser);
-                Save();
-                return true;
-            }
+                UserName = userName,
+                Password = password
+            };
+            _db.Clients.Add(newUser);
+            Save();
+            return true;
         }
 
         public bool UserExists(string username)
         {
-            if (string.IsNullOrEmpty(username))
-            {
-                return false;
-            }
-            if (db.Clients.Any(u => u.UserName == username))
-                return true;
-            else
-                return false;
+            return !string.IsNullOrEmpty(username) && _db.Clients.Any(u => u.UserName == username);
         }
 
         private void Save()
         {
-            db.SaveChanges();
+            _db.SaveChanges();
         }
         // Non interface member area//
 
 
         public List<string> GetUserNames()
         {
-            return new List<string>(db.Clients.Select(u => u.UserName).ToList());
+            return new List<string>(_db.Clients.Select(u => u.UserName).ToList());
         }
 
         public bool BanUser(string username)
         {
             try
             {
-                var userToBan = db.Clients.Where(u => u.UserName == username).FirstOrDefault();
-                db.Clients.Remove(userToBan);
-                db.SaveChanges();
+                var userToBan = _db.Clients.FirstOrDefault(u => u.UserName == username);
+                _db.Clients.Remove(userToBan);
+                _db.SaveChanges();
                 return true;
             }
             catch (Exception)
@@ -192,9 +167,9 @@ namespace ChattingServer
         {
             try
             {
-                Client user = db.Clients.Where(u => u.UserName == currentname).FirstOrDefault();
-                user.UserName = newname;
-                db.SaveChanges();
+                var user = _db.Clients.FirstOrDefault(u => u.UserName == currentname);
+                if (user != null) user.UserName = newname;
+                _db.SaveChanges();
                 return true;
             }
             catch (Exception)
@@ -207,7 +182,7 @@ namespace ChattingServer
         {
             try
             {
-                return db.Clients.Where(U => U.UserName == username).FirstOrDefault();
+                return _db.Clients.FirstOrDefault(u => u.UserName == username);
             }
             catch (Exception)
             {
@@ -219,8 +194,8 @@ namespace ChattingServer
         {
             try
             {
-                db.Database.ExecuteSqlCommand("TRUNCATE TABLE [Clients]");
-                db.SaveChanges();
+                _db.Database.ExecuteSqlCommand("TRUNCATE TABLE [Clients]");
+                _db.SaveChanges();
                 Console.WriteLine("Data entries deleted");
             }
             catch (Exception)
@@ -231,19 +206,17 @@ namespace ChattingServer
 
         public void LogoutUser(string username)
         {
-            Client client = db.Clients.Where(u => u.UserName == username).FirstOrDefault();
-            if (client != null)
-            {
-                Client removedClient;
-                _connectedClients.TryRemove(client.UserName, out removedClient);
+            Client client = _db.Clients.FirstOrDefault(u => u.UserName == username);
+            if (client == null) return;
+            Client removedClient;
+            ConnectedClients.TryRemove(client.UserName, out removedClient);
 
-                updateHelper(false, removedClient.UserName);
-                client.LoggedIn = false;
+            UpdateHelper(false, removedClient.UserName);
+            client.LoggedIn = false;
                 
-                Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.WriteLine("Client logoff: {0} at {1}", removedClient.UserName, DateTime.Now);
-                Console.ResetColor();
-            }
+            Console.ForegroundColor = ConsoleColor.Cyan;
+            Console.WriteLine("Client log-off: {0} at {1}", removedClient.UserName, DateTime.Now);
+            Console.ResetColor();
         }        
     }
 }

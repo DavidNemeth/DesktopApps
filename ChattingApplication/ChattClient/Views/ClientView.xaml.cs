@@ -10,19 +10,19 @@ namespace ChattClient.Views
     {
         //public static IChattingService Server;
         //private static DuplexChannelFactory<IChattingService> _channelFactory;
-        public static ClientView _this;
+        public static ClientView This;
         public ClientView()
         {
-            this.DataContext = new ClientViewModel();
+            DataContext = new ClientViewModel();
             InitializeComponent();
-            _this = this;
+            This = this;
             //_channelFactory = new DuplexChannelFactory<IChattingService>(new ClientService(), "ChattingServiceEndPoint");
             //Server = _channelFactory.CreateChannel();
         }
 
         public static ClientView GetInstance()
         {
-            return _this;
+            return This;
         }       
         //public void TakeMessage(string message, string userName)
         //{

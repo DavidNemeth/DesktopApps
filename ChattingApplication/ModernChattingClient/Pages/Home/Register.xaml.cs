@@ -10,7 +10,7 @@ namespace ModernChattingClient.Pages.Home
         public Register()
         {
             InitializeComponent();
-            this.DataContext = new RegisterViewModel();
+            DataContext = new RegisterViewModel();
         }
     }
 }

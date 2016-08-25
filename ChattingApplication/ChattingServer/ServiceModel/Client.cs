@@ -1,16 +1,16 @@
-﻿using ChattingInterfaces;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using ChattingInterfaces;
 
-namespace ChattingServer
+namespace ChattingServer.ServiceModel
 {
     public class Client
     {
-        public IClientService connection;
+        public IClientService Connection;
         
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Key]
-        public System.Guid UserID { get; set; }
+        public System.Guid UserId { get; set; }
         [Required]
         public string UserName { get; set; }
         [Required]

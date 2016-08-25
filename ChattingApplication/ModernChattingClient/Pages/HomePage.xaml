@@ -7,16 +7,16 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
-        <BooleanToVisibilityConverter x:Key="bvc" />
+        <BooleanToVisibilityConverter x:Key="Bvc" />
     </UserControl.Resources>
     <Grid Style="{StaticResource ContentRoot}">
-        <mui:ModernTab Layout="List" SelectedSource="/Pages/Home/Login.xaml" Visibility="{Binding LoginVis, Converter={StaticResource bvc},FallbackValue=Visible}">
+        <mui:ModernTab Layout="List" SelectedSource="/Pages/Home/Login.xaml" Visibility="{Binding LoginVis, Converter={StaticResource Bvc},FallbackValue=Visible}">
             <mui:ModernTab.Links>
                 <mui:Link DisplayName="Login" Source="/Pages/Home/Login.xaml" />
                 <mui:Link DisplayName="Register" Source="/Pages/Home/Register.xaml" />                
             </mui:ModernTab.Links>
         </mui:ModernTab>
-        <mui:ModernTab Layout="List" SelectedSource="/Pages/Home/Profile.xaml" Visibility="{Binding LogoutVis, Converter={StaticResource bvc},FallbackValue=Visible}">
+        <mui:ModernTab Layout="List" SelectedSource="/Pages/Home/Profile.xaml" Visibility="{Binding LogoutVis, Converter={StaticResource Bvc},FallbackValue=Visible}">
             <mui:ModernTab.Links>
                 <mui:Link DisplayName="Profile" Source="/Pages/Home/Profile.xaml" />                
             </mui:ModernTab.Links>

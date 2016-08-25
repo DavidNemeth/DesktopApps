@@ -2,6 +2,7 @@
 
 namespace ChattingInterfaces
 {
+    [ServiceContract]
     public interface IClientService
     {
         [OperationContract]

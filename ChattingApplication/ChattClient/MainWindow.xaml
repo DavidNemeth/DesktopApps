@@ -6,11 +6,11 @@
         xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
         xmlns:local="clr-namespace:ChattClient"
         mc:Ignorable="d"
-        xmlns:Views="clr-namespace:ChattClient.Views"
+        xmlns:views="clr-namespace:ChattClient.Views"
         ResizeMode="NoResize"
         Title="MainWindow" Height="350" Width="544">
     <Window.Resources>
-        <BooleanToVisibilityConverter x:Key="bvc" />
+        <BooleanToVisibilityConverter x:Key="Bvc" />
     </Window.Resources>
     <i:Interaction.Triggers>
         <i:EventTrigger EventName="Closing">
@@ -18,6 +18,6 @@
         </i:EventTrigger>
     </i:Interaction.Triggers>
     <Grid Margin="0,0,0,0">
-        <Views:ClientView Margin="0,0,0,0"/>
+        <views:ClientView Margin="0,0,0,0"/>
     </Grid>
 </Window>

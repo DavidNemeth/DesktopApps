@@ -9,7 +9,7 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
-        <BooleanToVisibilityConverter x:Key="bvc" />
+        <BooleanToVisibilityConverter x:Key="Bvc" />
     </UserControl.Resources>
     <Grid Style="{StaticResource ContentRoot}">
         <ScrollViewer>

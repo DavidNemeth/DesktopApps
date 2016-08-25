@@ -3,19 +3,19 @@ using System.ServiceModel;
 using ChattingInterfaces;
 using ChattClient.Helpers;
 using System.Collections.ObjectModel;
+using ChattClient.ClientSideServices;
 
 namespace ChattClient.ViewModels
 {
     public class ClientViewModel : BindableBase
     {
-        private static IChattingService Server;
-        private static DuplexChannelFactory<IChattingService> _channelFactory;
-        public static ClientViewModel _this;
+        private static IChattingService _server;
+        public static ClientViewModel This;
         public ClientViewModel()
         {
-            _channelFactory = new DuplexChannelFactory<IChattingService>(new ClientService(), "ChattingServiceEndPoint");
-            Server = _channelFactory.CreateChannel();
-            _this = this;
+            var channelFactory = new DuplexChannelFactory<IChattingService>(new ClientService(), "ChattingServiceEndPoint");
+            _server = channelFactory.CreateChannel();
+            This = this;
             CreateCommands();
         }
         private void CreateCommands()
@@ -29,68 +29,68 @@ namespace ChattClient.ViewModels
         public void OnRegister()
         {
             
-            Server.Register(UserName, Pw);
+            _server.Register(UserName, Pw);
         }
         #region props
-        private string userName;
+        private string _userName;
         public string UserName
         {
-            get { return userName; }
-            set { SetProperty(ref userName, value); }
+            get { return _userName; }
+            set { SetProperty(ref _userName, value); }
         }
 
-        private string message;
+        private string _message;
         public string Message
         {
-            get { return message; }
+            get { return _message; }
             set
             {
-                SetProperty(ref message, value);
+                SetProperty(ref _message, value);
                 OnPropertyChanged("SendEnabled");
             }
         }
 
-        private string chat;
+        private string _chat;
         public string Chat
         {
-            get { return chat; }
-            set { SetProperty(ref chat, value); }
+            get { return _chat; }
+            set { SetProperty(ref _chat, value); }
         }
 
-        private ObservableCollection<string> users = new ObservableCollection<string>();
+        private ObservableCollection<string> _users = new ObservableCollection<string>();
         public ObservableCollection<string> Users
         {
-            get { return users; }
-            set { SetProperty(ref users, value); }
+            get { return _users; }
+            set { SetProperty(ref _users, value); }
         }
         public string Pw { get; set; }
         #endregion
         #region converterProps
-        private string bordercolor = "Gray";
+        private string _bordercolor = "Gray";
         public string BorderColor
         {
-            get { return bordercolor; }
+            get { return _bordercolor; }
             set
             {
-                SetProperty(ref bordercolor, value);
+                SetProperty(ref _bordercolor, value);
             }
         }
-        private bool loginvis = true;
+        private bool _loginvis = true;
         public bool LoginVis
         {
-            get { return loginvis; }
+            get { return _loginvis; }
             set
             {
-                SetProperty(ref loginvis, value);
+                SetProperty(ref _loginvis, value);
             }
         }
-        private bool logoutvis;
+        private bool _logoutvis;
         public bool LogoutVis
         {
-            get { return logoutvis; }
+            get { return _logoutvis; }
             set
             {
-                SetProperty(ref logoutvis, value);
+                SetProperty(ref _logoutvis, value);
                 OnPropertyChanged("SendEnabled");
             }
         }
@@ -99,9 +99,9 @@ namespace ChattClient.ViewModels
         public RelayCommand Login { get; private set; }
         public void OnLogin()
         {            
-            if (Server.Login(UserName, Pw))
+            if (_server.Login(UserName, Pw))
             {
-                LoadUserList(Server.GetCurrentUsers());
+                LoadUserList(_server.GetCurrentUsers());
                 LogoutVis = true;
                 LoginVis = false;
                 BorderColor = "Green";
@@ -111,7 +111,7 @@ namespace ChattClient.ViewModels
         public RelayCommand Logout { get; private set; }
         private void OnLogout()
         {
-            Server.Logout();
+            _server.Logout();
             Users.Clear();
             UserName = "";
             LoginVis = true;
@@ -126,7 +126,7 @@ namespace ChattClient.ViewModels
             {
                 return;
             }
-            Server.SendMessageToAll(Message, UserName);
+            _server.SendMessageToAll(Message, UserName);
             TakeMessage(Message, "You");
             Message = "";
         }
@@ -138,7 +138,7 @@ namespace ChattClient.ViewModels
 
         public static ClientViewModel GetInstance()
         {
-            return _this;
+            return This;
         }
 
         private void LoadUserList(List<string> users)

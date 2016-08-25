@@ -5,14 +5,14 @@ namespace ChattingServer.Migrations
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<ChattingServer.ServiceModel.ClientContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<ServiceModel.ClientContext>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
         }
 
-        protected override void Seed(ChattingServer.ServiceModel.ClientContext context)
+        protected override void Seed(ServiceModel.ClientContext context)
         {
             //  This method will be called after migrating to the latest version.
 

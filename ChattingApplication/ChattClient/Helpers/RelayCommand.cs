@@ -5,18 +5,18 @@ namespace ChattClient.Helpers
 {
     public class RelayCommand : ICommand
     {
-        Action _TargetExecuteMethod;
-        Func<bool> _TargetCanExecuteMethod;        
+        Action _targetExecuteMethod;
+        Func<bool> _targetCanExecuteMethod;        
 
         public RelayCommand(Action executeMethod)
         {
-            _TargetExecuteMethod = executeMethod;
+            _targetExecuteMethod = executeMethod;
         }
 
         public RelayCommand(Action executeMethod, Func<bool> canExecuteMethod)
         {
-            _TargetExecuteMethod = executeMethod;
-            _TargetCanExecuteMethod = canExecuteMethod;
+            _targetExecuteMethod = executeMethod;
+            _targetCanExecuteMethod = canExecuteMethod;
         }        
 
         public void RaiseCanExecuteChanged()
@@ -27,11 +27,11 @@ namespace ChattClient.Helpers
 
         bool ICommand.CanExecute(object parameter)
         {
-            if (_TargetCanExecuteMethod != null)
+            if (_targetCanExecuteMethod != null)
             {
-                return _TargetCanExecuteMethod();
+                return _targetCanExecuteMethod();
             }
-            if (_TargetExecuteMethod != null)
+            if (_targetExecuteMethod != null)
             {
                 return true;
             }
@@ -42,9 +42,9 @@ namespace ChattClient.Helpers
 
         void ICommand.Execute(object parameter)
         {
-            if (_TargetExecuteMethod != null)
+            if (_targetExecuteMethod != null)
             {
-                _TargetExecuteMethod();
+                _targetExecuteMethod();
             }
         }
         #endregion
@@ -52,18 +52,18 @@ namespace ChattClient.Helpers
 
     public class RelayCommand<T> : ICommand
     {
-        Action<T> _TargetExecuteMethod;
-        Func<T, bool> _TargetCanExecuteMethod;
+        Action<T> _targetExecuteMethod;
+        Func<T, bool> _targetCanExecuteMethod;
 
         public RelayCommand(Action<T> executeMethod)
         {
-            _TargetExecuteMethod = executeMethod;
+            _targetExecuteMethod = executeMethod;
         }
 
         public RelayCommand(Action<T> executeMethod, Func<T, bool> canExecuteMethod)
         {
-            _TargetExecuteMethod = executeMethod;
-            _TargetCanExecuteMethod = canExecuteMethod;
+            _targetExecuteMethod = executeMethod;
+            _targetCanExecuteMethod = canExecuteMethod;
         }
 
         public void RaiseCanExecuteChanged()
@@ -74,12 +74,12 @@ namespace ChattClient.Helpers
 
         bool ICommand.CanExecute(object parameter)
         {
-            if (_TargetCanExecuteMethod != null)
+            if (_targetCanExecuteMethod != null)
             {
                 T tparm = (T)parameter;
-                return _TargetCanExecuteMethod(tparm);
+                return _targetCanExecuteMethod(tparm);
             }
-            if (_TargetExecuteMethod != null)
+            if (_targetExecuteMethod != null)
             {
                 return true;
             }
@@ -90,9 +90,9 @@ namespace ChattClient.Helpers
 
         void ICommand.Execute(object parameter)
         {
-            if (_TargetExecuteMethod != null)
+            if (_targetExecuteMethod != null)
             {
-                _TargetExecuteMethod((T)parameter);
+                _targetExecuteMethod((T)parameter);
             }
         }
         #endregion

@@ -6,56 +6,56 @@ namespace ModernChattingClient.Pages.Home
     {
 
         #region REGISTER
-        private string registermessage = "Register";
+        private string _registermessage = "Register";
         public string RegisterMessage
         {
             get
             {
-                return registermessage;
+                return _registermessage;
             }
             set
             {
-                SetProperty(ref registermessage, value);
+                SetProperty(ref _registermessage, value);
             }
         }
 
-        private string registercolor = "Black";
+        private string _registercolor = "Black";
         public string RegisterColor
         {
             get
             {
-                return registercolor;
+                return _registercolor;
             }
             set
             {
-                SetProperty(ref registercolor, value);
+                SetProperty(ref _registercolor, value);
             }
         }
         #endregion
         #region LOGIN
-        private string loginmessage = "Login";
+        private string _loginmessage = "Login";
         public string LoginMessage
         {
             get
             {
-                return loginmessage;
+                return _loginmessage;
             }
             set
             {
-                SetProperty(ref loginmessage, value);
+                SetProperty(ref _loginmessage, value);
             }
         }
 
-        private string logincolor = "Black";
+        private string _logincolor = "Black";
         public string LoginColor
         {
             get
             {
-                return logincolor;
+                return _logincolor;
             }
             set
             {
-                SetProperty(ref logincolor, value);
+                SetProperty(ref _logincolor, value);
             }
         }
         #endregion

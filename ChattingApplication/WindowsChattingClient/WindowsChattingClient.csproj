@@ -4,7 +4,7 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
-    <ProjectGuid>{FACB61E5-FEEC-4A9F-A92A-1D022D3FC348}</ProjectGuid>
+    <ProjectGuid>{831394B0-E9A7-4D7E-9A95-2B817A796EAF}</ProjectGuid>
     <OutputType>AppContainerExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>WindowsChattingClient</RootNamespace>

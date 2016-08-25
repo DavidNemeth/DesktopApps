@@ -8,12 +8,12 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
-        <BooleanToVisibilityConverter x:Key="bvc" />
+        <BooleanToVisibilityConverter x:Key="Bvc" />
     </UserControl.Resources>
     
     <Grid Style="{StaticResource ContentRoot}">
         <!-- TODO: set @SelectedSource -->
-        <mui:ModernTab Layout="List" Links="{Binding Path=CurrentUsers}" SelectedSource="/Pages/Chat/MainRoom.xaml">
-        </mui:ModernTab>        
+        <mui:ModernTab Layout="List" Links="{Binding Path=CurrentUsers}" SelectedSource="/Pages/Chat/MainRoom.xaml" />
     </Grid>
 </UserControl>
+
