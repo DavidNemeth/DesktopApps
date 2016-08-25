@@ -15,7 +15,7 @@ namespace ModernChattingClient.Pages.Home
             _channelFactory = new DuplexChannelFactory<IChattingService>(new ClientService(), "ChattingServiceEndPoint");
             Server = _channelFactory.CreateChannel();
             Register = new Base.RelayCommand(OnRegister, () => !(string.IsNullOrEmpty(UserName) || string.IsNullOrEmpty(Password)));
-            ClearCommand = new Base.RelayCommand(OnClear);
+            ClearCommand = new Base.RelayCommand(OnClear);            
         }
 
         private string username;

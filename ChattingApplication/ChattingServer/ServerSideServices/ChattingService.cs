@@ -244,6 +244,6 @@ namespace ChattingServer
                 Console.WriteLine("Client logoff: {0} at {1}", removedClient.UserName, DateTime.Now);
                 Console.ResetColor();
             }
-        }
+        }        
     }
 }
