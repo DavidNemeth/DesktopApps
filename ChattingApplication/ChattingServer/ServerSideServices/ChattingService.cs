@@ -68,7 +68,7 @@ namespace ChattingServer.ServerSideServices
             }
             foreach (var client in ConnectedClients)
             {
-                if (client.Key.ToLower() != userName.ToLower())
+                if (!String.Equals(client.Key, userName, StringComparison.CurrentCultureIgnoreCase))
                 {
                     client.Value.Connection.GetMessage(message, userName);
                 }
@@ -88,7 +88,7 @@ namespace ChattingServer.ServerSideServices
             }            
         }
 
-        public Client GetMyClient()
+        private Client GetMyClient()
         {
             var establishedUserConnection = OperationContext.Current.GetCallbackChannel<IClientService>();
 

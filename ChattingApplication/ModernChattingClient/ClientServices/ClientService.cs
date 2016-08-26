@@ -23,9 +23,9 @@ namespace ModernChattingClient.ClientServices
             else
             {
                 ClientViewModel.GetInstance().Users.Remove(userName);
-                var link = ClientViewModel.GetInstance().CurrentUsers.Where(n => n.DisplayName == userName).FirstOrDefault();
+                var link = ClientViewModel.GetInstance().CurrentUsers.FirstOrDefault(u => u.DisplayName == userName);
                 ClientViewModel.GetInstance().CurrentUsers.Remove(link);
             }
-        }        
+        }
     }
 }

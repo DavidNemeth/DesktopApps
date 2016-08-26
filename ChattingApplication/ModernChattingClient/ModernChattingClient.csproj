@@ -179,6 +179,10 @@
       <Project>{204738D8-7F5C-48A0-92D8-7FF32337B5A4}</Project>
       <Name>ChattingInterfaces</Name>
     </ProjectReference>
+    <ProjectReference Include="..\ChattingServer\ChattingServer.csproj">
+      <Project>{EF7C09B9-3330-4760-992A-7069843650A5}</Project>
+      <Name>ChattingServer</Name>
+    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Icons\" />

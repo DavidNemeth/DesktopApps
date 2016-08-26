@@ -9,5 +9,6 @@ namespace ChattingInterfaces
         void GetMessage(string message, string userName);       
         [OperationContract]
         void Update(bool value, string userName);
+
     }
 }

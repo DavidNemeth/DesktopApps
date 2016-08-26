@@ -19,6 +19,6 @@ namespace ChattingInterfaces
         List<string> GetCurrentUsers();
         [OperationContract]
         bool UserExists(string username);
-        string GetUserName();         
+        string GetUserName();
     }
 }
