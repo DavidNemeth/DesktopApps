@@ -12,6 +12,11 @@ namespace DchatServer
             using (ServiceHost host = new ServiceHost(typeof(ChatService)))
             {
                 host.Open();
+                System.Console.WriteLine("<Server is Open>");
+            }
+            for (;;)
+            {
+
             }
         }
     }
