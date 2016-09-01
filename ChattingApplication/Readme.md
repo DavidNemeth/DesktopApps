@@ -1,7 +1,7 @@
 Dekstop Chat application, not yet finished.
 
 -wfc    
+-wpf
 -entity framework   
--template 10 (Universal Windows Platform template)    
 -mvvm pattern   
   
