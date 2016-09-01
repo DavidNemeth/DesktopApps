@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using DchatEntities;
 
-namespace DchatServer.Model
+namespace DchatServices.Model
 {
     public class AutoMapperConfiguration
     {

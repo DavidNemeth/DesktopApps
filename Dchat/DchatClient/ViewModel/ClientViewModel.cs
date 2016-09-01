@@ -1,23 +1,26 @@
-﻿using System;
+﻿using DchatClient.ClientServices;
+using DchatServices.Services;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using System.ServiceModel;
 
 namespace DchatClient.ViewModel
 {
     public class ClientViewModel : MainViewModel
     {
         private static ClientViewModel _this;
+        private static IChatService _server;
 
         public ClientViewModel()
         {
+            var channelFactory = new DuplexChannelFactory<IChatService>(new ClientService(), "DchatEndpoint");
+            _server = channelFactory.CreateChannel();            
             _this = this;
         }
-
+        
         #region props  
         public string Password { get; private set; }
+               
 
         private string _username;
         public string Username
@@ -28,7 +31,7 @@ namespace DchatClient.ViewModel
 
         private string _message;
         public string Message
-        {
+        {            
             get { return _message; }
             set { Set(() => Message, ref _message, value); }
 
@@ -58,7 +61,7 @@ namespace DchatClient.ViewModel
 
         public static ClientViewModel GetInstance()
         {
-            return _this;
+            return _this;            
         }
 
         private void LoadUserList(List<string> currentusers)
@@ -70,9 +73,9 @@ namespace DchatClient.ViewModel
                     return;
                 }
                 else
-                {
+                {                                          
                     UserList.Add(user);
-                }
+                }                
             }
         }
     }

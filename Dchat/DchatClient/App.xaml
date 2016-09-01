@@ -5,7 +5,6 @@
         <ResourceDictionary Source="/FirstFloor.ModernUI;component/Assets/ModernUI.xaml">
         </ResourceDictionary>
         <ResourceDictionary Source="/FirstFloor.ModernUI;component/Assets/ModernUI.Light.xaml">
-          <vm:ViewModelLocator x:Key="Locator" d:IsDataSource="True" xmlns:vm="clr-namespace:DchatClient.ViewModel" />
         </ResourceDictionary>
       </ResourceDictionary.MergedDictionaries>
     </ResourceDictionary>

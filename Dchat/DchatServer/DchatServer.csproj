@@ -115,12 +115,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Model\AutoMapperConfiguration.cs" />
-    <Compile Include="Model\DmChatRoom.cs" />
-    <Compile Include="Model\DmUser.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\ChatService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -131,9 +127,9 @@
       <Project>{316FED08-2A7B-4D08-81F6-717A8B41FB06}</Project>
       <Name>DchatEntities</Name>
     </ProjectReference>
-    <ProjectReference Include="..\DchatInterface\DchatInterface.csproj">
-      <Project>{523681d4-cd8b-465a-8a52-710cdd63ecfc}</Project>
-      <Name>DchatInterface</Name>
+    <ProjectReference Include="..\DchatServices\DchatServices.csproj">
+      <Project>{0DA5155D-00E1-4D37-B978-751EAE02DA36}</Project>
+      <Name>DchatServices</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

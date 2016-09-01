@@ -1,22 +1,19 @@
 ﻿using AutoMapper;
-using DchatClient.DchatInterface;
 using DchatEntities;
-using DchatServer.DchatInterface;
-using DchatServer.Model;
+using DchatServices.Model;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
 
-namespace DchatServer.Services
+namespace DchatServices.Services
 {
     [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Multiple, InstanceContextMode = InstanceContextMode.Single)]
     public class ChatService : IChatService
     {
         public List<DmUser> ConnectedUsers = new List<DmUser>();
 
-        private readonly DchatContext _db = new DchatContext();
-
+        private readonly DchatContext _db = new DchatContext();        
 
         /**
          * 0: Log in Completed
@@ -230,6 +227,11 @@ namespace DchatServer.Services
         private void Save()
         {
             _db.SaveChanges();
+        }
+
+        public List<DmUser> GetUsers()
+        {
+            return new List<DmUser>();
         }
 
         #endregion

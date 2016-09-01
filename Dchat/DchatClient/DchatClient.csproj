@@ -85,6 +85,7 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ClientServices\ClientService.cs" />
     <Compile Include="ViewModel\ClientViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
@@ -92,7 +93,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Compile Include="ClientServices\ClientService.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -131,11 +131,13 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="packages.config" />
+    <None Include="Properties\DataSources\DchatServices.Model.DmUser.datasource" />
+    <None Include="Properties\DataSources\DchatServices.Services.DmUser.datasource" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DchatInterface\DchatInterface.csproj">
-      <Project>{523681d4-cd8b-465a-8a52-710cdd63ecfc}</Project>
-      <Name>DchatInterface</Name>
+    <ProjectReference Include="..\DchatServices\DchatServices.csproj">
+      <Project>{0DA5155D-00E1-4D37-B978-751EAE02DA36}</Project>
+      <Name>DchatServices</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -1,5 +1,5 @@
-﻿using DchatClient.DchatInterface;
-using DchatClient.ViewModel;
+﻿using DchatClient.ViewModel;
+using DchatServices.Services;
 using System.ServiceModel;
 
 namespace DchatClient.ClientServices

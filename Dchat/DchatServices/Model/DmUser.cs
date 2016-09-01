@@ -1,9 +1,9 @@
-﻿using DchatClient.DchatInterface;
+﻿using DchatServices.Services;
 using System;
 using System.Collections.Generic;
 using System.Runtime.Serialization;
 
-namespace DchatServer.Model
+namespace DchatServices.Model
 {
     [DataContract]
     public class DmUser
