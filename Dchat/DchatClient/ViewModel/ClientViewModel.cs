@@ -1,5 +1,4 @@
-﻿using DchatClient.ClientServices;
-using DchatServices.Services;
+﻿using DchatClient.DchatServiceReference;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ServiceModel;
@@ -13,14 +12,14 @@ namespace DchatClient.ViewModel
 
         public ClientViewModel()
         {
-            var channelFactory = new DuplexChannelFactory<IChatService>(new ClientService(), "DchatEndpoint");
+            ChannelFactory<IChatService> channelFactory = new ChannelFactory<IChatService>("DchatEndpoint");
+            _server = channelFactory.CreateChannel();
             _server = channelFactory.CreateChannel();            
             _this = this;
         }
         
         #region props  
-        public string Password { get; private set; }
-               
+        public string Password { get; private set; }        
 
         private string _username;
         public string Username

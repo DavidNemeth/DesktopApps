@@ -1,4 +1,5 @@
-﻿using FirstFloor.ModernUI.Windows.Controls;
+﻿using DchatClient.ViewModel;
+using FirstFloor.ModernUI.Windows.Controls;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -23,6 +24,7 @@ namespace DchatClient
     {
         public MainWindow()
         {
+            DataContext = new ClientViewModel();
             InitializeComponent();
         }
     }

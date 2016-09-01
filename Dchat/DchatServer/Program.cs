@@ -1,5 +1,6 @@
 ﻿using DchatServices.Model;
 using DchatServices.Services;
+using System;
 using System.ServiceModel;
 
 namespace DchatServer
@@ -9,15 +10,13 @@ namespace DchatServer
         static void Main(string[] args)
         {
             AutoMapperConfiguration.Configure();
+
             using (ServiceHost host = new ServiceHost(typeof(ChatService)))
             {
                 //host.Open();
-                System.Console.WriteLine("<Server is Open>");                
+                Console.WriteLine("<Server is Open>");
             }
-            for (;;)
-            {
-                
-            }
+            Console.ReadLine();
         }
     }
 }

@@ -86,6 +86,11 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="ClientServices\ClientService.cs" />
+    <Compile Include="Service References\DchatServiceReference\Reference.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </Compile>
     <Compile Include="ViewModel\ClientViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
@@ -133,12 +138,43 @@
     <None Include="packages.config" />
     <None Include="Properties\DataSources\DchatServices.Model.DmUser.datasource" />
     <None Include="Properties\DataSources\DchatServices.Services.DmUser.datasource" />
+    <None Include="Service References\DchatServiceReference\DchatClient.DchatServiceReference.DmUser.datasource">
+      <DependentUpon>Reference.svcmap</DependentUpon>
+    </None>
+    <None Include="Service References\DchatServiceReference\DchatServices.Model.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DchatServiceReference\service.wsdl" />
+    <None Include="Service References\DchatServiceReference\service.xsd">
+      <SubType>Designer</SubType>
+    </None>
+    <None Include="Service References\DchatServiceReference\service1.xsd">
+      <SubType>Designer</SubType>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DchatServices\DchatServices.csproj">
       <Project>{0DA5155D-00E1-4D37-B978-751EAE02DA36}</Project>
       <Name>DchatServices</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Service References\" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadataStorage Include="Service References\DchatServiceReference\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\DchatServiceReference\configuration91.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\DchatServiceReference\configuration.svcinfo" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Service References\DchatServiceReference\Reference.svcmap">
+      <Generator>WCF Proxy Generator</Generator>
+      <LastGenOutput>Reference.cs</LastGenOutput>
+    </None>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

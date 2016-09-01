@@ -1,0 +1,39 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<xs:schema xmlns:ser="http://schemas.microsoft.com/2003/10/Serialization/" xmlns:tns="http://schemas.datacontract.org/2004/07/DchatServices.Model" elementFormDefault="qualified" targetNamespace="http://schemas.datacontract.org/2004/07/DchatServices.Model" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+  <xs:import namespace="http://schemas.microsoft.com/2003/10/Serialization/" />
+  <xs:complexType name="ArrayOfDmUser">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="DmUser" nillable="true" type="tns:DmUser" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfDmUser" nillable="true" type="tns:ArrayOfDmUser" />
+  <xs:complexType name="DmUser">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="Connection" nillable="true" type="xs:anyType" />
+      <xs:element minOccurs="0" name="FriendList" nillable="true" type="tns:ArrayOfDmUser" />
+      <xs:element minOccurs="0" name="IgnoreList" nillable="true" type="tns:ArrayOfDmUser" />
+      <xs:element minOccurs="0" name="Image" nillable="true" type="xs:base64Binary" />
+      <xs:element minOccurs="0" name="LoggedIn" type="xs:boolean" />
+      <xs:element minOccurs="0" name="Message" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Password" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Rooms" nillable="true" type="tns:ArrayOfDmChatRoom" />
+      <xs:element minOccurs="0" name="UserId" type="ser:guid" />
+      <xs:element minOccurs="0" name="Username" nillable="true" type="xs:string" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="DmUser" nillable="true" type="tns:DmUser" />
+  <xs:complexType name="ArrayOfDmChatRoom">
+    <xs:sequence>
+      <xs:element minOccurs="0" maxOccurs="unbounded" name="DmChatRoom" nillable="true" type="tns:DmChatRoom" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="ArrayOfDmChatRoom" nillable="true" type="tns:ArrayOfDmChatRoom" />
+  <xs:complexType name="DmChatRoom">
+    <xs:sequence>
+      <xs:element minOccurs="0" name="ChatRoomId" type="ser:guid" />
+      <xs:element minOccurs="0" name="RoomName" nillable="true" type="xs:string" />
+      <xs:element minOccurs="0" name="Users" nillable="true" type="tns:ArrayOfDmUser" />
+    </xs:sequence>
+  </xs:complexType>
+  <xs:element name="DmChatRoom" nillable="true" type="tns:DmChatRoom" />
+</xs:schema>
