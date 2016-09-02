@@ -13,14 +13,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace DchatClient.Pages
+namespace DchatClient.Pages.Home
 {
     /// <summary>
-    /// Interaction logic for Home.xaml
+    /// Interaction logic for Register.xaml
     /// </summary>
-    public partial class Home : UserControl
+    public partial class Register : UserControl
     {
-        public Home()
+        public Register()
         {
             InitializeComponent();
         }

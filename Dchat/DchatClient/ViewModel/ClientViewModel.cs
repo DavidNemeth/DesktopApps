@@ -1,4 +1,6 @@
 ﻿using DchatClient.DchatServiceReference;
+using GalaSoft.MvvmLight.CommandWpf;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ServiceModel;
@@ -12,14 +14,35 @@ namespace DchatClient.ViewModel
 
         public ClientViewModel()
         {
-            ChannelFactory<IChatService> channelFactory = new ChannelFactory<IChatService>("DchatEndpoint");
-            _server = channelFactory.CreateChannel();
-            _server = channelFactory.CreateChannel();            
+            ChannelFactory<IChatService> channelFactory = new ChannelFactory<IChatService>("BasicHttpBinding_IChatService");
+            _server = channelFactory.CreateChannel();                      
             _this = this;
+            _server.StartUp();
+            CreateCommands();
         }
-        
+
+        private void CreateCommands()
+        {
+            Login = new RelayCommand(OnLogin, () => !(string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(Password)));
+            //Logout = new Base.RelayCommand(OnLogout);
+            //Send = new Base.RelayCommand(OnSend);
+            //ClearCommand = new Base.RelayCommand(OnClear);
+        }
+
         #region props  
-        public string Password { get; private set; }        
+        private string _password;
+        public string Password
+        {
+            get { return _password; }
+            set { Set(() => Password, ref _password, value); }
+        }
+
+        private DmUser _user;
+        public DmUser User
+        {
+            get { return _user; }
+            set { Set(() => User, ref _user, value); }
+        }
 
         private string _username;
         public string Username
@@ -63,19 +86,25 @@ namespace DchatClient.ViewModel
             return _this;            
         }
 
-        private void LoadUserList(List<string> currentusers)
+        //private void LoadUserList(List<string> currentusers)
+        //{
+        //    foreach (var user in currentusers)
+        //    {
+        //        if (UserList.Contains(user))
+        //        {
+        //            return;
+        //        }
+        //        else
+        //        {                                          
+        //            UserList.Add(user);
+        //        }                
+        //    }
+        //}
+
+        public RelayCommand Login { get; private set; }
+        public void OnLogin()
         {
-            foreach (var user in currentusers)
-            {
-                if (UserList.Contains(user))
-                {
-                    return;
-                }
-                else
-                {                                          
-                    UserList.Add(user);
-                }                
-            }
+           Username = _server.Login(Username, Password).ToString();
         }
     }
 }

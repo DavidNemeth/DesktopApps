@@ -12,8 +12,12 @@ namespace DchatServices.Services
     public class ChatService : IChatService
     {
         public List<DmUser> ConnectedUsers = new List<DmUser>();
+        private readonly DchatContext _db = new DchatContext();
 
-        private readonly DchatContext _db = new DchatContext();        
+        public void StartUp()
+        {
+            AutoMapperConfiguration.Configure();
+        }
 
         /**
          * 0: Log in Completed
@@ -21,35 +25,36 @@ namespace DchatServices.Services
          * 2: User already logged in
          * 3: Server offline
          **/
-        public int Login(string username, string password)
+
+        public string Login(string username, string password)
         {
             try
             {
                 var user = _db.Users.FirstOrDefault(u => u.Username == username && u.Password == password);
-                var dmuser = Mapper.Map<DmUser>(user);
+                //var dmuser = Mapper.Map<DmUser>(user);
                 if (user == null)
                 {
-                    return 1;
+                    return "Incorrect username or password";
                 }
-                if (ConnectedUsers.Contains(dmuser))
-                {
-                    return 2;
-                }
-                var userlogin = Mapper.Map<DmUser>(user);
+                //if (ConnectedUsers.Contains(dmuser))
+                //{
+                //    return "User already logged in";
+                //}
+                //var userlogin = Mapper.Map<DmUser>(user);
 
-                var establishedUserConnection = OperationContext.Current.GetCallbackChannel<IClientService>();
+                //var establishedUserConnection = OperationContext.Current.GetCallbackChannel<IClientService>();
 
-                userlogin.Connection = establishedUserConnection;
-                ConnectedUsers.Add(dmuser);
-                userlogin.LoggedIn = true;
-                Console.ForegroundColor = ConsoleColor.Green;
-                Console.WriteLine("Client login: {0} with id: {1} at {2}", user.Username, user.UserId, DateTime.Now);
-                Console.ResetColor();
-                return 0;
+                //user.Connection = establishedUserConnection;
+                //ConnectedUsers.Add(dmuser);
+                user.LoggedIn = true;
+                //Console.ForegroundColor = ConsoleColor.Green;
+                //Console.WriteLine("Client login: {0} with id: {1} at {2}", user.Username, user.UserId, DateTime.Now);
+                //Console.ResetColor();
+                return "Success";
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return 3;
+                return e.ToString();
             }
         }
 
@@ -61,15 +66,15 @@ namespace DchatServices.Services
                 if (dmuser == null) return;
                 ConnectedUsers.Remove(dmuser);
                 dmuser.LoggedIn = false;
-                Console.ForegroundColor = ConsoleColor.Cyan;
-                Console.WriteLine($"Client log-off: {dmuser.Username} at {DateTime.Now}");
-                Console.ResetColor();
+                //Console.ForegroundColor = ConsoleColor.Cyan;
+                //Console.WriteLine($"Client log-off: {dmuser.Username} at {DateTime.Now}");
+                //Console.ResetColor();
             }
             catch (Exception)
             {
                 //ignore                
             }
-        }        
+        }
 
         /**
         * 0: Log in Completed
@@ -124,7 +129,7 @@ namespace DchatServices.Services
         }
 
         public List<DmUser> GetCurrentUsers()
-        {            
+        {
             return ConnectedUsers;
         }
 
@@ -193,7 +198,7 @@ namespace DchatServices.Services
         {
             User client = _db.Users.FirstOrDefault(u => u.Username == username);
             DmUser dmuser = Mapper.Map<DmUser>(client);
-            if (client == null) return;            
+            if (client == null) return;
             ConnectedUsers.Remove(dmuser);
 
             UpdateHelper(false, dmuser.Username);
@@ -222,7 +227,7 @@ namespace DchatServices.Services
                     client.Connection.Update(value, userName);
                 }
             }
-        }        
+        }
 
         private void Save()
         {

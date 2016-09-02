@@ -286,6 +286,12 @@ namespace DchatClient.DchatServiceReference {
     [System.ServiceModel.ServiceContractAttribute(ConfigurationName="DchatServiceReference.IChatService")]
     public interface IChatService {
         
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatService/StartUp", ReplyAction="http://tempuri.org/IChatService/StartUpResponse")]
+        void StartUp();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatService/StartUp", ReplyAction="http://tempuri.org/IChatService/StartUpResponse")]
+        System.Threading.Tasks.Task StartUpAsync();
+        
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatService/GetUsers", ReplyAction="http://tempuri.org/IChatService/GetUsersResponse")]
         DchatClient.DchatServiceReference.DmUser[] GetUsers();
         
@@ -299,10 +305,10 @@ namespace DchatClient.DchatServiceReference {
         System.Threading.Tasks.Task<DchatClient.DchatServiceReference.DmUser> GetUserByNameAsync(string username);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatService/Login", ReplyAction="http://tempuri.org/IChatService/LoginResponse")]
-        int Login(string userName, string password);
+        string Login(string userName, string password);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatService/Login", ReplyAction="http://tempuri.org/IChatService/LoginResponse")]
-        System.Threading.Tasks.Task<int> LoginAsync(string userName, string password);
+        System.Threading.Tasks.Task<string> LoginAsync(string userName, string password);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatService/Logout", ReplyAction="http://tempuri.org/IChatService/LogoutResponse")]
         void Logout();
@@ -350,6 +356,14 @@ namespace DchatClient.DchatServiceReference {
                 base(binding, remoteAddress) {
         }
         
+        public void StartUp() {
+            base.Channel.StartUp();
+        }
+        
+        public System.Threading.Tasks.Task StartUpAsync() {
+            return base.Channel.StartUpAsync();
+        }
+        
         public DchatClient.DchatServiceReference.DmUser[] GetUsers() {
             return base.Channel.GetUsers();
         }
@@ -366,11 +380,11 @@ namespace DchatClient.DchatServiceReference {
             return base.Channel.GetUserByNameAsync(username);
         }
         
-        public int Login(string userName, string password) {
+        public string Login(string userName, string password) {
             return base.Channel.Login(userName, password);
         }
         
-        public System.Threading.Tasks.Task<int> LoginAsync(string userName, string password) {
+        public System.Threading.Tasks.Task<string> LoginAsync(string userName, string password) {
             return base.Channel.LoginAsync(userName, password);
         }
         
