@@ -1,5 +1,4 @@
-﻿using AutoMapper;
-using DchatEntities;
+﻿using DchatEntities;
 using DchatServices.Model;
 using System;
 using System.Collections.Generic;
@@ -14,11 +13,6 @@ namespace DchatServices.Services
         public List<DmUser> ConnectedUsers = new List<DmUser>();
         private readonly DchatContext _db = new DchatContext();
 
-        public void StartUp()
-        {
-            AutoMapperConfiguration.Configure();
-        }
-
         /**
          * 0: Log in Completed
          * 1: Invalid username or password
@@ -31,22 +25,25 @@ namespace DchatServices.Services
             try
             {
                 var user = _db.Users.FirstOrDefault(u => u.Username == username && u.Password == password);
-                //var dmuser = Mapper.Map<DmUser>(user);
+                var dmUser = new DmUser();
+
+                dmUser.Username = user.Username;
+                dmUser.Password = user.Password;
+                dmUser.Image = user.Image;
+                dmUser.LoggedIn = user.LoggedIn;
+                dmUser.UserId = user.UserId;
+
                 if (user == null)
                 {
                     return "Incorrect username or password";
                 }
-                //if (ConnectedUsers.Contains(dmuser))
-                //{
-                //    return "User already logged in";
-                //}
-                //var userlogin = Mapper.Map<DmUser>(user);
+                if (ConnectedUsers.Contains(dmUser))
+                {
+                    return "User already logged in";
+                }
 
-                //var establishedUserConnection = OperationContext.Current.GetCallbackChannel<IClientService>();
-
-                //user.Connection = establishedUserConnection;
-                //ConnectedUsers.Add(dmuser);
-                user.LoggedIn = true;
+                ConnectedUsers.Add(dmUser);
+                dmUser.LoggedIn = true;
                 //Console.ForegroundColor = ConsoleColor.Green;
                 //Console.WriteLine("Client login: {0} with id: {1} at {2}", user.Username, user.UserId, DateTime.Now);
                 //Console.ResetColor();
@@ -110,7 +107,7 @@ namespace DchatServices.Services
             {
                 if (!String.Equals(client.Username, userName, StringComparison.CurrentCultureIgnoreCase))
                 {
-                    Mapper.Map<DmUser>(client).Connection.GetMessage(message, userName);
+                    client.Connection.GetMessage(message, userName);
                 }
             }
         }
@@ -120,7 +117,15 @@ namespace DchatServices.Services
             try
             {
                 var user = _db.Users.FirstOrDefault(u => u.Username == username);
-                return Mapper.Map<DmUser>(user);
+                var dmUser = new DmUser();
+
+                dmUser.Username = user.Username;
+                dmUser.Password = user.Password;
+                dmUser.Image = user.Image;
+                dmUser.LoggedIn = user.LoggedIn;
+                dmUser.UserId = user.UserId;
+
+                return dmUser;
             }
             catch (Exception)
             {
@@ -196,17 +201,16 @@ namespace DchatServices.Services
 
         public void LogoutUser(string username)
         {
-            User client = _db.Users.FirstOrDefault(u => u.Username == username);
-            DmUser dmuser = Mapper.Map<DmUser>(client);
-            if (client == null) return;
-            ConnectedUsers.Remove(dmuser);
+            DmUser dmUser = ConnectedUsers.FirstOrDefault(u => u.Username == username);
+            if (dmUser == null) return;
+            ConnectedUsers.Remove(dmUser);
 
-            UpdateHelper(false, dmuser.Username);
-            client.LoggedIn = false;
+            UpdateHelper(false, dmUser.Username);
+            dmUser.LoggedIn = false;
 
-            Console.ForegroundColor = ConsoleColor.Cyan;
-            Console.WriteLine("Client log-off: {0} at {1}", dmuser.Username, DateTime.Now);
-            Console.ResetColor();
+            //Console.ForegroundColor = ConsoleColor.Cyan;
+            //Console.WriteLine("Client log-off: {0} at {1}", dmUser.Username, DateTime.Now);
+            //Console.ResetColor();
         }
 
         #endregion
@@ -237,6 +241,10 @@ namespace DchatServices.Services
         public List<DmUser> GetUsers()
         {
             return new List<DmUser>();
+        }
+
+        public void StartUp()
+        {
         }
 
         #endregion

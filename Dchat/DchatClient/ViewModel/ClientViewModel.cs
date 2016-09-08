@@ -16,8 +16,7 @@ namespace DchatClient.ViewModel
         {
             ChannelFactory<IChatService> channelFactory = new ChannelFactory<IChatService>("BasicHttpBinding_IChatService");
             _server = channelFactory.CreateChannel();                      
-            _this = this;
-            _server.StartUp();
+            _this = this;            
             CreateCommands();
         }
 
@@ -104,7 +103,7 @@ namespace DchatClient.ViewModel
         public RelayCommand Login { get; private set; }
         public void OnLogin()
         {
-           Username = _server.Login(Username, Password).ToString();
+           Username = _server.Login(Username, Password);
         }
     }
 }

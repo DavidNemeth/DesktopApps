@@ -74,7 +74,6 @@
     <Compile Include="Services\ChatService.cs" />
     <Compile Include="Services\IChatService.cs" />
     <Compile Include="Services\IClientService.cs" />
-    <Compile Include="Model\AutoMapperConfiguration.cs" />
     <Compile Include="Model\DmChatRoom.cs" />
     <Compile Include="Model\DmUser.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
