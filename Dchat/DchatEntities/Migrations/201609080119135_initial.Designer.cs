@@ -13,7 +13,7 @@ namespace DchatEntities.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201608290349543_initial"; }
+            get { return "201609080119135_initial"; }
         }
         
         string IMigrationMetadata.Source

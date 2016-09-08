@@ -9,8 +9,6 @@ namespace DchatServer
     {
         static void Main(string[] args)
         {
-            AutoMapperConfiguration.Configure();
-
             using (ServiceHost host = new ServiceHost(typeof(ChatService)))
             {
                 //host.Open();

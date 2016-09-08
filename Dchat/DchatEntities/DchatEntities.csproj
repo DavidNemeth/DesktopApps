@@ -95,9 +95,9 @@
   <ItemGroup>
     <Compile Include="ChatRoom.cs" />
     <Compile Include="DchatContext.cs" />
-    <Compile Include="Migrations\201608290349543_initial.cs" />
-    <Compile Include="Migrations\201608290349543_initial.Designer.cs">
-      <DependentUpon>201608290349543_initial.cs</DependentUpon>
+    <Compile Include="Migrations\201609080119135_initial.cs" />
+    <Compile Include="Migrations\201609080119135_initial.Designer.cs">
+      <DependentUpon>201609080119135_initial.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -108,8 +108,8 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201608290349543_initial.resx">
-      <DependentUpon>201608290349543_initial.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201609080119135_initial.resx">
+      <DependentUpon>201609080119135_initial.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
