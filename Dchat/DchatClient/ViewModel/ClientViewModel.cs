@@ -15,15 +15,15 @@ namespace DchatClient.ViewModel
         public ClientViewModel()
         {
             ChannelFactory<IChatService> channelFactory = new ChannelFactory<IChatService>("BasicHttpBinding_IChatService");
-            _server = channelFactory.CreateChannel();                      
-            _this = this;            
+            _server = channelFactory.CreateChannel();
+            _this = this;
             CreateCommands();
         }
 
         private void CreateCommands()
         {
             Login = new RelayCommand(OnLogin, () => !(string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(Password)));
-            //Logout = new Base.RelayCommand(OnLogout);
+            Logout = new RelayCommand(OnLogout);
             //Send = new Base.RelayCommand(OnSend);
             //ClearCommand = new Base.RelayCommand(OnClear);
         }
@@ -43,6 +43,13 @@ namespace DchatClient.ViewModel
             set { Set(() => User, ref _user, value); }
         }
 
+        private string _validationmessage;
+        public string ValidationMessage
+        {
+            get { return _validationmessage; }
+            set { Set(() => ValidationMessage, ref _validationmessage, value); }
+        }
+
         private string _username;
         public string Username
         {
@@ -52,10 +59,17 @@ namespace DchatClient.ViewModel
 
         private string _message;
         public string Message
-        {            
+        {
             get { return _message; }
             set { Set(() => Message, ref _message, value); }
 
+        }
+
+        private ObservableCollection<DmUser> _users = new ObservableCollection<DmUser>();
+        public ObservableCollection<DmUser> Users
+        {
+            get { return _users; }
+            set { Set(() => Users, ref _users, value); }
         }
 
         private ObservableCollection<string> _userlist = new ObservableCollection<string>();
@@ -82,28 +96,42 @@ namespace DchatClient.ViewModel
 
         public static ClientViewModel GetInstance()
         {
-            return _this;            
+            return _this;
         }
-
-        //private void LoadUserList(List<string> currentusers)
-        //{
-        //    foreach (var user in currentusers)
-        //    {
-        //        if (UserList.Contains(user))
-        //        {
-        //            return;
-        //        }
-        //        else
-        //        {                                          
-        //            UserList.Add(user);
-        //        }                
-        //    }
-        //}
 
         public RelayCommand Login { get; private set; }
         public void OnLogin()
         {
-           Username = _server.Login(Username, Password);
+            ValidationMessage = _server.Login(Username, Password);
+            if (ValidationMessage == "Success")
+            {
+                LoadUserList(_server.GetUsers());
+                User = _server.GetUserByName(Username);
+            }
+        }
+
+        public RelayCommand Logout { get; private set; }
+        public void OnLogout()
+        {
+            _server.Logout();
+            UserList.Clear();
+        }
+        
+        private void LoadUserList(IEnumerable<DmUser> currentusers)
+        {
+            
+            foreach (var user in currentusers)
+            {
+                if (UserList.Contains(user.Username))
+                {
+                    return;
+                }
+                else
+                {
+                    UserList.Add(user.Username);
+                    Users.Add(user);
+                }
+            }
         }
     }
 }

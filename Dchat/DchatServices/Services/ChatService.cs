@@ -49,9 +49,9 @@ namespace DchatServices.Services
                 //Console.ResetColor();
                 return "Success";
             }
-            catch (Exception e)
+            catch (Exception)
             {
-                return e.ToString();
+                return "Server is offline";
             }
         }
 
@@ -112,6 +112,11 @@ namespace DchatServices.Services
             }
         }
 
+        public List<DmUser> GetUsers()
+        {
+            return ConnectedUsers;
+        }
+
         public DmUser GetUserByName(string username)
         {
             try
@@ -131,11 +136,6 @@ namespace DchatServices.Services
             {
                 return null;
             }
-        }
-
-        public List<DmUser> GetCurrentUsers()
-        {
-            return ConnectedUsers;
         }
 
         public List<DmUser> GetFriendList()
@@ -236,12 +236,7 @@ namespace DchatServices.Services
         private void Save()
         {
             _db.SaveChanges();
-        }
-
-        public List<DmUser> GetUsers()
-        {
-            return new List<DmUser>();
-        }
+        }        
 
         public void StartUp()
         {
