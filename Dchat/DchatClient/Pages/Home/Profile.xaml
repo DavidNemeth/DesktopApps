@@ -7,17 +7,17 @@
              xmlns:w="clr-namespace:DchatClient.Helpers"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid Style="{StaticResource ContentRoot}">
+    <Grid Style="{StaticResource ContentRoot}" Visibility="{Binding LoginVisibility}">
         <ScrollViewer>
             <StackPanel MinWidth="200">
-                <TextBlock Text="{Binding ReturnMessage.LoginMessage,  FallbackValue=Login, UpdateSourceTrigger=PropertyChanged}" >
+                <TextBlock Text="{Binding Validation.LoginMessage,  FallbackValue=Login$, UpdateSourceTrigger=PropertyChanged}" >
                     <TextBlock.Style>
                         <Style TargetType="{x:Type TextBlock}">
                             <Style.Triggers>
                                 <DataTrigger Binding="{Binding MyTextProperty}" Value="{x:Null}">
                                     <Setter Property="FontSize" Value="15"/>
                                     <Setter Property="FontWeight" Value="Bold"/>
-                                    <Setter Property="Foreground" Value="{Binding ReturnMessage.LoginColor}"/>
+                                    <Setter Property="Foreground" Value="{Binding Validation.LoginColor}"/>
                                 </DataTrigger>
                             </Style.Triggers>
                         </Style>

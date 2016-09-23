@@ -292,11 +292,11 @@ namespace DchatClient.DchatServiceReference {
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatService/StartUp", ReplyAction="http://tempuri.org/IChatService/StartUpResponse")]
         System.Threading.Tasks.Task StartUpAsync();
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatService/GetUsers", ReplyAction="http://tempuri.org/IChatService/GetUsersResponse")]
-        DchatClient.DchatServiceReference.DmUser[] GetUsers();
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatService/GetConnectedUsers", ReplyAction="http://tempuri.org/IChatService/GetConnectedUsersResponse")]
+        DchatClient.DchatServiceReference.DmUser[] GetConnectedUsers();
         
-        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatService/GetUsers", ReplyAction="http://tempuri.org/IChatService/GetUsersResponse")]
-        System.Threading.Tasks.Task<DchatClient.DchatServiceReference.DmUser[]> GetUsersAsync();
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatService/GetConnectedUsers", ReplyAction="http://tempuri.org/IChatService/GetConnectedUsersResponse")]
+        System.Threading.Tasks.Task<DchatClient.DchatServiceReference.DmUser[]> GetConnectedUsersAsync();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatService/GetUserByName", ReplyAction="http://tempuri.org/IChatService/GetUserByNameResponse")]
         DchatClient.DchatServiceReference.DmUser GetUserByName(string username);
@@ -317,10 +317,10 @@ namespace DchatClient.DchatServiceReference {
         System.Threading.Tasks.Task LogoutAsync();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatService/Register", ReplyAction="http://tempuri.org/IChatService/RegisterResponse")]
-        int Register(string username, string password);
+        string Register(string username, string password);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatService/Register", ReplyAction="http://tempuri.org/IChatService/RegisterResponse")]
-        System.Threading.Tasks.Task<int> RegisterAsync(string username, string password);
+        System.Threading.Tasks.Task<string> RegisterAsync(string username, string password);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatService/SendMessageToAll", ReplyAction="http://tempuri.org/IChatService/SendMessageToAllResponse")]
         void SendMessageToAll(string message, string userName);
@@ -364,12 +364,12 @@ namespace DchatClient.DchatServiceReference {
             return base.Channel.StartUpAsync();
         }
         
-        public DchatClient.DchatServiceReference.DmUser[] GetUsers() {
-            return base.Channel.GetUsers();
+        public DchatClient.DchatServiceReference.DmUser[] GetConnectedUsers() {
+            return base.Channel.GetConnectedUsers();
         }
         
-        public System.Threading.Tasks.Task<DchatClient.DchatServiceReference.DmUser[]> GetUsersAsync() {
-            return base.Channel.GetUsersAsync();
+        public System.Threading.Tasks.Task<DchatClient.DchatServiceReference.DmUser[]> GetConnectedUsersAsync() {
+            return base.Channel.GetConnectedUsersAsync();
         }
         
         public DchatClient.DchatServiceReference.DmUser GetUserByName(string username) {
@@ -396,11 +396,11 @@ namespace DchatClient.DchatServiceReference {
             return base.Channel.LogoutAsync();
         }
         
-        public int Register(string username, string password) {
+        public string Register(string username, string password) {
             return base.Channel.Register(username, password);
         }
         
-        public System.Threading.Tasks.Task<int> RegisterAsync(string username, string password) {
+        public System.Threading.Tasks.Task<string> RegisterAsync(string username, string password) {
             return base.Channel.RegisterAsync(username, password);
         }
         

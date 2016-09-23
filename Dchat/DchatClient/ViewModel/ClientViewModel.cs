@@ -1,4 +1,5 @@
 ﻿using DchatClient.DchatServiceReference;
+using DchatClient.ViewModel;
 using GalaSoft.MvvmLight.CommandWpf;
 using System;
 using System.Collections.Generic;
@@ -28,6 +29,20 @@ namespace DchatClient.ViewModel
             //ClearCommand = new Base.RelayCommand(OnClear);
         }
 
+        private ReturnMessage _validation = new ReturnMessage();
+        public ReturnMessage Validation
+        {
+            get { return _validation; }
+            set { Set(() => Validation, ref _validation, value); }
+        }
+
+        private string _loginVisibility = "Visible";
+        public string LoginVisibility
+        {
+            get { return _loginVisibility; }
+            set { Set(() => LoginVisibility, ref _loginVisibility, value); }
+        }
+
         #region props  
         private string _password;
         public string Password
@@ -41,14 +56,7 @@ namespace DchatClient.ViewModel
         {
             get { return _user; }
             set { Set(() => User, ref _user, value); }
-        }
-
-        private string _validationmessage;
-        public string ValidationMessage
-        {
-            get { return _validationmessage; }
-            set { Set(() => ValidationMessage, ref _validationmessage, value); }
-        }
+        }        
 
         private string _username;
         public string Username
@@ -102,11 +110,16 @@ namespace DchatClient.ViewModel
         public RelayCommand Login { get; private set; }
         public void OnLogin()
         {
-            ValidationMessage = _server.Login(Username, Password);
-            if (ValidationMessage == "Success")
+            Validation.LoginMessage = _server.Login(Username, Password);
+            if (Validation.LoginMessage == "Success")
             {
-                LoadUserList(_server.GetUsers());
+                LoadUserList(_server.GetConnectedUsers());
                 User = _server.GetUserByName(Username);
+                LoginVisibility = "Hidden";
+            }
+            else
+            {
+                Validation.LoginColor = "Red";
             }
         }
 

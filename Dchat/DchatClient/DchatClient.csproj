@@ -103,6 +103,8 @@
     </Compile>
     <Compile Include="ViewModel\ClientViewModel.cs" />
     <Compile Include="ViewModel\MainViewModel.cs" />
+    <Compile Include="ViewModel\RegisterViewModel.cs" />
+    <Compile Include="ViewModel\ReturnMessage.cs" />
     <Compile Include="ViewModel\ViewModelLocator.cs" />
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

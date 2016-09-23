@@ -10,7 +10,7 @@ namespace DchatServices.Services
     [ServiceBehavior(ConcurrencyMode = ConcurrencyMode.Multiple, InstanceContextMode = InstanceContextMode.Single)]
     public class ChatService : IChatService
     {
-        public List<DmUser> ConnectedUsers = new List<DmUser>();
+        public HashSet<DmUser> ConnectedUsers = new HashSet<DmUser>();
         private readonly DchatContext _db = new DchatContext();
 
         /**
@@ -22,26 +22,27 @@ namespace DchatServices.Services
 
         public string Login(string username, string password)
         {
+            var user = _db.Users.FirstOrDefault(u => u.Username == username && u.Password == password);
+
+            if (user == null)
+            {
+                return "Incorrect username or password";
+            }
+            foreach (var item in ConnectedUsers)
+            {
+                if (item.Username == username)
+                {
+                    return "User already logged in";
+                }
+            }
             try
             {
-                var user = _db.Users.FirstOrDefault(u => u.Username == username && u.Password == password);
                 var dmUser = new DmUser();
-
                 dmUser.Username = user.Username;
                 dmUser.Password = user.Password;
                 dmUser.Image = user.Image;
                 dmUser.LoggedIn = user.LoggedIn;
                 dmUser.UserId = user.UserId;
-
-                if (user == null)
-                {
-                    return "Incorrect username or password";
-                }
-                if (ConnectedUsers.Contains(dmUser))
-                {
-                    return "User already logged in";
-                }
-
                 ConnectedUsers.Add(dmUser);
                 dmUser.LoggedIn = true;
                 //Console.ForegroundColor = ConsoleColor.Green;
@@ -49,9 +50,9 @@ namespace DchatServices.Services
                 //Console.ResetColor();
                 return "Success";
             }
-            catch (Exception)
+            catch (Exception e)
             {
-                return "Server is offline";
+                return e.ToString();
             }
         }
 
@@ -73,27 +74,22 @@ namespace DchatServices.Services
             }
         }
 
-        /**
-        * 0: Log in Completed
-        * 1: User already exists
-        * 2: Server offline      
-        **/
-        public int Register(string username, string password)
+        public string Register(string username, string password)
         {
             if (_db.Users.FirstOrDefault(u => u.Username == username) != null)
             {
-                return 1;
+                return "User already exists";
             }
             try
             {
                 var user = new User();
                 user.Username = username;
                 user.Password = password;
-                return 0;
+                return "Registration Complete!";
             }
             catch (Exception)
             {
-                return 2;
+                return "Server is offline";
             }
         }
 
@@ -112,7 +108,7 @@ namespace DchatServices.Services
             }
         }
 
-        public List<DmUser> GetUsers()
+        public HashSet<DmUser> GetConnectedUsers()
         {
             return ConnectedUsers;
         }
@@ -236,7 +232,7 @@ namespace DchatServices.Services
         private void Save()
         {
             _db.SaveChanges();
-        }        
+        }
 
         public void StartUp()
         {

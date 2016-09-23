@@ -4,13 +4,52 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:mui="http://firstfloorsoftware.com/ModernUI"
+             xmlns:w="clr-namespace:DchatClient.Helpers"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Grid Style="{StaticResource ContentRoot}">
         <ScrollViewer>
             <StackPanel MinWidth="200">
-                <TextBlock Text="BASIC PAGE" Style="{StaticResource Heading2}" />
-                <TextBlock Text="Content goes here" />
+                <TextBlock Text="{Binding Validation.RegisterMessage,  FallbackValue=Register, UpdateSourceTrigger=PropertyChanged}" >
+                    <TextBlock.Style>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding MyTextProperty}" Value="{x:Null}">
+                                    <Setter Property="FontSize" Value="15"/>
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                    <Setter Property="Foreground" Value="{Binding Validation.RegisterColor}"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+                <StackPanel x:Name="Form" Orientation="Vertical" Margin="0,20,0,0">
+                    <StackPanel.Resources>
+                        <Style TargetType="StackPanel">
+                            <Setter Property="Orientation" Value="Horizontal" />
+                            <Setter Property="Margin" Value="0,0,0,4" />
+                        </Style>
+                        <Style TargetType="Label" BasedOn="{StaticResource {x:Type Label}}">
+                            <Setter Property="Width" Value="100" />
+                            <Setter Property="VerticalAlignment" Value="Center" />
+                        </Style>
+                        <Style TargetType="CheckBox" BasedOn="{StaticResource {x:Type CheckBox}}">
+                            <Setter Property="Padding" Value="0,3" />
+                        </Style>
+                        <Style TargetType="RadioButton" BasedOn="{StaticResource {x:Type RadioButton}}">
+                            <Setter Property="Padding" Value="0,3" />
+                        </Style>
+                    </StackPanel.Resources>
+                    <StackPanel>
+                        <Label Content="UserName" Target="{Binding ElementName=TextFirstName}"/>
+                        <TextBox x:Name="TextUserName" Width="150" Text="{Binding Username, Mode=TwoWay}" />
+                    </StackPanel>
+                    <StackPanel>
+                        <Label Content="Password" Target="{Binding ElementName=TextLastName}"/>
+                        <PasswordBox x:Name="Password1" Width="150" w:PasswordHelper.Password="{Binding Password, Mode=TwoWay}"/>
+                    </StackPanel>
+                    <Button Content="Register" Margin="100,16,0,0" HorizontalAlignment="Left" Command="{Binding Register, ValidatesOnDataErrors=True}"/>
+                </StackPanel>
             </StackPanel>
         </ScrollViewer>
     </Grid>

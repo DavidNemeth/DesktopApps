@@ -10,7 +10,7 @@ namespace DchatServices.Services
         [OperationContract]
         void StartUp();
         [OperationContract]
-        List<DmUser> GetUsers();
+        HashSet<DmUser> GetConnectedUsers();
         [OperationContract]
         DmUser GetUserByName(string username);
         [OperationContract]
@@ -18,7 +18,7 @@ namespace DchatServices.Services
         [OperationContract]
         void Logout();
         [OperationContract]
-        int Register(string username, string password);
+        string Register(string username, string password);
         [OperationContract]
         void SendMessageToAll(string message, string userName);
     }

@@ -13,11 +13,11 @@
   <wsdl:message name="IChatService_StartUp_OutputMessage">
     <wsdl:part name="parameters" element="tns:StartUpResponse" />
   </wsdl:message>
-  <wsdl:message name="IChatService_GetUsers_InputMessage">
-    <wsdl:part name="parameters" element="tns:GetUsers" />
+  <wsdl:message name="IChatService_GetConnectedUsers_InputMessage">
+    <wsdl:part name="parameters" element="tns:GetConnectedUsers" />
   </wsdl:message>
-  <wsdl:message name="IChatService_GetUsers_OutputMessage">
-    <wsdl:part name="parameters" element="tns:GetUsersResponse" />
+  <wsdl:message name="IChatService_GetConnectedUsers_OutputMessage">
+    <wsdl:part name="parameters" element="tns:GetConnectedUsersResponse" />
   </wsdl:message>
   <wsdl:message name="IChatService_GetUserByName_InputMessage">
     <wsdl:part name="parameters" element="tns:GetUserByName" />
@@ -54,9 +54,9 @@
       <wsdl:input wsaw:Action="http://tempuri.org/IChatService/StartUp" message="tns:IChatService_StartUp_InputMessage" />
       <wsdl:output wsaw:Action="http://tempuri.org/IChatService/StartUpResponse" message="tns:IChatService_StartUp_OutputMessage" />
     </wsdl:operation>
-    <wsdl:operation name="GetUsers">
-      <wsdl:input wsaw:Action="http://tempuri.org/IChatService/GetUsers" message="tns:IChatService_GetUsers_InputMessage" />
-      <wsdl:output wsaw:Action="http://tempuri.org/IChatService/GetUsersResponse" message="tns:IChatService_GetUsers_OutputMessage" />
+    <wsdl:operation name="GetConnectedUsers">
+      <wsdl:input wsaw:Action="http://tempuri.org/IChatService/GetConnectedUsers" message="tns:IChatService_GetConnectedUsers_InputMessage" />
+      <wsdl:output wsaw:Action="http://tempuri.org/IChatService/GetConnectedUsersResponse" message="tns:IChatService_GetConnectedUsers_OutputMessage" />
     </wsdl:operation>
     <wsdl:operation name="GetUserByName">
       <wsdl:input wsaw:Action="http://tempuri.org/IChatService/GetUserByName" message="tns:IChatService_GetUserByName_InputMessage" />
@@ -90,8 +90,8 @@
         <soap:body use="literal" />
       </wsdl:output>
     </wsdl:operation>
-    <wsdl:operation name="GetUsers">
-      <soap:operation soapAction="http://tempuri.org/IChatService/GetUsers" style="document" />
+    <wsdl:operation name="GetConnectedUsers">
+      <soap:operation soapAction="http://tempuri.org/IChatService/GetConnectedUsers" style="document" />
       <wsdl:input>
         <soap:body use="literal" />
       </wsdl:input>
