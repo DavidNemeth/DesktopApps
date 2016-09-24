@@ -186,7 +186,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\DchatServices\DchatServices.csproj">
-      <Project>{0DA5155D-00E1-4D37-B978-751EAE02DA36}</Project>
+      <Project>{0da5155d-00e1-4d37-b978-751eae02da36}</Project>
       <Name>DchatServices</Name>
     </ProjectReference>
   </ItemGroup>

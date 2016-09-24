@@ -283,7 +283,7 @@ namespace DchatClient.DchatServiceReference {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="DchatServiceReference.IChatService", CallbackContract=typeof(IClientService))]
+    [System.ServiceModel.ServiceContractAttribute(ConfigurationName = "DchatServiceReference.IChatService", CallbackContract = typeof(IClientService))]
     public interface IChatService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatService/StartUp", ReplyAction="http://tempuri.org/IChatService/StartUpResponse")]
@@ -291,6 +291,12 @@ namespace DchatClient.DchatServiceReference {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatService/StartUp", ReplyAction="http://tempuri.org/IChatService/StartUpResponse")]
         System.Threading.Tasks.Task StartUpAsync();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatService/GetMyClient", ReplyAction="http://tempuri.org/IChatService/GetMyClientResponse")]
+        DchatClient.DchatServiceReference.DmUser GetMyClient();
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatService/GetMyClient", ReplyAction="http://tempuri.org/IChatService/GetMyClientResponse")]
+        System.Threading.Tasks.Task<DchatClient.DchatServiceReference.DmUser> GetMyClientAsync();
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatService/GetConnectedUsers", ReplyAction="http://tempuri.org/IChatService/GetConnectedUsersResponse")]
         DchatClient.DchatServiceReference.DmUser[] GetConnectedUsers();
@@ -336,7 +342,7 @@ namespace DchatClient.DchatServiceReference {
         void GetMessage(string message, string userName);
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatService/Update", ReplyAction="http://tempuri.org/IChatService/UpdateResponse")]
-        void Update(bool value, string userName);
+        void Update(bool value, string username);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -373,6 +379,14 @@ namespace DchatClient.DchatServiceReference {
         
         public System.Threading.Tasks.Task StartUpAsync() {
             return base.Channel.StartUpAsync();
+        }
+        
+        public DchatClient.DchatServiceReference.DmUser GetMyClient() {
+            return base.Channel.GetMyClient();
+        }
+        
+        public System.Threading.Tasks.Task<DchatClient.DchatServiceReference.DmUser> GetMyClientAsync() {
+            return base.Channel.GetMyClientAsync();
         }
         
         public DchatClient.DchatServiceReference.DmUser[] GetConnectedUsers() {

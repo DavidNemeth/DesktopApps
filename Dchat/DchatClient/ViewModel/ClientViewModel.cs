@@ -45,6 +45,13 @@ namespace DchatClient.ViewModel
             set { Set(() => LoginVisibility, ref _loginVisibility, value); }
         }
 
+        private string _profileVisibility = "Hidden";
+        public string ProfileVisibility
+        {
+            get { return _profileVisibility; }
+            set { Set(() => ProfileVisibility, ref _profileVisibility, value); }
+        }
+
         #region props  
         private string _password;
         public string Password
@@ -117,7 +124,10 @@ namespace DchatClient.ViewModel
             {
                 LoadUserList(_server.GetConnectedUsers());
                 User = _server.GetUserByName(Username);
-                LoginVisibility = "Hidden";                
+                LoginVisibility = "Hidden";
+                ProfileVisibility = "Visible";
+                Username = "";
+                Username = _server.GetMyClient().Username;
             }
             else
             {
@@ -130,6 +140,9 @@ namespace DchatClient.ViewModel
         {
             _server.Logout();
             ConnectedUsers.Clear();
+            Users.Clear();
+            LoginVisibility = "Visible";
+            ProfileVisibility = "Hidden";
         }
         
         private void LoadUserList(IEnumerable<DmUser> currentusers)

@@ -10,6 +10,8 @@ namespace DchatServices.Services
         [OperationContract]
         void StartUp();
         [OperationContract]
+        DmUser GetMyClient();
+        [OperationContract]
         HashSet<DmUser> GetConnectedUsers();
         [OperationContract]
         DmUser GetUserByName(string username);

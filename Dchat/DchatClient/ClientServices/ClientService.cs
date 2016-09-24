@@ -1,27 +1,30 @@
 ﻿using DchatClient.ViewModel;
-using DchatServices.Services;
 using FirstFloor.ModernUI.Presentation;
 using System.ServiceModel;
+using DchatServices.Services;
+using System.Linq;
 
 namespace DchatClient.ClientServices
 {
     [CallbackBehavior(ConcurrencyMode = ConcurrencyMode.Multiple)]
     public class ClientService : IClientService
     {
-        public void GetMessage(string message, string userName)
+        public void GetMessage(string message, string username)
         {
-            ClientViewModel.GetInstance().TakeMessage(message, userName);
+            ClientViewModel.GetInstance().TakeMessage(message, username);
         }
 
-        public void Update(bool value, string userName)
+        public void Update(bool value, string username)
         {
+            
             if (value)
             {
-                ClientViewModel.GetInstance().ConnectedUsers.Add(new Link() { DisplayName = userName });
+                ClientViewModel.GetInstance().ConnectedUsers.Add(new Link() { DisplayName = username });     
             }
             else
             {
-                ClientViewModel.GetInstance().ConnectedUsers.Remove(new Link() { DisplayName = userName });
+                var link = ClientViewModel.GetInstance().ConnectedUsers.FirstOrDefault(u => u.DisplayName == username);
+                ClientViewModel.GetInstance().ConnectedUsers.Remove(link);                
             }
         }
     }

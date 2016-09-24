@@ -7,8 +7,8 @@
              xmlns:w="clr-namespace:DchatClient.Helpers"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
-    <Grid Style="{StaticResource ContentRoot}" Visibility="{Binding LoginVisibility}">
-        <ScrollViewer>
+    <Grid Style="{StaticResource ContentRoot}">
+        <ScrollViewer Visibility="{Binding LoginVisibility}">
             <StackPanel MinWidth="200">
                 <TextBlock Text="{Binding Validation.LoginMessage,  FallbackValue=Login$, UpdateSourceTrigger=PropertyChanged}" >
                     <TextBlock.Style>
@@ -23,7 +23,7 @@
                         </Style>
                     </TextBlock.Style>
                 </TextBlock>
-                <StackPanel x:Name="Form" Orientation="Vertical" Margin="0,20,0,0">
+                <StackPanel x:Name="Login" Orientation="Vertical" Margin="0,20,0,0">
                     <StackPanel.Resources>
                         <Style TargetType="StackPanel">
                             <Setter Property="Orientation" Value="Horizontal" />
@@ -52,5 +52,46 @@
                 </StackPanel>
             </StackPanel>
         </ScrollViewer>
+         <ScrollViewer Visibility="{Binding ProfileVisibility}">
+            <StackPanel MinWidth="200">
+                <TextBlock Text="Profile" >
+                    <TextBlock.Style>
+                        <Style TargetType="{x:Type TextBlock}">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding MyTextProperty}" Value="{x:Null}">
+                                    <Setter Property="FontSize" Value="15"/>
+                                    <Setter Property="FontWeight" Value="Bold"/>
+                                    <Setter Property="Foreground" Value="{Binding Validation.LoginColor}"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </TextBlock.Style>
+                </TextBlock>
+                <StackPanel x:Name="Welcome" Orientation="Vertical" Margin="0,20,0,0">
+                    <StackPanel.Resources>
+                        <Style TargetType="StackPanel">
+                            <Setter Property="Orientation" Value="Horizontal" />
+                            <Setter Property="Margin" Value="0,0,0,4" />
+                        </Style>
+                        <Style TargetType="Label" BasedOn="{StaticResource {x:Type Label}}">
+                            <Setter Property="Width" Value="100" />
+                            <Setter Property="VerticalAlignment" Value="Center" />
+                        </Style>
+                        <Style TargetType="CheckBox" BasedOn="{StaticResource {x:Type CheckBox}}">
+                            <Setter Property="Padding" Value="0,3" />
+                        </Style>
+                        <Style TargetType="RadioButton" BasedOn="{StaticResource {x:Type RadioButton}}">
+                            <Setter Property="Padding" Value="0,3" />
+                        </Style>
+                    </StackPanel.Resources>
+                    <StackPanel>
+                        <Label Content="Welcome"/>
+                        <Label Content="{Binding Username}"/>
+                    </StackPanel>                    
+                    <Button Content="Logout" Margin="100,16,0,0" HorizontalAlignment="Left" Command="{Binding Logout, ValidatesOnDataErrors=False}"/>
+                </StackPanel>
+            </StackPanel>
+        </ScrollViewer>
     </Grid>
+    
 </UserControl>

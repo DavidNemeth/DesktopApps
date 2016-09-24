@@ -11,6 +11,18 @@
       <xs:sequence />
     </xs:complexType>
   </xs:element>
+  <xs:element name="GetMyClient">
+    <xs:complexType>
+      <xs:sequence />
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="GetMyClientResponse">
+    <xs:complexType>
+      <xs:sequence>
+        <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/DchatServices.Model" minOccurs="0" name="GetMyClientResult" nillable="true" type="q1:DmUser" />
+      </xs:sequence>
+    </xs:complexType>
+  </xs:element>
   <xs:element name="GetConnectedUsers">
     <xs:complexType>
       <xs:sequence />
@@ -19,7 +31,7 @@
   <xs:element name="GetConnectedUsersResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q1="http://schemas.datacontract.org/2004/07/DchatServices.Model" minOccurs="0" name="GetConnectedUsersResult" nillable="true" type="q1:ArrayOfDmUser" />
+        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/DchatServices.Model" minOccurs="0" name="GetConnectedUsersResult" nillable="true" type="q2:ArrayOfDmUser" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -33,7 +45,7 @@
   <xs:element name="GetUserByNameResponse">
     <xs:complexType>
       <xs:sequence>
-        <xs:element xmlns:q2="http://schemas.datacontract.org/2004/07/DchatServices.Model" minOccurs="0" name="GetUserByNameResult" nillable="true" type="q2:DmUser" />
+        <xs:element xmlns:q3="http://schemas.datacontract.org/2004/07/DchatServices.Model" minOccurs="0" name="GetUserByNameResult" nillable="true" type="q3:DmUser" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>
@@ -107,7 +119,7 @@
     <xs:complexType>
       <xs:sequence>
         <xs:element minOccurs="0" name="value" type="xs:boolean" />
-        <xs:element minOccurs="0" name="userName" nillable="true" type="xs:string" />
+        <xs:element minOccurs="0" name="username" nillable="true" type="xs:string" />
       </xs:sequence>
     </xs:complexType>
   </xs:element>

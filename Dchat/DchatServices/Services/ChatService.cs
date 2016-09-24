@@ -37,18 +37,18 @@ namespace DchatServices.Services
             }
             try
             {
-                var dmUser = new DmUser();
+                var client = new DmUser();
                 var UserConnection = OperationContext.Current.GetCallbackChannel<IClientService>();
-                dmUser.Connection = UserConnection;
-                dmUser.Username = user.Username;
-                dmUser.Password = user.Password;
-                dmUser.Image = user.Image;
-                dmUser.LoggedIn = user.LoggedIn;
-                dmUser.UserId = user.UserId;
-                ConnectedUsers.Add(dmUser);
-                UpdateHelper(true, username);
+                client.Connection = UserConnection;
+                client.Username = user.Username;
+                client.Password = user.Password;
+                client.Image = user.Image;
+                client.LoggedIn = user.LoggedIn;
+                client.UserId = user.UserId;
+                ConnectedUsers.Add(client);
+                UpdateHelper(true, client.Username);
 
-                dmUser.LoggedIn = true;
+                client.LoggedIn = true;
                 //Console.ForegroundColor = ConsoleColor.Green;
                 //Console.WriteLine("Client login: {0} with id: {1} at {2}", user.Username, user.UserId, DateTime.Now);
                 //Console.ResetColor();
@@ -62,20 +62,15 @@ namespace DchatServices.Services
 
         public void Logout()
         {
-            try
-            {
-                var dmuser = GetMyClient();
-                if (dmuser == null) return;
-                ConnectedUsers.Remove(dmuser);
-                dmuser.LoggedIn = false;
-                //Console.ForegroundColor = ConsoleColor.Cyan;
-                //Console.WriteLine($"Client log-off: {dmuser.Username} at {DateTime.Now}");
-                //Console.ResetColor();
-            }
-            catch (Exception)
-            {
-                //ignore                
-            }
+
+            var client = GetMyClient();            
+            UpdateHelper(false, client.Username);            
+            ConnectedUsers.Remove(client);
+            client.LoggedIn = false;
+            //Console.ForegroundColor = ConsoleColor.Cyan;
+            //Console.WriteLine($"Client log-off: {dmuser.Username} at {DateTime.Now}");
+            //Console.ResetColor();
+
         }
 
         public string Register(string username, string password)
@@ -219,19 +214,19 @@ namespace DchatServices.Services
         #endregion
         #region private
 
-        private DmUser GetMyClient()
+        public DmUser GetMyClient()
         {
             var establishedUserConnection = OperationContext.Current.GetCallbackChannel<IClientService>();
             return (from client in ConnectedUsers where client.Connection == establishedUserConnection select client).FirstOrDefault();
         }
 
-        private void UpdateHelper(bool value, string userName)
+        private void UpdateHelper(bool value, string username)
         {
             foreach (var client in ConnectedUsers)
             {
-                if (!string.Equals(client.Username, userName, StringComparison.CurrentCultureIgnoreCase))
+                if (!string.Equals(client.Username, username, StringComparison.CurrentCultureIgnoreCase))
                 {
-                    client.Connection.Update(value, userName);
+                    client.Connection.Update(value, username);
                 }
             }
         }
