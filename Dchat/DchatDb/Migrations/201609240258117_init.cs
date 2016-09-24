@@ -1,9 +1,9 @@
-namespace DchatEntities.Migrations
+namespace DchatDb.Migrations
 {
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class initial : DbMigration
+    public partial class init : DbMigration
     {
         public override void Up()
         {
@@ -11,7 +11,7 @@ namespace DchatEntities.Migrations
                 "dbo.ChatRooms",
                 c => new
                     {
-                        ChatRoomId = c.Guid(nullable: false),
+                        ChatRoomId = c.Guid(nullable: false, identity: true),
                         RoomName = c.String(nullable: false),
                     })
                 .PrimaryKey(t => t.ChatRoomId);
@@ -20,7 +20,7 @@ namespace DchatEntities.Migrations
                 "dbo.Users",
                 c => new
                     {
-                        UserId = c.Guid(nullable: false),
+                        UserId = c.Guid(nullable: false, identity: true),
                         Username = c.String(nullable: false),
                         Password = c.String(nullable: false),
                         LoggedIn = c.Boolean(nullable: false),

@@ -124,10 +124,6 @@
     <None Include="packages.config.vsspell" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DchatEntities\DchatEntities.csproj">
-      <Project>{316FED08-2A7B-4D08-81F6-717A8B41FB06}</Project>
-      <Name>DchatEntities</Name>
-    </ProjectReference>
     <ProjectReference Include="..\DchatServices\DchatServices.csproj">
       <Project>{0DA5155D-00E1-4D37-B978-751EAE02DA36}</Project>
       <Name>DchatServices</Name>

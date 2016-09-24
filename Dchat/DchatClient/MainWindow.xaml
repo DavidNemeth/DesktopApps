@@ -10,11 +10,17 @@
         <mui:LinkGroup DisplayName="welcome">
             <mui:LinkGroup.Links>
                 <mui:Link DisplayName="homepage" Source="/Pages/HomePage.xaml" />
+                <mui:Link DisplayName="chat" Source="/Pages/ChatPage.xaml" />
+            </mui:LinkGroup.Links>
+        </mui:LinkGroup>
+        <mui:LinkGroup DisplayName="chat" GroupKey="chat">
+            <mui:LinkGroup.Links>
+                <mui:Link DisplayName="chat" Source="/Pages/ChatPage.xaml" />
             </mui:LinkGroup.Links>
         </mui:LinkGroup>
         <mui:LinkGroup DisplayName="settings" GroupKey="settings">
             <mui:LinkGroup.Links>
-                <mui:Link DisplayName="software" Source="/Pages/SettingsPage.xaml" />
+                <mui:Link DisplayName="interface" Source="/Pages/SettingsPage.xaml" />
             </mui:LinkGroup.Links>
         </mui:LinkGroup>
     </mui:ModernWindow.MenuLinkGroups>

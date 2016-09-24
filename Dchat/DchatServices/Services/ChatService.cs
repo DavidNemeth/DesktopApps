@@ -1,5 +1,5 @@
-﻿using DchatEntities;
-using DchatServices.Model;
+﻿using DchatServices.Model;
+using DchatDb;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -85,6 +85,9 @@ namespace DchatServices.Services
                 var user = new User();
                 user.Username = username;
                 user.Password = password;
+                user.LoggedIn = false;                
+                _db.Users.Add(user);
+                _db.SaveChanges();  
                 return "Registration Complete!";
             }
             catch (Exception)

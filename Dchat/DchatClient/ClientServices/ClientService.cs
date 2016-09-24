@@ -1,5 +1,6 @@
 ﻿using DchatClient.ViewModel;
 using DchatServices.Services;
+using FirstFloor.ModernUI.Presentation;
 using System.ServiceModel;
 
 namespace DchatClient.ClientServices
@@ -16,11 +17,11 @@ namespace DchatClient.ClientServices
         {
             if (value)
             {
-                ClientViewModel.GetInstance().UserList.Add(userName);
+                ClientViewModel.GetInstance().ConnectedUsers.Add(new Link() { DisplayName = userName });
             }
             else
             {
-                ClientViewModel.GetInstance().UserList.Remove(userName);
+                ClientViewModel.GetInstance().ConnectedUsers.Remove(new Link() { DisplayName = userName });
             }
         }
     }

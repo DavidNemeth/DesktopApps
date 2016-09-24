@@ -83,9 +83,9 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DchatEntities\DchatEntities.csproj">
-      <Project>{316fed08-2a7b-4d08-81f6-717a8b41fb06}</Project>
-      <Name>DchatEntities</Name>
+    <ProjectReference Include="..\DchatDb\DchatDb.csproj">
+      <Project>{50ac3677-6bb2-43cc-b381-b4e64951164b}</Project>
+      <Name>DchatDb</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

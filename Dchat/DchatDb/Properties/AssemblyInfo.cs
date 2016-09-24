@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("DchatEntities")]
+[assembly: AssemblyTitle("DchatDb")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("DchatEntities")]
+[assembly: AssemblyProduct("DchatDb")]
 [assembly: AssemblyCopyright("Copyright ©  2016")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("316fed08-2a7b-4d08-81f6-717a8b41fb06")]
+[assembly: Guid("50ac3677-6bb2-43cc-b381-b4e64951164b")]
 
 // Version information for an assembly consists of the following four values:
 //

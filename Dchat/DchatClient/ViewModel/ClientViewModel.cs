@@ -1,5 +1,5 @@
 ﻿using DchatClient.DchatServiceReference;
-using DchatClient.ViewModel;
+using FirstFloor.ModernUI.Presentation;
 using GalaSoft.MvvmLight.CommandWpf;
 using System;
 using System.Collections.Generic;
@@ -23,8 +23,8 @@ namespace DchatClient.ViewModel
 
         private void CreateCommands()
         {
-            Login = new RelayCommand(OnLogin, () => !(string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(Password)));
-            Logout = new RelayCommand(OnLogout);
+            Login = new GalaSoft.MvvmLight.CommandWpf.RelayCommand(OnLogin, () => !(string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(Password)));
+            Logout = new GalaSoft.MvvmLight.CommandWpf.RelayCommand(OnLogout);
             //Send = new Base.RelayCommand(OnSend);
             //ClearCommand = new Base.RelayCommand(OnClear);
         }
@@ -80,11 +80,11 @@ namespace DchatClient.ViewModel
             set { Set(() => Users, ref _users, value); }
         }
 
-        private ObservableCollection<string> _userlist = new ObservableCollection<string>();
-        public ObservableCollection<string> UserList
+        private LinkCollection _connectedUsers = new LinkCollection();
+        public LinkCollection ConnectedUsers
         {
-            get { return _userlist; }
-            set { Set(() => UserList, ref _userlist, value); }
+            get { return _connectedUsers; }
+            set { Set(() => ConnectedUsers, ref _connectedUsers, value); }
         }
 
         private string _chat;
@@ -107,7 +107,7 @@ namespace DchatClient.ViewModel
             return _this;
         }
 
-        public RelayCommand Login { get; private set; }
+        public GalaSoft.MvvmLight.CommandWpf.RelayCommand Login { get; private set; }
         public void OnLogin()
         {
             Validation.LoginMessage = _server.Login(Username, Password);
@@ -115,7 +115,7 @@ namespace DchatClient.ViewModel
             {
                 LoadUserList(_server.GetConnectedUsers());
                 User = _server.GetUserByName(Username);
-                LoginVisibility = "Hidden";
+                LoginVisibility = "Hidden";                
             }
             else
             {
@@ -123,11 +123,11 @@ namespace DchatClient.ViewModel
             }
         }
 
-        public RelayCommand Logout { get; private set; }
+        public GalaSoft.MvvmLight.CommandWpf.RelayCommand Logout { get; private set; }
         public void OnLogout()
         {
             _server.Logout();
-            UserList.Clear();
+            ConnectedUsers.Clear();
         }
         
         private void LoadUserList(IEnumerable<DmUser> currentusers)
@@ -135,14 +135,14 @@ namespace DchatClient.ViewModel
             
             foreach (var user in currentusers)
             {
-                if (UserList.Contains(user.Username))
+                if (Users.Contains(user))
                 {
                     return;
                 }
                 else
                 {
-                    UserList.Add(user.Username);
                     Users.Add(user);
+                    ConnectedUsers.Add(new Link() { DisplayName = user.Username, Source = new Uri("/Pages/Chat/MainRoom.xaml", UriKind.Relative) });
                 }
             }
         }
