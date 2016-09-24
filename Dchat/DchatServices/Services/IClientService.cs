@@ -1,5 +1,4 @@
-﻿using DchatServices.Model;
-using System.ServiceModel;
+﻿using System.ServiceModel;
 
 namespace DchatServices.Services
 {

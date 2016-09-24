@@ -38,12 +38,16 @@ namespace DchatServices.Services
             try
             {
                 var dmUser = new DmUser();
+                var UserConnection = OperationContext.Current.GetCallbackChannel<IClientService>();
+                dmUser.Connection = UserConnection;
                 dmUser.Username = user.Username;
                 dmUser.Password = user.Password;
                 dmUser.Image = user.Image;
                 dmUser.LoggedIn = user.LoggedIn;
                 dmUser.UserId = user.UserId;
                 ConnectedUsers.Add(dmUser);
+                UpdateHelper(true, username);
+
                 dmUser.LoggedIn = true;
                 //Console.ForegroundColor = ConsoleColor.Green;
                 //Console.WriteLine("Client login: {0} with id: {1} at {2}", user.Username, user.UserId, DateTime.Now);
@@ -85,9 +89,9 @@ namespace DchatServices.Services
                 var user = new User();
                 user.Username = username;
                 user.Password = password;
-                user.LoggedIn = false;                
+                user.LoggedIn = false;
                 _db.Users.Add(user);
-                _db.SaveChanges();  
+                Save();
                 return "Registration Complete!";
             }
             catch (Exception)
@@ -239,6 +243,7 @@ namespace DchatServices.Services
 
         public void StartUp()
         {
+
         }
 
         #endregion

@@ -1,6 +1,6 @@
-﻿using DchatClient.DchatServiceReference;
+﻿using DchatClient.ClientServices;
+using DchatClient.DchatServiceReference;
 using FirstFloor.ModernUI.Presentation;
-using GalaSoft.MvvmLight.CommandWpf;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -15,7 +15,9 @@ namespace DchatClient.ViewModel
 
         public ClientViewModel()
         {
-            ChannelFactory<IChatService> channelFactory = new ChannelFactory<IChatService>("BasicHttpBinding_IChatService");
+            var channelFactory = new DuplexChannelFactory<IChatService>(new ClientService(), "IChatEndpoint");
+         
+
             _server = channelFactory.CreateChannel();
             _this = this;
             CreateCommands();

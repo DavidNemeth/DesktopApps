@@ -1,4 +1,5 @@
-﻿using DchatClient.DchatServiceReference;
+﻿using DchatClient.ClientServices;
+using DchatClient.DchatServiceReference;
 using GalaSoft.MvvmLight.CommandWpf;
 using System.ServiceModel;
 
@@ -10,7 +11,7 @@ namespace DchatClient.ViewModel
 
         public RegisterViewModel()
         {
-            ChannelFactory<IChatService> channelFactory = new ChannelFactory<IChatService>("BasicHttpBinding_IChatService");
+            var channelFactory = new DuplexChannelFactory<IChatService>(new ClientService(), "IChatEndpoint");
             _server = channelFactory.CreateChannel();
             CreateCommands();
         }

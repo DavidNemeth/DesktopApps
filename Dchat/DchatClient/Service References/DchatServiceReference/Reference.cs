@@ -11,8 +11,8 @@
 namespace DchatClient.DchatServiceReference {
     using System.Runtime.Serialization;
     using System;
-    
-    
+    using DchatServices.Services;
+
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.Runtime.Serialization", "4.0.0.0")]
     [System.Runtime.Serialization.DataContractAttribute(Name="DmUser", Namespace="http://schemas.datacontract.org/2004/07/DchatServices.Model")]
@@ -283,7 +283,7 @@ namespace DchatClient.DchatServiceReference {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="DchatServiceReference.IChatService")]
+    [System.ServiceModel.ServiceContractAttribute(ConfigurationName="DchatServiceReference.IChatService", CallbackContract=typeof(IClientService))]
     public interface IChatService {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatService/StartUp", ReplyAction="http://tempuri.org/IChatService/StartUpResponse")]
@@ -330,30 +330,41 @@ namespace DchatClient.DchatServiceReference {
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
+    public interface IChatServiceCallback {
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatService/GetMessage", ReplyAction="http://tempuri.org/IChatService/GetMessageResponse")]
+        void GetMessage(string message, string userName);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatService/Update", ReplyAction="http://tempuri.org/IChatService/UpdateResponse")]
+        void Update(bool value, string userName);
+    }
+    
+    [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
     public interface IChatServiceChannel : DchatClient.DchatServiceReference.IChatService, System.ServiceModel.IClientChannel {
     }
     
     [System.Diagnostics.DebuggerStepThroughAttribute()]
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
-    public partial class ChatServiceClient : System.ServiceModel.ClientBase<DchatClient.DchatServiceReference.IChatService>, DchatClient.DchatServiceReference.IChatService {
+    public partial class ChatServiceClient : System.ServiceModel.DuplexClientBase<DchatClient.DchatServiceReference.IChatService>, DchatClient.DchatServiceReference.IChatService {
         
-        public ChatServiceClient() {
+        public ChatServiceClient(System.ServiceModel.InstanceContext callbackInstance) : 
+                base(callbackInstance) {
         }
         
-        public ChatServiceClient(string endpointConfigurationName) : 
-                base(endpointConfigurationName) {
+        public ChatServiceClient(System.ServiceModel.InstanceContext callbackInstance, string endpointConfigurationName) : 
+                base(callbackInstance, endpointConfigurationName) {
         }
         
-        public ChatServiceClient(string endpointConfigurationName, string remoteAddress) : 
-                base(endpointConfigurationName, remoteAddress) {
+        public ChatServiceClient(System.ServiceModel.InstanceContext callbackInstance, string endpointConfigurationName, string remoteAddress) : 
+                base(callbackInstance, endpointConfigurationName, remoteAddress) {
         }
         
-        public ChatServiceClient(string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
-                base(endpointConfigurationName, remoteAddress) {
+        public ChatServiceClient(System.ServiceModel.InstanceContext callbackInstance, string endpointConfigurationName, System.ServiceModel.EndpointAddress remoteAddress) : 
+                base(callbackInstance, endpointConfigurationName, remoteAddress) {
         }
         
-        public ChatServiceClient(System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
-                base(binding, remoteAddress) {
+        public ChatServiceClient(System.ServiceModel.InstanceContext callbackInstance, System.ServiceModel.Channels.Binding binding, System.ServiceModel.EndpointAddress remoteAddress) : 
+                base(callbackInstance, binding, remoteAddress) {
         }
         
         public void StartUp() {

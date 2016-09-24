@@ -4,7 +4,7 @@ using System.ServiceModel;
 
 namespace DchatServices.Services
 {
-    [ServiceContract]
+    [ServiceContract(CallbackContract = typeof(IClientService))]
     public interface IChatService
     {
         [OperationContract]
