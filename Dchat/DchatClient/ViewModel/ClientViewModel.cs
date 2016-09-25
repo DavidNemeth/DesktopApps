@@ -12,7 +12,7 @@ namespace DchatClient.ViewModel
     {
         private static ClientViewModel _this;
         private static IChatService _server;
-
+        #region Initialization
         public ClientViewModel()
         {
             var channelFactory = new DuplexChannelFactory<IChatService>(new ClientService(), "IChatEndpoint");
@@ -22,15 +22,16 @@ namespace DchatClient.ViewModel
             _this = this;
             CreateCommands();
         }
-
         private void CreateCommands()
         {
             Login = new GalaSoft.MvvmLight.CommandWpf.RelayCommand(OnLogin, () => !(string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(Password)));
             Logout = new GalaSoft.MvvmLight.CommandWpf.RelayCommand(OnLogout);
-            //Send = new Base.RelayCommand(OnSend);
+            Send = new GalaSoft.MvvmLight.CommandWpf.RelayCommand(OnSend);
             //ClearCommand = new Base.RelayCommand(OnClear);
         }
+        #endregion
 
+        #region props 
         private ReturnMessage _validation = new ReturnMessage();
         public ReturnMessage Validation
         {
@@ -51,8 +52,7 @@ namespace DchatClient.ViewModel
             get { return _profileVisibility; }
             set { Set(() => ProfileVisibility, ref _profileVisibility, value); }
         }
-
-        #region props  
+         
         private string _password;
         public string Password
         {
@@ -105,17 +105,7 @@ namespace DchatClient.ViewModel
         }
         #endregion
 
-        public void TakeMessage(string message, string username)
-        {
-            Chat += username + ": " + message + "\n";
-        }
-
-
-        public static ClientViewModel GetInstance()
-        {
-            return _this;
-        }
-
+        #region RelayCommands
         public GalaSoft.MvvmLight.CommandWpf.RelayCommand Login { get; private set; }
         public void OnLogin()
         {
@@ -141,10 +131,36 @@ namespace DchatClient.ViewModel
             _server.Logout();
             ConnectedUsers.Clear();
             Users.Clear();
+            Chat = "";
             LoginVisibility = "Visible";
             ProfileVisibility = "Hidden";
         }
-        
+
+        public GalaSoft.MvvmLight.CommandWpf.RelayCommand Send { get; private set; }
+        public void OnSend()
+        {
+            if (string.IsNullOrEmpty(Message))
+            {
+                return;
+            }
+            try
+            {
+                _server.SendMessageToAll(Message, Username);
+                TakeMessage(Message, "You");
+                Message = "";
+            }
+            catch (Exception)
+            {
+                Users.Clear();
+                ConnectedUsers.Clear();
+                Validation.LoginMessage = "Log In";
+                LoginVisibility = "Visible";
+                ProfileVisibility = "Hidden";
+            }
+        }
+        #endregion
+
+        #region Other_methods
         private void LoadUserList(IEnumerable<DmUser> currentusers)
         {
             
@@ -161,5 +177,17 @@ namespace DchatClient.ViewModel
                 }
             }
         }
+
+        public void TakeMessage(string message, string username)
+        {
+            Chat += username + ": " + message + "\n";
+        }
+
+
+        public static ClientViewModel GetInstance()
+        {
+            return _this;
+        }
+        #endregion
     }
 }
