@@ -43,11 +43,11 @@
                     <StackPanel>
                         <Label Content="UserName" Target="{Binding ElementName=TextFirstName}"/>
                         <TextBox x:Name="TextUserName" Width="150" Text="{Binding Username, Mode=TwoWay}" />
-                    </StackPanel>
+                    </StackPanel>                    
                     <StackPanel>
                         <Label Content="Password" Target="{Binding ElementName=TextLastName}"/>
                         <PasswordBox x:Name="Password1" Width="150" w:PasswordHelper.Password="{Binding Password, Mode=TwoWay}"/>
-                    </StackPanel>
+                    </StackPanel>                    
                     <Button Content="Register" Margin="100,16,0,0" HorizontalAlignment="Left" Command="{Binding Register, ValidatesOnDataErrors=True}"/>
                 </StackPanel>
             </StackPanel>

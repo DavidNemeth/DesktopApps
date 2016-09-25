@@ -1,6 +1,7 @@
 ﻿using DchatClient.ClientServices;
 using DchatClient.DchatServiceReference;
 using GalaSoft.MvvmLight.CommandWpf;
+using Microsoft.Win32;
 using System.ServiceModel;
 
 namespace DchatClient.ViewModel
@@ -25,7 +26,7 @@ namespace DchatClient.ViewModel
         {
             get { return _validation; }
             set { Set(() => Validation, ref _validation, value); }
-        }
+        }        
 
         private string _username;
         public string Username
@@ -48,6 +49,6 @@ namespace DchatClient.ViewModel
                 Validation.RegisterColor = "Green";
             else
                 Validation.RegisterColor = "Red";
-        }
+        }       
     }
 }

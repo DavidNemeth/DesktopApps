@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.ServiceModel;
+using System.IO;
 
 namespace DchatServices.Services
 {
@@ -83,7 +84,7 @@ namespace DchatServices.Services
             {
                 var user = new User();
                 user.Username = username;
-                user.Password = password;
+                user.Password = password;                
                 user.LoggedIn = false;
                 _db.Users.Add(user);
                 Save();

@@ -1,6 +1,7 @@
 ﻿using DchatClient.ClientServices;
 using DchatClient.DchatServiceReference;
 using FirstFloor.ModernUI.Presentation;
+using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -27,7 +28,7 @@ namespace DchatClient.ViewModel
             Login = new GalaSoft.MvvmLight.CommandWpf.RelayCommand(OnLogin, () => !(string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(Password)));
             Logout = new GalaSoft.MvvmLight.CommandWpf.RelayCommand(OnLogout);
             Send = new GalaSoft.MvvmLight.CommandWpf.RelayCommand(OnSend);
-            //ClearCommand = new Base.RelayCommand(OnClear);
+            LoadImage = new GalaSoft.MvvmLight.CommandWpf.RelayCommand(OnLoadImage);
         }
         #endregion
 
@@ -37,6 +38,13 @@ namespace DchatClient.ViewModel
         {
             get { return _validation; }
             set { Set(() => Validation, ref _validation, value); }
+        }
+
+        private string _profileImage;
+        public string ProfileImage
+        {
+            get { return _profileImage; }
+            set { Set(() => ProfileImage, ref _profileImage, value); }
         }
 
         private string _loginVisibility = "Visible";
@@ -157,6 +165,16 @@ namespace DchatClient.ViewModel
                 LoginVisibility = "Visible";
                 ProfileVisibility = "Hidden";
             }
+        }
+        public GalaSoft.MvvmLight.CommandWpf.RelayCommand LoadImage { get; private set; }
+        public void OnLoadImage()
+        {
+            OpenFileDialog open = new OpenFileDialog();
+            open.DefaultExt = (".png");
+            open.Filter = "Pictures (*.jpg;*.gif;*.png)|*.jpg;*.gif;*.png";
+
+            if (open.ShowDialog() == true)
+                ProfileImage = open.FileName;
         }
         #endregion
 
