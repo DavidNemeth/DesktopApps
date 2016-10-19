@@ -23,5 +23,7 @@ namespace DchatServices.Services
         string Register(string username, string password);
         [OperationContract]
         void SendMessageToAll(string message, string userName);
+        [OperationContract]
+        bool UpdateUser(string NewUsername, string OldUsername, byte[] image);
     }
 }

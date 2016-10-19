@@ -5,7 +5,9 @@ using Microsoft.Win32;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.IO;
 using System.ServiceModel;
+using System.Windows.Media.Imaging;
 
 namespace DchatClient.ViewModel
 {
@@ -29,6 +31,7 @@ namespace DchatClient.ViewModel
             Logout = new GalaSoft.MvvmLight.CommandWpf.RelayCommand(OnLogout);
             Send = new GalaSoft.MvvmLight.CommandWpf.RelayCommand(OnSend);
             LoadImage = new GalaSoft.MvvmLight.CommandWpf.RelayCommand(OnLoadImage);
+            SaveChanges = new GalaSoft.MvvmLight.CommandWpf.RelayCommand(OnSaveChanges);
         }
         #endregion
 
@@ -40,8 +43,8 @@ namespace DchatClient.ViewModel
             set { Set(() => Validation, ref _validation, value); }
         }
 
-        private string _profileImage;
-        public string ProfileImage
+        private byte[] _profileImage;
+        public byte[] ProfileImage
         {
             get { return _profileImage; }
             set { Set(() => ProfileImage, ref _profileImage, value); }
@@ -126,6 +129,7 @@ namespace DchatClient.ViewModel
                 ProfileVisibility = "Visible";
                 Username = "";
                 Username = _server.GetMyClient().Username;
+                ProfileImage = _server.GetMyClient().Image;
             }
             else
             {
@@ -174,7 +178,20 @@ namespace DchatClient.ViewModel
             open.Filter = "Pictures (*.jpg;*.gif;*.png)|*.jpg;*.gif;*.png";
 
             if (open.ShowDialog() == true)
-                ProfileImage = open.FileName;
+                ProfileImage = File.ReadAllBytes(open.FileName);
+        }
+
+        public GalaSoft.MvvmLight.CommandWpf.RelayCommand SaveChanges { get; private set; }
+        public void OnSaveChanges()
+        {
+            try
+            {
+                _server.UpdateUser(Username, Username, ProfileImage);
+            }
+            catch (Exception)
+            {
+                /*TODO: Error message: file size too large*/
+            }        
         }
         #endregion
 

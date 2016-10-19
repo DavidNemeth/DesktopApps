@@ -96,6 +96,19 @@ namespace DchatServices.Services
             }
         }
 
+        public bool UpdateUser(string NewUsername, string OldUsername, byte[] image)
+        {
+            if (_db.Users.FirstOrDefault(u => u.Username == OldUsername) != null)
+            {
+                var user = _db.Users.FirstOrDefault(u => u.Username == OldUsername);
+                user.Username = NewUsername;
+                user.Image = image;
+                Save();
+                return true;
+            }
+            else return false;
+        }
+
         public void SendMessageToAll(string message, string userName)
         {
             if (string.IsNullOrEmpty(userName))

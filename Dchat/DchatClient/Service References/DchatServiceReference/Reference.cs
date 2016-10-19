@@ -333,6 +333,12 @@ namespace DchatClient.DchatServiceReference {
         
         [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatService/SendMessageToAll", ReplyAction="http://tempuri.org/IChatService/SendMessageToAllResponse")]
         System.Threading.Tasks.Task SendMessageToAllAsync(string message, string userName);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatService/UpdateUser", ReplyAction="http://tempuri.org/IChatService/UpdateUserResponse")]
+        bool UpdateUser(string NewUsername, string OldUsername, byte[] image);
+        
+        [System.ServiceModel.OperationContractAttribute(Action="http://tempuri.org/IChatService/UpdateUser", ReplyAction="http://tempuri.org/IChatService/UpdateUserResponse")]
+        System.Threading.Tasks.Task<bool> UpdateUserAsync(string NewUsername, string OldUsername, byte[] image);
     }
     
     [System.CodeDom.Compiler.GeneratedCodeAttribute("System.ServiceModel", "4.0.0.0")]
@@ -435,6 +441,14 @@ namespace DchatClient.DchatServiceReference {
         
         public System.Threading.Tasks.Task SendMessageToAllAsync(string message, string userName) {
             return base.Channel.SendMessageToAllAsync(message, userName);
+        }
+        
+        public bool UpdateUser(string NewUsername, string OldUsername, byte[] image) {
+            return base.Channel.UpdateUser(NewUsername, OldUsername, image);
+        }
+        
+        public System.Threading.Tasks.Task<bool> UpdateUserAsync(string NewUsername, string OldUsername, byte[] image) {
+            return base.Channel.UpdateUserAsync(NewUsername, OldUsername, image);
         }
     }
 }
