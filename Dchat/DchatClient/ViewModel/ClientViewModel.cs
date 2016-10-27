@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.IO;
 using System.ServiceModel;
 using System.Windows.Media.Imaging;
+using Rc = GalaSoft.MvvmLight.CommandWpf;
 
 namespace DchatClient.ViewModel
 {
@@ -27,11 +28,11 @@ namespace DchatClient.ViewModel
         }
         private void CreateCommands()
         {
-            Login = new GalaSoft.MvvmLight.CommandWpf.RelayCommand(OnLogin, () => !(string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(Password)));
-            Logout = new GalaSoft.MvvmLight.CommandWpf.RelayCommand(OnLogout);
-            Send = new GalaSoft.MvvmLight.CommandWpf.RelayCommand(OnSend);
-            LoadImage = new GalaSoft.MvvmLight.CommandWpf.RelayCommand(OnLoadImage);
-            SaveChanges = new GalaSoft.MvvmLight.CommandWpf.RelayCommand(OnSaveChanges);
+            Login = new Rc.RelayCommand(OnLogin, () => !(string.IsNullOrEmpty(Username) || string.IsNullOrEmpty(Password)));
+            Logout = new Rc.RelayCommand(OnLogout);
+            Send = new Rc.RelayCommand(OnSend);
+            LoadImage = new Rc.RelayCommand(OnLoadImage);
+            SaveChanges = new Rc.RelayCommand(OnSaveChanges);
         }
         #endregion
 
@@ -117,7 +118,7 @@ namespace DchatClient.ViewModel
         #endregion
 
         #region RelayCommands
-        public GalaSoft.MvvmLight.CommandWpf.RelayCommand Login { get; private set; }
+        public Rc.RelayCommand Login { get; private set; }
         public void OnLogin()
         {
             Validation.LoginMessage = _server.Login(Username, Password);
@@ -137,7 +138,7 @@ namespace DchatClient.ViewModel
             }
         }
 
-        public GalaSoft.MvvmLight.CommandWpf.RelayCommand Logout { get; private set; }
+        public Rc.RelayCommand Logout { get; private set; }
         public void OnLogout()
         {
             _server.Logout();
@@ -148,7 +149,7 @@ namespace DchatClient.ViewModel
             ProfileVisibility = "Hidden";
         }
 
-        public GalaSoft.MvvmLight.CommandWpf.RelayCommand Send { get; private set; }
+        public Rc.RelayCommand Send { get; private set; }
         public void OnSend()
         {
             if (string.IsNullOrEmpty(Message))
@@ -170,7 +171,7 @@ namespace DchatClient.ViewModel
                 ProfileVisibility = "Hidden";
             }
         }
-        public GalaSoft.MvvmLight.CommandWpf.RelayCommand LoadImage { get; private set; }
+        public Rc.RelayCommand LoadImage { get; private set; }
         public void OnLoadImage()
         {
             OpenFileDialog open = new OpenFileDialog();
@@ -181,7 +182,7 @@ namespace DchatClient.ViewModel
                 ProfileImage = File.ReadAllBytes(open.FileName);
         }
 
-        public GalaSoft.MvvmLight.CommandWpf.RelayCommand SaveChanges { get; private set; }
+        public Rc.RelayCommand SaveChanges { get; private set; }
         public void OnSaveChanges()
         {
             try
