@@ -1,7 +1,3 @@
-Dekstop Chat application, not yet finished.
+Dekstop Chat application to learn and practice WCF and Observer Pattern.
 
--wfc    
--wpf
--entity framework   
--mvvm
-  
+Singleton service to enable multi client usage. (A client starting a new session does not instantiate a new instance of the service)
