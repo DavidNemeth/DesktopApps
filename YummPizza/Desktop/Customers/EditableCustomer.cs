@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Desktop.Customers
 {
-    public class EditableCustomer : ValidatebleBindableBase
+    public class EditableCustomer : ValidationBindableBase
     {
         private Guid _Id;
         public Guid Id
